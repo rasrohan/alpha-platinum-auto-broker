@@ -15,6 +15,14 @@ const translations = {
     tellUs: "Tell Us What You Want",
     regionLabels: ["Primary sourcing lanes", "Expansion lane", "Buyer support"],
     regionTitles: ["Georgia Partner Inventory", "South Florida Dealer Network", "International Intake + Export Coordination"],
+    atlWidget: {
+      label: "Atlanta desk",
+      time: "Local time",
+      weather: "ATL weather",
+      loadingDate: "Loading date...",
+      loadingWeather: "Checking...",
+      unavailable: "Weather unavailable"
+    },
     showroomEyebrow: "Virtual Showroom",
     showroomTitle: "Featured sourcing opportunities",
     aboutEyebrow: "Built From Real Service Experience",
@@ -133,6 +141,14 @@ const translations = {
     tellUs: "Dinos Qué Buscas",
     regionLabels: ["Rutas principales", "Ruta de expansión", "Soporte al comprador"],
     regionTitles: ["Inventario Asociado en Georgia", "Red de Concesionarios del Sur de Florida", "Intake Internacional + Coordinación de Exportación"],
+    atlWidget: {
+      label: "Mesa de Atlanta",
+      time: "Hora local",
+      weather: "Clima ATL",
+      loadingDate: "Cargando fecha...",
+      loadingWeather: "Consultando...",
+      unavailable: "Clima no disponible"
+    },
     showroomEyebrow: "Showroom Virtual",
     showroomTitle: "Oportunidades destacadas de búsqueda",
     aboutEyebrow: "Construido Desde Experiencia Real de Servicio",
@@ -424,6 +440,14 @@ const feeLabel = document.querySelector("#feeLabel");
 const tierReason = document.querySelector("#tierReason");
 const formNote = document.querySelector("#formNote");
 const languageToggle = document.querySelector(".language-toggle");
+const atlWidgetLabel = document.querySelector("#atlWidgetLabel");
+const atlTimeLabel = document.querySelector("#atlTimeLabel");
+const atlWeatherLabel = document.querySelector("#atlWeatherLabel");
+const atlDate = document.querySelector("#atlDate");
+const atlTime = document.querySelector("#atlTime");
+const atlWeather = document.querySelector("#atlWeather");
+
+let atlWeatherData = null;
 
 function t() {
   return translations[currentLanguage];
@@ -447,6 +471,99 @@ function setPlaceholder(selector, value) {
 
 function setOptionText(select, index, value) {
   if (select?.options[index]) select.options[index].textContent = value;
+}
+
+function getWeatherSummary(code) {
+  const summaries = {
+    en: {
+      0: "Clear",
+      1: "Mostly clear",
+      2: "Partly cloudy",
+      3: "Cloudy",
+      45: "Fog",
+      48: "Fog",
+      51: "Light drizzle",
+      53: "Drizzle",
+      55: "Heavy drizzle",
+      61: "Light rain",
+      63: "Rain",
+      65: "Heavy rain",
+      71: "Light snow",
+      73: "Snow",
+      75: "Heavy snow",
+      80: "Light showers",
+      81: "Showers",
+      82: "Heavy showers",
+      95: "Thunderstorms"
+    },
+    es: {
+      0: "Despejado",
+      1: "Mayormente despejado",
+      2: "Parcialmente nublado",
+      3: "Nublado",
+      45: "Niebla",
+      48: "Niebla",
+      51: "Llovizna leve",
+      53: "Llovizna",
+      55: "Llovizna fuerte",
+      61: "Lluvia leve",
+      63: "Lluvia",
+      65: "Lluvia fuerte",
+      71: "Nieve leve",
+      73: "Nieve",
+      75: "Nieve fuerte",
+      80: "Chubascos leves",
+      81: "Chubascos",
+      82: "Chubascos fuertes",
+      95: "Tormentas"
+    }
+  };
+
+  return summaries[currentLanguage][code] || (currentLanguage === "es" ? "Clima variable" : "Variable weather");
+}
+
+function updateAtlantaClock() {
+  const now = new Date();
+  const locale = currentLanguage === "es" ? "es-US" : "en-US";
+  atlDate.textContent = new Intl.DateTimeFormat(locale, {
+    timeZone: "America/New_York",
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+    year: "numeric"
+  }).format(now);
+  atlTime.textContent = new Intl.DateTimeFormat(locale, {
+    timeZone: "America/New_York",
+    hour: "numeric",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: currentLanguage === "en"
+  }).format(now);
+}
+
+function updateAtlantaWeatherText() {
+  if (!atlWeatherData) {
+    atlWeather.textContent = t().atlWidget.loadingWeather;
+    return;
+  }
+
+  const temp = Math.round(atlWeatherData.temperature);
+  atlWeather.textContent = `${temp}°F · ${getWeatherSummary(atlWeatherData.code)}`;
+}
+
+async function fetchAtlantaWeather() {
+  try {
+    const response = await fetch("https://api.open-meteo.com/v1/forecast?latitude=33.749&longitude=-84.388&current=temperature_2m,weather_code&temperature_unit=fahrenheit&timezone=America%2FNew_York");
+    if (!response.ok) throw new Error("Weather request failed");
+    const data = await response.json();
+    atlWeatherData = {
+      temperature: data.current.temperature_2m,
+      code: data.current.weather_code
+    };
+    updateAtlantaWeatherText();
+  } catch (error) {
+    atlWeather.textContent = t().atlWidget.unavailable;
+  }
 }
 
 function renderInventory() {
@@ -630,6 +747,12 @@ function applyLanguage(lang) {
   setText(".hero-actions .secondary", copy.tellUs);
   setAllText(".region-strip span", copy.regionLabels);
   setAllText(".region-strip strong", copy.regionTitles);
+  atlWidgetLabel.textContent = copy.atlWidget.label;
+  atlTimeLabel.textContent = copy.atlWidget.time;
+  atlWeatherLabel.textContent = copy.atlWidget.weather;
+  if (!atlWeatherData) atlWeather.textContent = copy.atlWidget.loadingWeather;
+  updateAtlantaClock();
+  updateAtlantaWeatherText();
   setText("#showroom .eyebrow", copy.showroomEyebrow);
   setText("#showroom h2", copy.showroomTitle);
   setText("#about .eyebrow", copy.aboutEyebrow);
@@ -742,3 +865,7 @@ renderMakes();
 renderColors();
 renderInventory();
 applyLanguage("en");
+updateAtlantaClock();
+fetchAtlantaWeather();
+setInterval(updateAtlantaClock, 1000);
+setInterval(fetchAtlantaWeather, 900000);
