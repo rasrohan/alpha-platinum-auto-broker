@@ -12,6 +12,10 @@ Later June 17 update: the Virtual Showroom now appears before the About/service-
 
 June 19 update: EN/ES toggle now switches the main website copy, form labels, placeholders, select prompts, concierge flow, disclosures, footer, and inventory card UI. `app.js` is cache-busted in `index.html` for GitHub Pages updates.
 
+Later June 19 update: added a compact Atlanta desk widget below the region strip with live Atlanta date, time, and current weather. Weather uses Open-Meteo's no-key public forecast endpoint and falls back gracefully if unavailable.
+
+Brand update: added the Alpha Platinum logo stack. `alpha-platinum-mark.png` is used in the header and `alpha-platinum-logo.png` is used in the contact/business registry area.
+
 ## Operations
 
 - Operations Manager: Lance Johnson
