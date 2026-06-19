@@ -57,12 +57,20 @@ a {
 
 .brand-mark {
   display: grid;
-  width: 42px;
-  height: 42px;
+  width: 46px;
+  height: 46px;
   place-items: center;
   border: 1px solid rgba(215, 222, 226, 0.52);
+  background: #020303;
   color: var(--platinum);
   font-weight: 800;
+  overflow: hidden;
+}
+
+.brand-mark img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .brand strong,
@@ -262,6 +270,36 @@ h3 {
 .region-strip strong {
   color: var(--platinum);
   font-size: 1.05rem;
+}
+
+.atl-widget {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  padding: 1px;
+  background: var(--line);
+}
+
+.atl-widget div {
+  min-height: 82px;
+  display: grid;
+  align-content: center;
+  gap: 6px;
+  padding: 18px clamp(20px, 4vw, 54px);
+  background: #0b0e11;
+}
+
+.atl-widget span {
+  color: var(--subtle);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.atl-widget strong {
+  color: var(--platinum);
+  font-size: clamp(0.98rem, 1.6vw, 1.22rem);
 }
 
 .section,
@@ -601,6 +639,13 @@ textarea:focus {
   padding: clamp(22px, 4vw, 34px);
 }
 
+.contact-logo {
+  display: block;
+  width: min(260px, 80%);
+  height: auto;
+  margin: 0 0 24px;
+}
+
 .contact-card p,
 .disclosure-copy p {
   color: var(--muted);
@@ -632,6 +677,7 @@ textarea:focus {
   .about-grid,
   .steps,
   .region-strip,
+  .atl-widget,
   .split-section,
   .disclosures {
     grid-template-columns: 1fr;
