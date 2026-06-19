@@ -10,6 +10,8 @@ June 17 update: public site now includes the founder-service background, operati
 
 Later June 17 update: the Virtual Showroom now appears before the About/service-background section so buyers see dream-car opportunities first. Header includes an EN/ES toggle scaffold for the upcoming bilingual pass.
 
+June 19 update: EN/ES toggle now switches the main website copy, form labels, placeholders, select prompts, concierge flow, disclosures, footer, and inventory card UI. `app.js` is cache-busted in `index.html` for GitHub Pages updates.
+
 ## Operations
 
 - Operations Manager: Lance Johnson
