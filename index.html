@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alpha Platinum Auto Broker | Premium Vehicle Procurement Concierge</title>
+  <meta name="description" content="Alpha Platinum Auto Broker helps qualified buyers source premium U.S. vehicles through licensed dealer relationships in Georgia and South Florida.">
+  <link rel="preload" href="assets/showroom-hero.png" as="image">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#top" aria-label="Alpha Platinum Auto Broker home">
+      <span class="brand-mark">AP</span>
+      <span>
+        <strong>Alpha Platinum</strong>
+        <small>Auto Broker</small>
+      </span>
+    </a>
+    <nav class="nav" aria-label="Main navigation">
+      <a href="#showroom">Showroom</a>
+      <a href="#source">Custom Sourcing</a>
+      <a href="#process">Process</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button class="language-toggle" type="button" aria-label="Language toggle">
+      <span class="active">EN</span>
+      <span>ES</span>
+    </button>
+  </header>
+
+  <main id="top">
+    <section class="hero" aria-labelledby="hero-title">
+      <img class="hero-image" src="assets/showroom-hero.png" alt="Dark premium vehicle showroom with luxury cars">
+      <div class="hero-overlay"></div>
+      <div class="hero-content">
+        <p class="eyebrow">Rowtronic LLC DBA</p>
+        <h1 id="hero-title">Alpha Platinum Auto Broker</h1>
+        <p class="hero-copy">A virtual luxury auto showroom and procurement concierge for qualified buyers seeking premium U.S. vehicles through trusted licensed dealer relationships in Georgia and South Florida.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="#showroom">Browse Showroom</a>
+          <a class="button secondary" href="#source">Tell Us What You Want</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="region-strip" aria-label="Service regions">
+      <div>
+        <span>Primary sourcing lanes</span>
+        <strong>Georgia Partner Inventory</strong>
+      </div>
+      <div>
+        <span>Expansion lane</span>
+        <strong>South Florida Dealer Network</strong>
+      </div>
+      <div>
+        <span>Buyer support</span>
+        <strong>International Intake + Export Coordination</strong>
+      </div>
+    </section>
+
+    <section class="section" id="showroom">
+      <div class="section-heading">
+        <p class="eyebrow">Virtual Showroom</p>
+        <h2>Featured sourcing opportunities</h2>
+      </div>
+      <div class="inventory-grid" id="inventoryGrid" aria-live="polite"></div>
+    </section>
+
+    <section class="section about-section" id="about">
+      <div class="section-heading">
+        <p class="eyebrow">Built From Real Service Experience</p>
+        <h2>A concierge desk for serious vehicle buyers</h2>
+        <p>Alpha Platinum Auto Broker was registered in Georgia in 2023 after years of seeing the same opportunity: overseas buyers want access to premium U.S. vehicles, but they need a trustworthy local process to help find, verify, and coordinate the right deal.</p>
+      </div>
+      <div class="about-grid">
+        <details class="about-story">
+          <summary>Founder Background</summary>
+          <div>
+            <p>The foundation is more than 25 years of customer service, logistics, field support, and dispatch experience across New York, South Florida, and Atlanta. That includes bus operations with Adirondack and New York Transit in Albany, nine years as a Dish Network installer and lead technician in South Florida, and more than 16 years as a technician and dispatcher with Prime Rangers Inc. in Atlanta.</p>
+            <p>The original spark came from a 2018 ATL Airport ride conversation about international demand for American vehicles. The business sat quiet after registration, then came back to life in 2026 as high-end dealer inventory started appearing through trusted local relationships.</p>
+          </div>
+        </details>
+        <article class="partner-lanes">
+          <h3>Sourcing Lanes</h3>
+          <p>Current development focuses on Georgia partner inventory and a South Florida exotic-vehicle lane. Fort Lauderdale Collection is logged internally as a prospective South Florida lead because its public inventory categories include luxury and exotic brands such as Ferrari, Lamborghini, Bentley, Rolls-Royce, Porsche, Mercedes-Benz, Lexus, Land Rover, and more.</p>
+          <p>Dealer names are treated as prospective or verified sourcing relationships only. Public partner claims should wait until permission or a formal agreement exists.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="split-section" id="source">
+      <div class="source-panel">
+        <p class="eyebrow">Custom Procurement Intake</p>
+        <h2>Tell us what you want. We will find it.</h2>
+        <p>Submit the desired make, model, budget, destination, and timing. Alpha Platinum reviews export eligibility, confirms the right procurement tier, then begins active sourcing after the concierge fee is paid through Stripe.</p>
+        <div class="fee-box">
+          <div>
+            <span>Current procurement tier</span>
+            <strong id="feeLabel">Standard Concierge</strong>
+          </div>
+          <strong id="feeAmount">$699</strong>
+        </div>
+      </div>
+
+      <form class="intake-form" id="intakeForm">
+        <div class="form-grid">
+          <label>
+            Full name
+            <input id="fullName" name="fullName" autocomplete="name" required placeholder="Client name">
+          </label>
+          <label>
+            Email
+            <input id="email" name="email" type="email" autocomplete="email" required placeholder="name@example.com">
+          </label>
+          <label>
+            WhatsApp / phone
+            <input id="phone" name="phone" type="tel" autocomplete="tel" required placeholder="+1 678 387 0355">
+          </label>
+          <label>
+            Destination country
+            <select id="country" name="country" autocomplete="country-name" required>
+              <option value="">Select destination country</option>
+            </select>
+          </label>
+          <label>
+            Vehicle year
+            <select id="vehicleYear" name="vehicleYear" required>
+              <option value="">Select year</option>
+              <option>2027</option>
+              <option>2026</option>
+              <option>2025</option>
+              <option>2024</option>
+              <option>2023</option>
+              <option>2022</option>
+              <option>2021</option>
+              <option>2020</option>
+              <option>2019</option>
+            </select>
+          </label>
+          <label>
+            Vehicle make
+            <select id="vehicleMake" name="vehicleMake" required>
+              <option value="">Select make</option>
+            </select>
+          </label>
+          <label>
+            Vehicle model
+            <input id="vehicleModel" name="vehicleModel" list="modelOptions" required placeholder="Select or type model">
+            <datalist id="modelOptions"></datalist>
+          </label>
+          <label>
+            Budget in USD
+            <select id="budget" name="budget" required>
+              <option value="">Select range</option>
+              <option>$25,000 - $35,000</option>
+              <option>$35,000 - $60,000</option>
+              <option>$42,000 - $45,000</option>
+              <option>$60,000 - $100,000</option>
+              <option>$100,000 - $175,000</option>
+              <option>$175,000+</option>
+            </select>
+          </label>
+          <label>
+            Maximum mileage
+            <select id="maxMileage" name="maxMileage" required>
+              <option value="">Select mileage</option>
+              <option value="15000">Under 15,000 mi</option>
+              <option value="25000">Under 25,000 mi</option>
+              <option value="40000">Under 40,000 mi</option>
+              <option value="60000">Under 60,000 mi</option>
+              <option value="any">Flexible</option>
+            </select>
+          </label>
+          <label>
+            Preferred exterior color
+            <select id="vehicleColor" name="vehicleColor" required>
+              <option value="">Select color</option>
+            </select>
+          </label>
+          <label id="customColorWrap" class="hidden-field">
+            Custom color
+            <input id="customColor" name="customColor" placeholder="Type preferred color">
+          </label>
+          <label>
+            Destination port / city
+            <input id="destination" name="destination" required placeholder="Lagos, Dubai, Accra, Kingston">
+          </label>
+          <label>
+            Purchase timeline
+            <select id="timeline" name="timeline" required>
+              <option value="">Select timing</option>
+              <option>Ready now</option>
+              <option>Within 14 days</option>
+              <option>Within 30 days</option>
+              <option>Researching options</option>
+            </select>
+          </label>
+          <label>
+            Procurement tier
+            <select id="tier" name="tier">
+              <option value="standard">Standard Concierge - $699</option>
+              <option value="premium">Premium / Export Concierge - $1,400</option>
+            </select>
+            <span class="tier-note" id="tierReason">Standard tier applies until the request requires premium sourcing.</span>
+          </label>
+          <label class="wide">
+            Must-have specs
+            <textarea id="specs" name="specs" rows="4" placeholder="Trim, engine, interior color, title preference, shipping needs..."></textarea>
+          </label>
+        </div>
+        <fieldset class="eligibility-panel">
+          <legend>Buyer eligibility confirmations</legend>
+          <label class="check-row">
+            <input id="ageConfirm" name="ageConfirm" type="checkbox" required>
+            <span>I confirm the buyer is 18 years of age or older.</span>
+          </label>
+          <label class="check-row">
+            <input id="bankConfirm" name="bankConfirm" type="checkbox" required>
+            <span>I confirm the buyer has a valid bank account or approved payment method for vehicle purchase funds.</span>
+          </label>
+          <label class="check-row">
+            <input id="idConfirm" name="idConfirm" type="checkbox" required>
+            <span>I confirm the buyer has valid government identification, such as a passport or valid driver's license.</span>
+          </label>
+          <p>Destination selection does not guarantee export approval. Final eligibility depends on U.S. export requirements, sanctions screening, destination-country import rules, and licensed dealer documentation.</p>
+        </fieldset>
+        <div class="form-actions">
+          <button class="button primary" type="submit">Start Intake</button>
+          <p id="formNote" role="status"></p>
+        </div>
+      </form>
+    </section>
+
+    <section class="section process" id="process">
+      <div class="section-heading">
+        <p class="eyebrow">Concierge Flow</p>
+        <h2>Designed to help buyers procure their dream car</h2>
+      </div>
+      <div class="steps">
+        <article>
+          <span>01</span>
+          <h3>Tell us the target</h3>
+          <p>Select a showroom vehicle or submit the exact year, make, model, budget, mileage, color, destination, and timing.</p>
+        </article>
+        <article>
+          <span>02</span>
+          <h3>Confirm the sourcing tier</h3>
+          <p>Alpha Platinum reviews the request, confirms the concierge tier, and starts the procurement path after Stripe checkout.</p>
+        </article>
+        <article>
+          <span>03</span>
+          <h3>Verify real options</h3>
+          <p>Available vehicles are checked through licensed dealer relationships before pricing, availability, and next steps are presented.</p>
+        </article>
+        <article>
+          <span>04</span>
+          <h3>Coordinate the handoff</h3>
+          <p>The licensed selling dealer handles the final sale documents while Alpha Platinum supports communication, inspection, and shipping coordination.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section disclosures" id="contact">
+      <div class="contact-card">
+        <p class="eyebrow">Business Registry</p>
+        <h2>Rowtronic LLC</h2>
+        <p><strong>DBA:</strong> Alpha Platinum Auto Broker</p>
+        <p><strong>Email:</strong> <a href="mailto:rowtronicconsulting@gmail.com">rowtronicconsulting@gmail.com</a></p>
+        <p><strong>Phone:</strong> <a href="tel:+16783870355">+1 (678) 387-0355</a></p>
+        <p><strong>Address:</strong> 909 Eagles Landing Pkwy Ste 440 #2159, Stockbridge, GA 30281</p>
+        <hr>
+        <p><strong>Operations Manager:</strong> Lance Johnson</p>
+        <p><strong>Operations Cell:</strong> <a href="tel:+15186987516">+1 (518) 698-7516</a></p>
+      </div>
+      <div class="disclosure-copy">
+        <h2>Corporate & logistics disclosures</h2>
+        <p>Alpha Platinum Auto Broker operates as a DBA of Rowtronic LLC. Our service focuses on buyer intake, vehicle sourcing support, procurement coordination, dealer communication, and logistics guidance.</p>
+        <p>Alpha Platinum Auto Broker is not an exclusive agent, franchise, or representative of any single dealership. We source through trusted licensed dealer relationships in Georgia and South Florida to help clients identify available premium vehicles.</p>
+        <p>Alpha Platinum Auto Broker does not directly sell, finance, title, or export vehicles. Final vehicle sale terms, title documentation, taxes, fees, dealer paperwork, export documentation, sanctions screening, destination import eligibility, and customs requirements are handled by the licensed selling dealer and applicable third-party providers.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>&copy; 2026 Rowtronic LLC. Alpha Platinum Auto Broker DBA. Independent vehicle procurement concierge.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
