@@ -117,6 +117,7 @@ const translations = {
       "Alpha Platinum Auto Broker does not directly sell, finance, title, or export vehicles. Final vehicle sale terms, title documentation, taxes, fees, dealer paperwork, export documentation, sanctions screening, destination import eligibility, and customs requirements are handled by the licensed selling dealer and applicable third-party providers."
     ],
     footer: "© 2026 Rowtronic LLC. Alpha Platinum Auto Broker DBA. Independent vehicle procurement concierge.",
+    poweredBy: "Powered by Rowtronic LLC | Custom Web Design & AI Receptionist Agents | +1 (404) 664-1309",
     inventoryLabels: {
       mileage: "Mileage",
       price: "Price",
@@ -243,6 +244,7 @@ const translations = {
       "Alpha Platinum Auto Broker no vende, financia, titula ni exporta vehículos directamente. Los términos finales de venta, documentación de título, impuestos, cargos, documentos del concesionario, documentación de exportación, revisión de sanciones, elegibilidad de importación del destino y requisitos de aduana son manejados por el concesionario autorizado y proveedores terceros aplicables."
     ],
     footer: "© 2026 Rowtronic LLC. Alpha Platinum Auto Broker DBA. Conserje independiente de procuración vehicular.",
+    poweredBy: "Desarrollado por Rowtronic LLC | Diseño Web Personalizado y Agentes Recepcionistas con IA | +1 (404) 664-1309",
     inventoryLabels: {
       mileage: "Millaje",
       price: "Precio",
@@ -775,7 +777,8 @@ function applyLanguage(lang) {
   setText(".contact-card .eyebrow", copy.businessEyebrow);
   setText(".disclosure-copy h2", copy.disclosureTitle);
   setAllText(".disclosure-copy p", copy.disclosureCopy);
-  setText(".footer p", copy.footer);
+  setText(".footer p:first-child", copy.footer);
+  setText("#poweredByLine", copy.poweredBy);
 
   const labelMap = [
     ["#fullName", copy.labels.fullName],
