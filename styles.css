@@ -672,6 +672,12 @@ textarea:focus {
   margin: 0;
 }
 
+#poweredByLine {
+  margin-top: 8px;
+  color: rgba(215, 222, 226, 0.72);
+  font-size: 0.82rem;
+}
+
 @media (max-width: 980px) {
   .inventory-grid,
   .about-grid,
