@@ -827,7 +827,7 @@ function applyLanguage(lang) {
   setText(".form-actions .button", copy.startIntake);
   if (formNote.textContent) formNote.textContent = copy.formDemo;
 
-  const contactParagraphs = document.querySelectorAll(".contact-card p");
+  const contactParagraphs = document.querySelectorAll(".contact-card p:not(.eyebrow)");
   if (contactParagraphs[0]) contactParagraphs[0].innerHTML = `<strong>${copy.dba}</strong> Alpha Platinum Auto Broker`;
   if (contactParagraphs[1]) contactParagraphs[1].innerHTML = `<strong>${copy.email}</strong> <a href="mailto:rowtronicconsulting@gmail.com">rowtronicconsulting@gmail.com</a>`;
   if (contactParagraphs[2]) contactParagraphs[2].innerHTML = `<strong>${copy.phone}</strong> <a href="tel:+16783870355">+1 (678) 387-0355</a>`;
