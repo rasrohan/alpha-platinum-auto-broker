@@ -18,6 +18,8 @@ Brand update: added the Alpha Platinum logo stack. `alpha-platinum-mark.png` is 
 
 June 20 update: added a secondary powered-by footer line for Rowtronic LLC web design and AI receptionist services.
 
+Contact fix: corrected bilingual contact rewriting so Lance Johnson and the operations cell appear once in the business registry card.
+
 ## Operations
 
 - Operations Manager: Lance Johnson
