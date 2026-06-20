@@ -16,6 +16,8 @@ Later June 19 update: added a compact Atlanta desk widget below the region strip
 
 Brand update: added the Alpha Platinum logo stack. `alpha-platinum-mark.png` is used in the header and `alpha-platinum-logo.png` is used in the contact/business registry area.
 
+June 20 update: added a secondary powered-by footer line for Rowtronic LLC web design and AI receptionist services.
+
 ## Operations
 
 - Operations Manager: Lance Johnson
