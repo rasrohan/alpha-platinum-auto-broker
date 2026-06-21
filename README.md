@@ -20,6 +20,8 @@ June 20 update: added a secondary powered-by footer line for Rowtronic LLC web d
 
 Contact fix: corrected bilingual contact rewriting so Lance Johnson and the operations cell appear once in the business registry card.
 
+June 21 update: replaced the native mobile select indicator with a custom light dropdown chevron so form arrows stay visible on dark fields in mobile browsers.
+
 ## Operations
 
 - Operations Manager: Lance Johnson
