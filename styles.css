@@ -584,6 +584,25 @@ textarea {
   letter-spacing: 0;
 }
 
+select {
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: #090b0d;
+  background-image:
+    linear-gradient(45deg, transparent 50%, #d7dee2 50%),
+    linear-gradient(135deg, #d7dee2 50%, transparent 50%);
+  background-position:
+    calc(100% - 23px) 50%,
+    calc(100% - 15px) 50%;
+  background-repeat: no-repeat;
+  background-size: 8px 8px, 8px 8px;
+  padding-right: 48px;
+}
+
+select::-ms-expand {
+  display: none;
+}
+
 textarea {
   resize: vertical;
 }
