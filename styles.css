@@ -239,6 +239,12 @@ h3 {
   background: rgba(255, 255, 255, 0.06);
 }
 
+.button:disabled,
+.button[aria-disabled="true"] {
+  cursor: not-allowed;
+  opacity: 0.58;
+}
+
 .region-strip {
   display: grid;
   grid-template-columns: repeat(3, 1fr);

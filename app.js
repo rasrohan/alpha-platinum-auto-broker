@@ -290,6 +290,7 @@ const mariaTranslations = {
     prepareButton: "Prepare buyer request",
     mainIntake: "Open full intake",
     speak: "Hear greeting",
+    speakUnavailable: "Voice preview unavailable",
     reset: "Reset",
     close: "Close Maria assistant",
     checkoutButton: "Continue to secure website checkout",
@@ -300,6 +301,7 @@ const mariaTranslations = {
     readyReply: "You are in the right place. I will prepare this clearly for the Alpha Platinum team.",
     checkoutReply: "Payments are completed through secure Alpha Platinum website checkout. I do not collect card details in chat.",
     resetReply: "Maria is reset. Tell me what vehicle you want to source.",
+    voiceUnavailable: "Voice preview is not ready on this device. You can continue with the chat request.",
     vehicleReply: (vehicle) => `I can help you request the ${vehicle.year} ${vehicle.make} ${vehicle.model}. Add your destination, budget, mileage, timeline, and contact details when ready.`,
     voiceGreeting: (vehicle) => vehicle
       ? `Hi, I'm Maria. I can help prepare a request for the ${vehicle.year} ${vehicle.make} ${vehicle.model}.`
@@ -328,6 +330,7 @@ const mariaTranslations = {
     prepareButton: "Preparar solicitud",
     mainIntake: "Abrir intake completo",
     speak: "Escuchar saludo",
+    speakUnavailable: "Voz no disponible",
     reset: "Limpiar",
     close: "Cerrar asistente Maria",
     checkoutButton: "Continuar al checkout seguro",
@@ -338,6 +341,7 @@ const mariaTranslations = {
     readyReply: "Estas en el lugar correcto. Preparare esto claramente para el equipo de Alpha Platinum.",
     checkoutReply: "Los pagos se completan por el checkout seguro de Alpha Platinum. No recopilo datos de tarjeta en el chat.",
     resetReply: "Maria fue reiniciada. Dime que vehiculo quieres buscar.",
+    voiceUnavailable: "La vista previa de voz no esta lista en este dispositivo. Puedes continuar con la solicitud por chat.",
     vehicleReply: (vehicle) => `Puedo ayudarte a solicitar el ${vehicle.year} ${vehicle.make} ${vehicle.model}. Agrega destino, presupuesto, millaje, tiempo y contacto cuando estes listo.`,
     voiceGreeting: (vehicle) => vehicle
       ? `Hola, soy Maria. Puedo ayudarte a preparar una solicitud para el ${vehicle.year} ${vehicle.make} ${vehicle.model}.`
@@ -782,6 +786,15 @@ function mariaCopy() {
   return mariaTranslations[currentLanguage] || mariaTranslations.en;
 }
 
+function isIOSDevice() {
+  return /iPad|iPhone|iPod/i.test(navigator.userAgent)
+    || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+}
+
+function isMariaVoicePreviewAvailable() {
+  return "speechSynthesis" in window && !isIOSDevice();
+}
+
 function mariaField(name) {
   return mariaWidgetForm?.elements[name];
 }
@@ -839,21 +852,31 @@ function refreshMariaVoices() {
   return cachedMariaVoices;
 }
 
-function selectMariaVoice(voices) {
-  const exactGoogleUs = voices.find((voice) => voice.name === "Google US English" && voice.lang === "en-US");
-  if (exactGoogleUs) return exactGoogleUs;
+function selectMariaVoice(voices, language = currentLanguage) {
+  const desiredLanguage = language === "es" ? "es" : "en";
+  const languageVoices = voices.filter((voice) => voice.lang?.toLowerCase().startsWith(desiredLanguage));
+  if (!languageVoices.length) return null;
 
-  const preferred = [
-    /Google US English/i,
-    /Google.*English.*United States/i,
-    /Microsoft Zira/i,
-    /Microsoft Aria/i,
-    /Jenny|Sara|Sonia|Female|Natural|Maria/i
-  ];
+  const preferred = desiredLanguage === "es"
+    ? [
+        /Google.*espa/i,
+        /Google.*Spanish/i,
+        /Paulina|Monica|Luciana|Marisol|Maria/i
+      ]
+    : [
+        /Google US English/i,
+        /Google.*English.*United States/i,
+        /Samantha|Ava|Nicky|Susan|Victoria/i,
+        /Microsoft Zira/i,
+        /Microsoft Aria/i,
+        /Jenny|Sara|Sonia|Female|Natural|Maria/i
+      ];
 
   return preferred
-    .map((pattern) => voices.find((voice) => pattern.test(`${voice.name} ${voice.lang}`)))
-    .find(Boolean) || voices.find((voice) => voice.lang === "en-US") || voices[0];
+    .map((pattern) => languageVoices.find((voice) => pattern.test(`${voice.name} ${voice.lang}`)))
+    .find(Boolean)
+    || languageVoices.find((voice) => voice.lang === (desiredLanguage === "es" ? "es-US" : "en-US"))
+    || languageVoices[0];
 }
 
 function setMariaCheckout(tier, muted = false) {
@@ -868,13 +891,22 @@ function setMariaCheckout(tier, muted = false) {
 }
 
 function speakMariaGreeting(vehicle = selectedConciergeVehicle) {
-  if (!("speechSynthesis" in window)) return;
+  const copy = mariaCopy();
+  if (!isMariaVoicePreviewAvailable()) {
+    mariaWidgetState.textContent = copy.voiceUnavailable;
+    return;
+  }
   window.speechSynthesis.cancel();
-  const utterance = new SpeechSynthesisUtterance(mariaCopy().voiceGreeting(vehicle));
+  const utterance = new SpeechSynthesisUtterance(copy.voiceGreeting(vehicle));
   const voices = cachedMariaVoices.length ? cachedMariaVoices : refreshMariaVoices();
   const warmVoice = selectMariaVoice(voices);
+  if (voices.length && !warmVoice) {
+    mariaWidgetState.textContent = copy.voiceUnavailable;
+    console.info("Maria voice preview blocked: no matching language voice available.");
+    return;
+  }
   if (warmVoice) utterance.voice = warmVoice;
-  utterance.lang = warmVoice?.lang || "en-US";
+  utterance.lang = warmVoice?.lang || (currentLanguage === "es" ? "es-US" : "en-US");
   utterance.rate = 0.92;
   utterance.pitch = 1.04;
   utterance.volume = 0.86;
@@ -950,6 +982,15 @@ function closeMariaWidget() {
   if ("speechSynthesis" in window) window.speechSynthesis.cancel();
 }
 
+function applyMariaVoiceAvailability() {
+  const copy = mariaCopy();
+  const available = isMariaVoicePreviewAvailable();
+  mariaSpeak.disabled = !available;
+  mariaSpeak.setAttribute("aria-disabled", String(!available));
+  mariaSpeak.title = available ? copy.speak : copy.voiceUnavailable;
+  mariaSpeak.textContent = available ? copy.speak : copy.speakUnavailable;
+}
+
 function prepareMariaRequest() {
   const copy = mariaCopy();
   const data = new FormData(mariaWidgetForm);
@@ -996,7 +1037,7 @@ function requestVehicle(index) {
   renderModels(vehicle.make);
   vehicleModelInput.value = vehicle.model;
   setTier(vehicle.tier, t().tierShowroom);
-  openMariaWidget(vehicle, true);
+  openMariaWidget(vehicle, false);
 }
 
 function buildLeadSummary(data) {
@@ -1111,6 +1152,7 @@ function applyMariaLanguage() {
   setPlaceholder("#mariaMileage", currentLanguage === "es" ? "Menos de 25,000 mi" : "Under 25,000 mi");
   setPlaceholder("#mariaContact", "name@example.com");
   setPlaceholder("#mariaQuestion", currentLanguage === "es" ? "Version, color, envio, tiempo..." : "Trim, color, shipping needs, timing...");
+  applyMariaVoiceAvailability();
   t().selects.timelineOptions.forEach((text, index) => setOptionText(mariaField("timeline"), index, text));
 }
 
