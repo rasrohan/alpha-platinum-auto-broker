@@ -267,6 +267,7 @@ const translations = {
 const mariaTranslations = {
   en: {
     launcher: "Chat with Maria",
+    nudge: "Need help choosing? I can prepare your request.",
     kicker: "Alpha Platinum concierge",
     title: "Need help choosing?",
     message: "Maria can collect your vehicle request and prepare it clearly for the Alpha Platinum team.",
@@ -302,6 +303,7 @@ const mariaTranslations = {
   },
   es: {
     launcher: "Chat con Maria",
+    nudge: "Necesitas ayuda? Puedo preparar tu solicitud.",
     kicker: "Conserje Alpha Platinum",
     title: "Necesitas ayuda?",
     message: "Maria puede recopilar tu solicitud de vehiculo y prepararla claramente para el equipo de Alpha Platinum.",
@@ -528,6 +530,8 @@ const atlTime = document.querySelector("#atlTime");
 const atlWeather = document.querySelector("#atlWeather");
 const atlStatus = document.querySelector("#atlStatus");
 const mariaLauncher = document.querySelector("#mariaLauncher");
+const mariaNudge = document.querySelector("#mariaNudge");
+const mariaNudgeText = document.querySelector("#mariaNudgeText");
 const mariaPopover = document.querySelector("#mariaPopover");
 const mariaClose = document.querySelector("#mariaClose");
 const mariaWidgetForm = document.querySelector("#mariaWidgetForm");
@@ -544,6 +548,8 @@ const mariaSpeak = document.querySelector("#mariaSpeak");
 
 let atlWeatherData = null;
 let selectedConciergeVehicle = null;
+let mariaNudgeTimer = null;
+let mariaHasEngaged = false;
 
 function t() {
   return translations[currentLanguage];
@@ -887,7 +893,29 @@ async function speakMariaGreeting(vehicle = selectedConciergeVehicle) {
   window.speechSynthesis.speak(utterance);
 }
 
+function hideMariaNudge() {
+  mariaNudge.classList.remove("is-visible");
+  mariaLauncher.classList.remove("is-pulsing");
+  if (mariaNudgeTimer) {
+    window.clearTimeout(mariaNudgeTimer);
+    mariaNudgeTimer = null;
+  }
+}
+
+function showMariaNudge() {
+  if (mariaHasEngaged || mariaPopover.classList.contains("open")) return;
+  mariaNudge.classList.add("is-visible");
+  mariaLauncher.classList.add("is-pulsing");
+}
+
+function scheduleMariaNudge() {
+  hideMariaNudge();
+  mariaNudgeTimer = window.setTimeout(showMariaNudge, 24000);
+}
+
 function openMariaWidget(vehicle = null, shouldSpeak = false) {
+  mariaHasEngaged = true;
+  hideMariaNudge();
   selectedConciergeVehicle = vehicle;
   if (vehicle) {
     setMariaValue("vehicle", `${vehicle.year} ${vehicle.make} ${vehicle.model}`, true);
@@ -984,6 +1012,7 @@ grid.addEventListener("click", (event) => {
 });
 
 mariaLauncher.addEventListener("click", () => openMariaWidget(null, false));
+mariaNudge.addEventListener("click", () => openMariaWidget(null, false));
 mariaClose.addEventListener("click", closeMariaWidget);
 mariaSpeak.addEventListener("click", () => speakMariaGreeting());
 mariaMainIntake.addEventListener("click", () => {
@@ -1029,6 +1058,7 @@ tierSelect.addEventListener("change", () => {
 function applyMariaLanguage() {
   const copy = mariaCopy();
   setText("#mariaLauncher span", copy.launcher);
+  setText("#mariaNudgeText", copy.nudge);
   setText("#mariaWidgetKicker", copy.kicker);
   setText("#mariaWidgetTitle", copy.title);
   setText("#mariaWidgetMessage", selectedConciergeVehicle ? copy.vehicleReply(selectedConciergeVehicle) : copy.message);
@@ -1052,6 +1082,7 @@ function applyMariaLanguage() {
   }
   mariaClose.setAttribute("aria-label", copy.close);
   mariaLauncher.setAttribute("aria-label", copy.launcher);
+  mariaNudge.setAttribute("aria-label", copy.launcher);
   setPlaceholder("#mariaName", currentLanguage === "es" ? "Nombre del cliente" : "Client name");
   setPlaceholder("#mariaVehicle", currentLanguage === "es" ? "2024 Mercedes-Benz G-Class" : "2024 Mercedes-Benz G-Class");
   setPlaceholder("#mariaDestination", currentLanguage === "es" ? "Jamaica" : "Jamaica");
@@ -1201,5 +1232,6 @@ renderInventory();
 applyLanguage("en");
 updateAtlantaClock();
 fetchAtlantaWeather();
+scheduleMariaNudge();
 setInterval(updateAtlantaClock, 1000);
 setInterval(fetchAtlantaWeather, 900000);
