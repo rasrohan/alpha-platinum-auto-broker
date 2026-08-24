@@ -6,7 +6,7 @@
   <title>Alpha Platinum Auto Broker | Premium Vehicle Procurement Concierge</title>
   <meta name="description" content="Alpha Platinum Auto Broker helps qualified buyers source premium U.S. vehicles through licensed dealer relationships in Georgia and South Florida.">
   <link rel="preload" href="showroom-hero.png" as="image">
-  <link rel="stylesheet" href="styles.css?v=20260806-maria-ready">
+  <link rel="stylesheet" href="styles.css?v=20260824-reset-audio">
 </head>
 <body>
   <header class="topbar">
@@ -252,6 +252,7 @@
           <p id="formNote" role="status"></p>
         </div>
       </form>
+      <button class="intake-reset-tab" id="intakeResetTab" type="button" aria-label="Reset buyer intake form">Reset</button>
     </section>
 
     <section class="section process" id="process">
@@ -315,7 +316,10 @@
 
   <aside class="maria-popover" id="mariaPopover" aria-live="polite" aria-hidden="true">
     <div class="maria-widget-card" role="dialog" aria-modal="false" aria-labelledby="mariaWidgetTitle">
-      <button class="maria-close" id="mariaClose" type="button" aria-label="Close Maria assistant">X</button>
+      <div class="maria-top-actions">
+        <button class="maria-reset" id="mariaReset" type="button" aria-label="Reset Maria assistant">Reset</button>
+        <button class="maria-close" id="mariaClose" type="button" aria-label="Close Maria assistant">X</button>
+      </div>
       <div class="maria-widget-head">
         <img src="assets/maria-v3-avatar-blueprint.jpg" alt="Maria, Alpha Platinum AI receptionist">
         <div>
@@ -373,6 +377,6 @@
     <p id="poweredByLine">Powered by Rowtronic LLC | Custom Web Design & AI Receptionist Agents | +1 (404) 664-1309</p>
   </footer>
 
-  <script src="app.js?v=20260824-maria-nudge"></script>
+  <script src="app.js?v=20260824-reset-audio"></script>
 </body>
 </html>

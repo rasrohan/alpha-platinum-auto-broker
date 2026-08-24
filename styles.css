@@ -516,6 +516,7 @@ h3 {
 }
 
 .split-section {
+  position: relative;
   display: grid;
   grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
   gap: 24px;
@@ -523,6 +524,32 @@ h3 {
   background: #0d1013;
   border-top: 1px solid var(--line);
   border-bottom: 1px solid var(--line);
+}
+
+.intake-reset-tab {
+  position: absolute;
+  top: 38px;
+  right: clamp(20px, 5vw, 72px);
+  min-height: 76px;
+  padding: 10px 8px;
+  color: var(--platinum);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(62, 183, 173, 0.42);
+  box-shadow: 0 0 24px rgba(62, 183, 173, 0.16);
+  cursor: pointer;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+
+.intake-reset-tab:hover,
+.intake-reset-tab:focus-visible {
+  border-color: var(--aqua);
+  color: var(--aqua);
+  outline: none;
 }
 
 .source-panel,
@@ -889,10 +916,17 @@ textarea:focus {
   box-shadow: 0 24px 70px rgba(0, 0, 0, 0.58), 0 0 0 1px rgba(62, 183, 173, 0.14);
 }
 
-.maria-close {
+.maria-top-actions {
   position: absolute;
   top: 10px;
   right: 10px;
+  z-index: 2;
+  display: flex;
+  gap: 8px;
+}
+
+.maria-close,
+.maria-reset {
   width: 34px;
   height: 34px;
   display: grid;
@@ -901,7 +935,28 @@ textarea:focus {
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid var(--line);
   cursor: pointer;
+}
+
+.maria-close {
   font-size: 1.25rem;
+}
+
+.maria-reset {
+  width: auto;
+  padding: 0 10px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.maria-close:hover,
+.maria-close:focus-visible,
+.maria-reset:hover,
+.maria-reset:focus-visible {
+  border-color: var(--aqua);
+  color: var(--aqua);
+  outline: none;
 }
 
 .maria-widget-head {
@@ -920,7 +975,7 @@ textarea:focus {
 }
 
 .maria-widget-card h2 {
-  margin: 4px 34px 8px 0;
+  margin: 4px 104px 8px 0;
   color: var(--platinum);
   font-size: clamp(1.15rem, 3vw, 1.55rem);
 }
@@ -1174,6 +1229,16 @@ textarea:focus {
     right: 12px;
     bottom: 78px;
     max-width: min(300px, calc(100vw - 24px));
+  }
+
+  .intake-reset-tab {
+    position: static;
+    min-height: 46px;
+    width: 100%;
+    margin-top: 16px;
+    padding: 12px 14px;
+    transform: none;
+    writing-mode: horizontal-tb;
   }
 
   .maria-popover {

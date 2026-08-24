@@ -97,6 +97,7 @@ const translations = {
     eligibilityId: "I confirm the buyer has valid government identification, such as a passport or valid driver's license.",
     eligibilityNote: "Destination selection does not guarantee export approval. Final eligibility depends on U.S. export requirements, sanctions screening, destination-country import rules, and licensed dealer documentation.",
     startIntake: "Start Intake",
+    resetIntake: "Reset",
     processEyebrow: "Concierge Sourcing Process",
     processTitle: "From dream vehicle to serious sourcing request",
     steps: [
@@ -226,6 +227,7 @@ const translations = {
     eligibilityId: "Confirmo que el comprador tiene identificación gubernamental válida, como pasaporte o licencia de conducir válida.",
     eligibilityNote: "Seleccionar un destino no garantiza aprobación de exportación. La elegibilidad final depende de requisitos de exportación de EE. UU., revisión de sanciones, reglas de importación del país destino y documentación del concesionario autorizado.",
     startIntake: "Iniciar Intake",
+    resetIntake: "Limpiar",
     processEyebrow: "Proceso de Busqueda Concierge",
     processTitle: "Del vehiculo sonado a una solicitud seria",
     steps: [
@@ -288,6 +290,7 @@ const mariaTranslations = {
     prepareButton: "Prepare buyer request",
     mainIntake: "Open full intake",
     speak: "Hear greeting",
+    reset: "Reset",
     close: "Close Maria assistant",
     checkoutButton: "Continue to secure website checkout",
     paymentNote: "Payments are completed through secure Alpha Platinum website checkout. Maria does not collect card details in chat.",
@@ -296,6 +299,7 @@ const mariaTranslations = {
     guardrailReply: "I do not want to guess on that. I can add your question to the buyer request and have the Alpha Platinum team follow up with the right answer.",
     readyReply: "You are in the right place. I will prepare this clearly for the Alpha Platinum team.",
     checkoutReply: "Payments are completed through secure Alpha Platinum website checkout. I do not collect card details in chat.",
+    resetReply: "Maria is reset. Tell me what vehicle you want to source.",
     vehicleReply: (vehicle) => `I can help you request the ${vehicle.year} ${vehicle.make} ${vehicle.model}. Add your destination, budget, mileage, timeline, and contact details when ready.`,
     voiceGreeting: (vehicle) => vehicle
       ? `Hi, I'm Maria. I can help prepare a request for the ${vehicle.year} ${vehicle.make} ${vehicle.model}.`
@@ -324,6 +328,7 @@ const mariaTranslations = {
     prepareButton: "Preparar solicitud",
     mainIntake: "Abrir intake completo",
     speak: "Escuchar saludo",
+    reset: "Limpiar",
     close: "Cerrar asistente Maria",
     checkoutButton: "Continuar al checkout seguro",
     paymentNote: "Los pagos se completan por el checkout seguro de Alpha Platinum. Maria no recopila datos de tarjeta en el chat.",
@@ -332,6 +337,7 @@ const mariaTranslations = {
     guardrailReply: "No quiero adivinar esa respuesta. Puedo agregar tu pregunta a la solicitud para que el equipo de Alpha Platinum responda correctamente.",
     readyReply: "Estas en el lugar correcto. Preparare esto claramente para el equipo de Alpha Platinum.",
     checkoutReply: "Los pagos se completan por el checkout seguro de Alpha Platinum. No recopilo datos de tarjeta en el chat.",
+    resetReply: "Maria fue reiniciada. Dime que vehiculo quieres buscar.",
     vehicleReply: (vehicle) => `Puedo ayudarte a solicitar el ${vehicle.year} ${vehicle.make} ${vehicle.model}. Agrega destino, presupuesto, millaje, tiempo y contacto cuando estes listo.`,
     voiceGreeting: (vehicle) => vehicle
       ? `Hola, soy Maria. Puedo ayudarte a preparar una solicitud para el ${vehicle.year} ${vehicle.make} ${vehicle.model}.`
@@ -504,6 +510,7 @@ const inventory = [
 
 const grid = document.querySelector("#inventoryGrid");
 const intakeForm = document.querySelector("#intakeForm");
+const intakeResetTab = document.querySelector("#intakeResetTab");
 const countrySelect = document.querySelector("#country");
 const vehicleYearSelect = document.querySelector("#vehicleYear");
 const vehicleMakeSelect = document.querySelector("#vehicleMake");
@@ -534,6 +541,7 @@ const mariaNudge = document.querySelector("#mariaNudge");
 const mariaNudgeText = document.querySelector("#mariaNudgeText");
 const mariaPopover = document.querySelector("#mariaPopover");
 const mariaClose = document.querySelector("#mariaClose");
+const mariaReset = document.querySelector("#mariaReset");
 const mariaWidgetForm = document.querySelector("#mariaWidgetForm");
 const mariaWidgetState = document.querySelector("#mariaWidgetState");
 const mariaWidgetTitle = document.querySelector("#mariaWidgetTitle");
@@ -550,6 +558,7 @@ let atlWeatherData = null;
 let selectedConciergeVehicle = null;
 let mariaNudgeTimer = null;
 let mariaHasEngaged = false;
+let cachedMariaVoices = [];
 
 function t() {
   return translations[currentLanguage];
@@ -824,30 +833,10 @@ function mariaHasSensitiveQuestion(question) {
   return /finance|loan|title|customs|export document|sanction|dealer fee|tax|availability|final price|wire|card number|routing|account number/i.test(question || "");
 }
 
-function getMariaVoices() {
-  return new Promise((resolve) => {
-    if (!("speechSynthesis" in window)) {
-      resolve([]);
-      return;
-    }
-
-    const voices = window.speechSynthesis.getVoices();
-    if (voices.length) {
-      resolve(voices);
-      return;
-    }
-
-    const timer = window.setTimeout(() => {
-      window.speechSynthesis.onvoiceschanged = null;
-      resolve(window.speechSynthesis.getVoices());
-    }, 800);
-
-    window.speechSynthesis.onvoiceschanged = () => {
-      window.clearTimeout(timer);
-      window.speechSynthesis.onvoiceschanged = null;
-      resolve(window.speechSynthesis.getVoices());
-    };
-  });
+function refreshMariaVoices() {
+  if (!("speechSynthesis" in window)) return [];
+  cachedMariaVoices = window.speechSynthesis.getVoices();
+  return cachedMariaVoices;
 }
 
 function selectMariaVoice(voices) {
@@ -878,19 +867,37 @@ function setMariaCheckout(tier, muted = false) {
   mariaCheckoutPreview.classList.toggle("is-muted", muted);
 }
 
-async function speakMariaGreeting(vehicle = selectedConciergeVehicle) {
+function speakMariaGreeting(vehicle = selectedConciergeVehicle) {
   if (!("speechSynthesis" in window)) return;
   window.speechSynthesis.cancel();
   const utterance = new SpeechSynthesisUtterance(mariaCopy().voiceGreeting(vehicle));
-  const voices = await getMariaVoices();
+  const voices = cachedMariaVoices.length ? cachedMariaVoices : refreshMariaVoices();
   const warmVoice = selectMariaVoice(voices);
   if (warmVoice) utterance.voice = warmVoice;
   utterance.lang = warmVoice?.lang || "en-US";
   utterance.rate = 0.92;
   utterance.pitch = 1.04;
   utterance.volume = 0.86;
+  utterance.onstart = () => {
+    mariaWidgetState.textContent = mariaCopy().stateReady;
+  };
+  window.speechSynthesis.resume();
   console.info(`Maria selected voice: ${warmVoice ? `${warmVoice.name} (${warmVoice.lang})` : "browser default"}`);
   window.speechSynthesis.speak(utterance);
+}
+
+function resetMariaWidget() {
+  const copy = mariaCopy();
+  selectedConciergeVehicle = null;
+  mariaWidgetForm.reset();
+  mariaWidgetTitle.textContent = copy.title;
+  mariaWidgetMessage.textContent = copy.message;
+  mariaWidgetState.textContent = copy.stateReady;
+  mariaReply.textContent = copy.resetReply;
+  mariaCheckoutPreview.classList.remove("is-visible", "is-muted");
+  mariaCheckoutButton.disabled = false;
+  mariaCheckoutButton.dataset.tier = "";
+  if ("speechSynthesis" in window) window.speechSynthesis.cancel();
 }
 
 function hideMariaNudge() {
@@ -973,6 +980,15 @@ function updateTierFromVehicle() {
   setTier(result.tier, result.reason);
 }
 
+function resetIntakeForm() {
+  intakeForm.reset();
+  renderModels("");
+  customColorWrap.classList.add("hidden-field");
+  customColorInput.required = false;
+  setTier("standard", t().tierDefault);
+  formNote.textContent = "";
+}
+
 function requestVehicle(index) {
   const vehicle = inventory[index];
   vehicleYearSelect.value = String(vehicle.year);
@@ -1014,6 +1030,7 @@ grid.addEventListener("click", (event) => {
 mariaLauncher.addEventListener("click", () => openMariaWidget(null, false));
 mariaNudge.addEventListener("click", () => openMariaWidget(null, false));
 mariaClose.addEventListener("click", closeMariaWidget);
+mariaReset.addEventListener("click", resetMariaWidget);
 mariaSpeak.addEventListener("click", () => speakMariaGreeting());
 mariaMainIntake.addEventListener("click", () => {
   closeMariaWidget();
@@ -1055,6 +1072,8 @@ tierSelect.addEventListener("change", () => {
   setTier(tierSelect.value, t().tierManual);
 });
 
+intakeResetTab.addEventListener("click", resetIntakeForm);
+
 function applyMariaLanguage() {
   const copy = mariaCopy();
   setText("#mariaLauncher span", copy.launcher);
@@ -1075,12 +1094,14 @@ function applyMariaLanguage() {
   setText("#mariaPrepare", copy.prepareButton);
   setText("#mariaMainIntake", copy.mainIntake);
   setText("#mariaSpeak", copy.speak);
+  setText("#mariaReset", copy.reset);
   setText("#mariaCheckoutButton", copy.checkoutButton);
   setText("#mariaPaymentNote", copy.paymentNote);
   if (!mariaReply.textContent || mariaReply.textContent.includes("Hi, I'm Maria") || mariaReply.textContent.includes("Hola, soy Maria")) {
     mariaReply.textContent = copy.initialReply;
   }
   mariaClose.setAttribute("aria-label", copy.close);
+  mariaReset.setAttribute("aria-label", copy.reset);
   mariaLauncher.setAttribute("aria-label", copy.launcher);
   mariaNudge.setAttribute("aria-label", copy.launcher);
   setPlaceholder("#mariaName", currentLanguage === "es" ? "Nombre del cliente" : "Client name");
@@ -1186,6 +1207,8 @@ function applyLanguage(lang) {
   setAllText(".eligibility-panel .check-row span", [copy.eligibilityAge, copy.eligibilityBank, copy.eligibilityId]);
   setText(".eligibility-panel p", copy.eligibilityNote);
   setText(".form-actions .button", copy.startIntake);
+  setText("#intakeResetTab", copy.resetIntake);
+  intakeResetTab.setAttribute("aria-label", copy.resetIntake);
   if (formNote.textContent) formNote.textContent = copy.formDemo;
   applyMariaLanguage();
 
@@ -1232,6 +1255,14 @@ renderInventory();
 applyLanguage("en");
 updateAtlantaClock();
 fetchAtlantaWeather();
+if ("speechSynthesis" in window) {
+  refreshMariaVoices();
+  if (typeof window.speechSynthesis.addEventListener === "function") {
+    window.speechSynthesis.addEventListener("voiceschanged", refreshMariaVoices);
+  } else {
+    window.speechSynthesis.onvoiceschanged = refreshMariaVoices;
+  }
+}
 scheduleMariaNudge();
 setInterval(updateAtlantaClock, 1000);
 setInterval(fetchAtlantaWeather, 900000);
