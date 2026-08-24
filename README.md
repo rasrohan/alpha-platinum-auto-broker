@@ -22,6 +22,16 @@ Contact fix: corrected bilingual contact rewriting so Lance Johnson and the oper
 
 June 21 update: replaced the native mobile select indicator with a custom light dropdown chevron so form arrows stay visible on dark fields in mobile browsers.
 
+July 1 update: added the Maria AI Receptionist bridge section. The public website remains the premium showroom/intake front door, while Maria owns conversational buyer intake and prepares the shared lead packet for Rowtronic / Alpha Platinum human review.
+
+July 3 update: standardized the AI receptionist name to Maria and clarified the payment lane. Maria may explain Standard Concierge ($699) and Premium / Export Concierge ($1,400), then route buyers to secure website Stripe checkout. Maria must never collect card details in chat.
+
+July 15 update: tested an Institution Ready Protocol design layer for internal structure and compliance thinking.
+
+July 16 update: removed the public Maria explainer and visible protocol language so the shopper experience stays focused on finding vehicles. The assistant now appears as a small concierge pop-up after a buyer clicks a showroom vehicle. Payment, lead ID, and routing logic should stay behind the scenes.
+
+Later list: consider replacing the simple EN/ES toggle with a compact dropdown language selector that can support English, Spanish, Arabic, French, German, Portuguese, and other buyer-market languages.
+
 ## Operations
 
 - Operations Manager: Lance Johnson
@@ -95,6 +105,43 @@ The form auto-selects Premium / Export Concierge when it detects:
 - international destination
 
 Example: `2024 Infiniti Q45`, `$42,000 - $45,000`, under `25,000 mi`, and an overseas destination is automatically classified as Premium / Export Concierge.
+
+## Maria AI Receptionist Bridge
+
+Maria v1 stays focused on premium buyer intake:
+
+- EN/ES greeting and buyer conversation
+- missing-field collection
+- eligibility and consent confirmations
+- Standard vs Premium / Export tier detection
+- secure website/Stripe payment routing after tier detection
+- copy-ready lead summary for human review
+
+Shared lead packet fields:
+
+```text
+full_name
+email
+phone_or_whatsapp
+preferred_language
+destination_country
+destination_port_city
+vehicle_year
+vehicle_make
+vehicle_model
+budget_usd
+maximum_mileage
+preferred_color
+purchase_timeline
+must_have_specs
+age_confirmed
+bank_or_payment_method_confirmed
+government_id_confirmed
+consent_to_contact
+likely_concierge_tier
+handoff_route
+lead_summary
+```
 
 ## About Us Notes
 

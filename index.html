@@ -6,7 +6,7 @@
   <title>Alpha Platinum Auto Broker | Premium Vehicle Procurement Concierge</title>
   <meta name="description" content="Alpha Platinum Auto Broker helps qualified buyers source premium U.S. vehicles through licensed dealer relationships in Georgia and South Florida.">
   <link rel="preload" href="showroom-hero.png" as="image">
-  <link rel="stylesheet" href="styles.css?v=20260621-select-arrow">
+  <link rel="stylesheet" href="styles.css?v=20260806-maria-ready">
 </head>
 <body>
   <header class="topbar">
@@ -62,18 +62,22 @@
       </div>
     </section>
 
-    <section class="atl-widget" aria-label="Atlanta local time and weather">
-      <div>
-        <span id="atlWidgetLabel">Atlanta desk</span>
+    <section class="atl-widget" aria-label="Atlanta operations desk time and weather">
+      <div class="atl-widget-panel atl-widget-head">
+        <span id="atlWidgetLabel">ATL operations desk</span>
         <strong id="atlDate">Loading date...</strong>
       </div>
-      <div>
-        <span id="atlTimeLabel">Local time</span>
+      <div class="atl-widget-panel atl-time-panel">
+        <span id="atlTimeLabel">Atlanta local time</span>
         <strong id="atlTime">--:--</strong>
       </div>
-      <div>
-        <span id="atlWeatherLabel">ATL weather</span>
+      <div class="atl-widget-panel atl-weather-panel">
+        <span id="atlWeatherLabel">ATL weather watch</span>
         <strong id="atlWeather">Checking...</strong>
+      </div>
+      <div class="atl-widget-panel atl-status-panel">
+        <span id="atlStatusLabel">Desk status</span>
+        <strong id="atlStatus">Monitoring buyer requests</strong>
       </div>
     </section>
 
@@ -252,29 +256,29 @@
 
     <section class="section process" id="process">
       <div class="section-heading">
-        <p class="eyebrow">Concierge Flow</p>
-        <h2>Designed to help buyers procure their dream car</h2>
+        <p class="eyebrow">Concierge Sourcing Process</p>
+        <h2>From dream vehicle to serious sourcing request</h2>
       </div>
       <div class="steps">
         <article>
           <span>01</span>
-          <h3>Tell us the target</h3>
-          <p>Select a showroom vehicle or submit the exact year, make, model, budget, mileage, color, destination, and timing.</p>
+          <h3>Choose the target</h3>
+          <p>Select a showroom vehicle or tell us the exact year, make, model, budget, mileage, color, and destination you want.</p>
         </article>
         <article>
           <span>02</span>
-          <h3>Confirm the sourcing tier</h3>
-          <p>Alpha Platinum reviews the request, confirms the concierge tier, and starts the procurement path after Stripe checkout.</p>
+          <h3>Confirm the request</h3>
+          <p>We review the vehicle goal, buyer readiness, destination, and sourcing level before active work begins.</p>
         </article>
         <article>
           <span>03</span>
-          <h3>Verify real options</h3>
-          <p>Available vehicles are checked through licensed dealer relationships before pricing, availability, and next steps are presented.</p>
+          <h3>Search real options</h3>
+          <p>Alpha Platinum checks available dealer inventory and presents serious options for the buyer to review.</p>
         </article>
         <article>
           <span>04</span>
-          <h3>Coordinate the handoff</h3>
-          <p>The licensed selling dealer handles the final sale documents while Alpha Platinum supports communication, inspection, and shipping coordination.</p>
+          <h3>Coordinate next steps</h3>
+          <p>The team supports communication, inspection questions, dealer handoff, and logistics guidance.</p>
         </article>
       </div>
     </section>
@@ -301,11 +305,71 @@
     </section>
   </main>
 
+  <button class="maria-launcher" id="mariaLauncher" type="button" aria-label="Chat with Maria">
+    <img src="assets/maria-v3-avatar-blueprint.jpg" alt="" aria-hidden="true">
+    <span>Chat with Maria</span>
+  </button>
+
+  <aside class="maria-popover" id="mariaPopover" aria-live="polite" aria-hidden="true">
+    <div class="maria-widget-card" role="dialog" aria-modal="false" aria-labelledby="mariaWidgetTitle">
+      <button class="maria-close" id="mariaClose" type="button" aria-label="Close Maria assistant">X</button>
+      <div class="maria-widget-head">
+        <img src="assets/maria-v3-avatar-blueprint.jpg" alt="Maria, Alpha Platinum AI receptionist">
+        <div>
+          <p class="eyebrow" id="mariaWidgetKicker">Alpha Platinum concierge</p>
+          <h2 id="mariaWidgetTitle">Need help choosing?</h2>
+          <p id="mariaWidgetMessage">Maria can collect your vehicle request and prepare it clearly for the Alpha Platinum team.</p>
+          <div class="maria-status">
+            <i aria-hidden="true"></i>
+            <strong id="mariaWidgetState">Ready</strong>
+          </div>
+        </div>
+      </div>
+      <form class="maria-widget-form" id="mariaWidgetForm">
+        <label><span id="mariaNameLabel">Full name</span><input id="mariaName" name="name" autocomplete="name" placeholder="Client name"></label>
+        <label><span id="mariaVehicleLabel">What vehicle are you looking for?</span><input id="mariaVehicle" name="vehicle" placeholder="2024 Mercedes-Benz G-Class"></label>
+        <div class="maria-field-row">
+          <label><span id="mariaDestinationLabel">Destination</span><input id="mariaDestination" name="destination" placeholder="Jamaica"></label>
+          <label><span id="mariaBudgetLabel">Budget</span><input id="mariaBudget" name="budget" placeholder="$75,000"></label>
+        </div>
+        <div class="maria-field-row">
+          <label><span id="mariaMileageLabel">Maximum mileage</span><input id="mariaMileage" name="mileage" placeholder="Under 25,000 mi"></label>
+          <label>
+            <span id="mariaTimelineLabel">Timeline</span>
+            <select id="mariaTimeline" name="timeline">
+              <option>Ready now</option>
+              <option>Within 14 days</option>
+              <option>Within 30 days</option>
+              <option>Researching options</option>
+            </select>
+          </label>
+        </div>
+        <label><span id="mariaContactLabel">Email or WhatsApp</span><input id="mariaContact" name="contact" autocomplete="email" placeholder="name@example.com"></label>
+        <label><span id="mariaQuestionLabel">Anything else Maria should add?</span><textarea id="mariaQuestion" name="question" rows="3" placeholder="Trim, color, shipping needs, timing..."></textarea></label>
+        <label class="maria-check-row"><input id="mariaConsent" name="consent" type="checkbox"><span id="mariaConsentLabel">I consent to Alpha Platinum / Rowtronic contacting me about this request.</span></label>
+        <button class="button primary full" id="mariaPrepare" type="submit">Prepare buyer request</button>
+      </form>
+      <section class="maria-widget-result" aria-live="polite">
+        <p id="mariaReply">Hi, I'm Maria. Tell me a little about your dream car and I will prepare it clearly for the team.</p>
+        <div class="maria-checkout-preview" id="mariaCheckoutPreview">
+          <span id="mariaFeeLane">Premium / Export Concierge</span>
+          <strong id="mariaFeeAmount">$1,400</strong>
+          <button class="button secondary full" id="mariaCheckoutButton" type="button">Continue to secure website checkout</button>
+          <small id="mariaPaymentNote">Payments are completed through secure Alpha Platinum website checkout. Maria does not collect card details in chat.</small>
+        </div>
+      </section>
+      <div class="maria-widget-actions">
+        <a class="button secondary" id="mariaMainIntake" href="#source">Open full intake</a>
+        <button class="button secondary" id="mariaSpeak" type="button">Hear greeting</button>
+      </div>
+    </div>
+  </aside>
+
   <footer class="footer">
     <p>&copy; 2026 Rowtronic LLC. Alpha Platinum Auto Broker DBA. Independent vehicle procurement concierge.</p>
     <p id="poweredByLine">Powered by Rowtronic LLC | Custom Web Design & AI Receptionist Agents | +1 (404) 664-1309</p>
   </footer>
 
-  <script src="app.js?v=20260620-contact-fix"></script>
+  <script src="app.js?v=20260806-maria-ready"></script>
 </body>
 </html>

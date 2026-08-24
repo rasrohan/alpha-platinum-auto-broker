@@ -16,9 +16,11 @@ const translations = {
     regionLabels: ["Primary sourcing lanes", "Expansion lane", "Buyer support"],
     regionTitles: ["Georgia Partner Inventory", "South Florida Dealer Network", "International Intake + Export Coordination"],
     atlWidget: {
-      label: "Atlanta desk",
-      time: "Local time",
-      weather: "ATL weather",
+      label: "ATL operations desk",
+      time: "Atlanta local time",
+      weather: "ATL weather watch",
+      status: "Desk status",
+      statusText: "Monitoring buyer requests",
       loadingDate: "Loading date...",
       loadingWeather: "Checking...",
       unavailable: "Weather unavailable"
@@ -95,13 +97,13 @@ const translations = {
     eligibilityId: "I confirm the buyer has valid government identification, such as a passport or valid driver's license.",
     eligibilityNote: "Destination selection does not guarantee export approval. Final eligibility depends on U.S. export requirements, sanctions screening, destination-country import rules, and licensed dealer documentation.",
     startIntake: "Start Intake",
-    processEyebrow: "Concierge Flow",
-    processTitle: "Designed to help buyers procure their dream car",
+    processEyebrow: "Concierge Sourcing Process",
+    processTitle: "From dream vehicle to serious sourcing request",
     steps: [
-      ["Tell us the target", "Select a showroom vehicle or submit the exact year, make, model, budget, mileage, color, destination, and timing."],
-      ["Confirm the sourcing tier", "Alpha Platinum reviews the request, confirms the concierge tier, and starts the procurement path after Stripe checkout."],
-      ["Verify real options", "Available vehicles are checked through licensed dealer relationships before pricing, availability, and next steps are presented."],
-      ["Coordinate the handoff", "The licensed selling dealer handles the final sale documents while Alpha Platinum supports communication, inspection, and shipping coordination."]
+      ["Choose the target", "Select a showroom vehicle or tell us the exact year, make, model, budget, mileage, color, and destination you want."],
+      ["Confirm the request", "We review the vehicle goal, buyer readiness, destination, and sourcing level before active work begins."],
+      ["Search real options", "Alpha Platinum checks available dealer inventory and presents serious options for the buyer to review."],
+      ["Coordinate next steps", "The team supports communication, inspection questions, dealer handoff, and logistics guidance."]
     ],
     businessEyebrow: "Business Registry",
     dba: "DBA:",
@@ -143,9 +145,11 @@ const translations = {
     regionLabels: ["Rutas principales", "Ruta de expansión", "Soporte al comprador"],
     regionTitles: ["Inventario Asociado en Georgia", "Red de Concesionarios del Sur de Florida", "Intake Internacional + Coordinación de Exportación"],
     atlWidget: {
-      label: "Mesa de Atlanta",
-      time: "Hora local",
+      label: "Mesa de operaciones ATL",
+      time: "Hora local de Atlanta",
       weather: "Clima ATL",
+      status: "Estado del desk",
+      statusText: "Monitoreando solicitudes",
       loadingDate: "Cargando fecha...",
       loadingWeather: "Consultando...",
       unavailable: "Clima no disponible"
@@ -222,13 +226,13 @@ const translations = {
     eligibilityId: "Confirmo que el comprador tiene identificación gubernamental válida, como pasaporte o licencia de conducir válida.",
     eligibilityNote: "Seleccionar un destino no garantiza aprobación de exportación. La elegibilidad final depende de requisitos de exportación de EE. UU., revisión de sanciones, reglas de importación del país destino y documentación del concesionario autorizado.",
     startIntake: "Iniciar Intake",
-    processEyebrow: "Flujo Conserje",
-    processTitle: "Diseñado para ayudar a compradores a conseguir el auto de sus sueños",
+    processEyebrow: "Proceso de Busqueda Concierge",
+    processTitle: "Del vehiculo sonado a una solicitud seria",
     steps: [
-      ["Dinos el objetivo", "Selecciona un vehículo del showroom o envía el año, marca, modelo, presupuesto, millaje, color, destino y tiempo exacto."],
-      ["Confirma el nivel de búsqueda", "Alpha Platinum revisa la solicitud, confirma el nivel de conserje y comienza el camino de procuración después del checkout de Stripe."],
-      ["Verificamos opciones reales", "Los vehículos disponibles se revisan mediante relaciones con concesionarios autorizados antes de presentar precio, disponibilidad y próximos pasos."],
-      ["Coordinamos la entrega", "El concesionario autorizado maneja los documentos finales de venta mientras Alpha Platinum apoya comunicación, inspección y coordinación de envío."]
+      ["Elige el objetivo", "Selecciona un vehiculo del showroom o dinos ano, marca, modelo, presupuesto, millaje, color y destino."],
+      ["Confirma la solicitud", "Revisamos el objetivo, preparacion del comprador, destino y nivel de busqueda antes de comenzar."],
+      ["Buscamos opciones reales", "Alpha Platinum revisa inventario disponible de dealers y presenta opciones serias para el comprador."],
+      ["Coordinamos proximos pasos", "El equipo apoya comunicacion, preguntas de inspeccion, handoff al dealer y orientacion logistica."]
     ],
     businessEyebrow: "Registro Comercial",
     dba: "DBA:",
@@ -257,6 +261,79 @@ const translations = {
       source: "Buscar"
     },
     formDemo: "Intake capturado para demo. Agrega URLs de Stripe Checkout en app.js para activar el pago."
+  }
+};
+
+const mariaTranslations = {
+  en: {
+    launcher: "Chat with Maria",
+    kicker: "Alpha Platinum concierge",
+    title: "Need help choosing?",
+    message: "Maria can collect your vehicle request and prepare it clearly for the Alpha Platinum team.",
+    stateReady: "Ready",
+    stateCollecting: "Collecting details",
+    stateCheckout: "Checkout ready",
+    stateTeam: "Team review",
+    stateConsent: "Consent needed",
+    nameLabel: "Full name",
+    vehicleLabel: "What vehicle are you looking for?",
+    destinationLabel: "Destination",
+    budgetLabel: "Budget",
+    mileageLabel: "Maximum mileage",
+    timelineLabel: "Timeline",
+    contactLabel: "Email or WhatsApp",
+    questionLabel: "Anything else Maria should add?",
+    consentLabel: "I consent to Alpha Platinum / Rowtronic contacting me about this request.",
+    prepareButton: "Prepare buyer request",
+    mainIntake: "Open full intake",
+    speak: "Hear greeting",
+    close: "Close Maria assistant",
+    checkoutButton: "Continue to secure website checkout",
+    paymentNote: "Payments are completed through secure Alpha Platinum website checkout. Maria does not collect card details in chat.",
+    initialReply: "Hi, I'm Maria. Tell me a little about your dream car and I will prepare it clearly for the team.",
+    consentReply: "I can prepare the request, but I need your consent before Alpha Platinum / Rowtronic can contact you about it.",
+    guardrailReply: "I do not want to guess on that. I can add your question to the buyer request and have the Alpha Platinum team follow up with the right answer.",
+    readyReply: "You are in the right place. I will prepare this clearly for the Alpha Platinum team.",
+    checkoutReply: "Payments are completed through secure Alpha Platinum website checkout. I do not collect card details in chat.",
+    vehicleReply: (vehicle) => `I can help you request the ${vehicle.year} ${vehicle.make} ${vehicle.model}. Add your destination, budget, mileage, timeline, and contact details when ready.`,
+    voiceGreeting: (vehicle) => vehicle
+      ? `Hi, I'm Maria. I can help prepare a request for the ${vehicle.year} ${vehicle.make} ${vehicle.model}.`
+      : "Hi, I'm Maria. I can help prepare your vehicle request for the Alpha Platinum team."
+  },
+  es: {
+    launcher: "Chat con Maria",
+    kicker: "Conserje Alpha Platinum",
+    title: "Necesitas ayuda?",
+    message: "Maria puede recopilar tu solicitud de vehiculo y prepararla claramente para el equipo de Alpha Platinum.",
+    stateReady: "Lista",
+    stateCollecting: "Recopilando datos",
+    stateCheckout: "Checkout listo",
+    stateTeam: "Revision del equipo",
+    stateConsent: "Falta consentimiento",
+    nameLabel: "Nombre completo",
+    vehicleLabel: "Que vehiculo buscas?",
+    destinationLabel: "Destino",
+    budgetLabel: "Presupuesto",
+    mileageLabel: "Millaje maximo",
+    timelineLabel: "Tiempo",
+    contactLabel: "Email o WhatsApp",
+    questionLabel: "Algo mas que Maria deba agregar?",
+    consentLabel: "Acepto que Alpha Platinum / Rowtronic me contacte sobre esta solicitud.",
+    prepareButton: "Preparar solicitud",
+    mainIntake: "Abrir intake completo",
+    speak: "Escuchar saludo",
+    close: "Cerrar asistente Maria",
+    checkoutButton: "Continuar al checkout seguro",
+    paymentNote: "Los pagos se completan por el checkout seguro de Alpha Platinum. Maria no recopila datos de tarjeta en el chat.",
+    initialReply: "Hola, soy Maria. Cuentame un poco sobre el vehiculo que buscas y lo preparare claramente para el equipo.",
+    consentReply: "Puedo preparar la solicitud, pero necesito tu consentimiento antes de que Alpha Platinum / Rowtronic pueda contactarte.",
+    guardrailReply: "No quiero adivinar esa respuesta. Puedo agregar tu pregunta a la solicitud para que el equipo de Alpha Platinum responda correctamente.",
+    readyReply: "Estas en el lugar correcto. Preparare esto claramente para el equipo de Alpha Platinum.",
+    checkoutReply: "Los pagos se completan por el checkout seguro de Alpha Platinum. No recopilo datos de tarjeta en el chat.",
+    vehicleReply: (vehicle) => `Puedo ayudarte a solicitar el ${vehicle.year} ${vehicle.make} ${vehicle.model}. Agrega destino, presupuesto, millaje, tiempo y contacto cuando estes listo.`,
+    voiceGreeting: (vehicle) => vehicle
+      ? `Hola, soy Maria. Puedo ayudarte a preparar una solicitud para el ${vehicle.year} ${vehicle.make} ${vehicle.model}.`
+      : "Hola, soy Maria. Puedo ayudarte a preparar tu solicitud de vehiculo para el equipo de Alpha Platinum."
   }
 };
 
@@ -445,11 +522,28 @@ const languageToggle = document.querySelector(".language-toggle");
 const atlWidgetLabel = document.querySelector("#atlWidgetLabel");
 const atlTimeLabel = document.querySelector("#atlTimeLabel");
 const atlWeatherLabel = document.querySelector("#atlWeatherLabel");
+const atlStatusLabel = document.querySelector("#atlStatusLabel");
 const atlDate = document.querySelector("#atlDate");
 const atlTime = document.querySelector("#atlTime");
 const atlWeather = document.querySelector("#atlWeather");
+const atlStatus = document.querySelector("#atlStatus");
+const mariaLauncher = document.querySelector("#mariaLauncher");
+const mariaPopover = document.querySelector("#mariaPopover");
+const mariaClose = document.querySelector("#mariaClose");
+const mariaWidgetForm = document.querySelector("#mariaWidgetForm");
+const mariaWidgetState = document.querySelector("#mariaWidgetState");
+const mariaWidgetTitle = document.querySelector("#mariaWidgetTitle");
+const mariaWidgetMessage = document.querySelector("#mariaWidgetMessage");
+const mariaReply = document.querySelector("#mariaReply");
+const mariaCheckoutPreview = document.querySelector("#mariaCheckoutPreview");
+const mariaFeeLane = document.querySelector("#mariaFeeLane");
+const mariaFeeAmount = document.querySelector("#mariaFeeAmount");
+const mariaCheckoutButton = document.querySelector("#mariaCheckoutButton");
+const mariaMainIntake = document.querySelector("#mariaMainIntake");
+const mariaSpeak = document.querySelector("#mariaSpeak");
 
 let atlWeatherData = null;
+let selectedConciergeVehicle = null;
 
 function t() {
   return translations[currentLanguage];
@@ -550,7 +644,7 @@ function updateAtlantaWeatherText() {
   }
 
   const temp = Math.round(atlWeatherData.temperature);
-  atlWeather.textContent = `${temp}°F · ${getWeatherSummary(atlWeatherData.code)}`;
+  atlWeather.textContent = `${temp} F / ${getWeatherSummary(atlWeatherData.code)}`;
 }
 
 async function fetchAtlantaWeather() {
@@ -669,6 +763,183 @@ function setTier(tier, reason = "") {
   tierReason.textContent = reason || (premium ? t().tierPremiumDetected : t().tierDefault);
 }
 
+function mariaCopy() {
+  return mariaTranslations[currentLanguage] || mariaTranslations.en;
+}
+
+function mariaField(name) {
+  return mariaWidgetForm?.elements[name];
+}
+
+function setMariaValue(name, value, force = false) {
+  const field = mariaField(name);
+  if (!field || (!force && field.value)) return;
+  field.value = value || "";
+}
+
+function parseMariaAmount(value) {
+  if (!value) return 0;
+  const normalized = String(value).toLowerCase().replace(/,/g, "");
+  const match = normalized.match(/\$?\s*(\d+(?:\.\d+)?)\s*(k|000)?/);
+  if (!match) return 0;
+  const number = Number(match[1]);
+  return match[2] === "k" || match[2] === "000" ? number * 1000 : number;
+}
+
+function getMariaYear(text) {
+  const match = String(text || "").match(/\b(20[1-3]\d|19[8-9]\d)\b/);
+  return match ? Number(match[1]) : 0;
+}
+
+function isMariaLowMileage(value) {
+  const text = String(value || "").toLowerCase();
+  if (/under|less|below|fewer|<=/.test(text) && parseMariaAmount(text) <= 25000) return true;
+  const number = parseMariaAmount(text);
+  return number > 0 && number <= 25000;
+}
+
+function mariaLikelyTier(data) {
+  const vehicle = `${data.get("vehicle") || ""}`.toLowerCase();
+  const destination = `${data.get("destination") || ""}`.trim().toLowerCase();
+  const budget = parseMariaAmount(data.get("budget"));
+  const year = getMariaYear(data.get("vehicle"));
+  const mileage = data.get("mileage") || "";
+  const domesticDestinations = ["", "us", "usa", "u.s.", "u.s.a.", "united states", "united states of america"];
+
+  if (!domesticDestinations.includes(destination)) return "premium";
+  if (premiumModelTerms.some((term) => vehicle.includes(term))) return "premium";
+  if (vehicleMakes.some((item) => item.premium && vehicle.includes(item.make.toLowerCase()))) return "premium";
+  if (budget >= 60000) return "premium";
+  if (year >= 2023 && budget >= 35000 && isMariaLowMileage(mileage)) return "premium";
+  return "standard";
+}
+
+function mariaHasSensitiveQuestion(question) {
+  return /finance|loan|title|customs|export document|sanction|dealer fee|tax|availability|final price|wire|card number|routing|account number/i.test(question || "");
+}
+
+function getMariaVoices() {
+  return new Promise((resolve) => {
+    if (!("speechSynthesis" in window)) {
+      resolve([]);
+      return;
+    }
+
+    const voices = window.speechSynthesis.getVoices();
+    if (voices.length) {
+      resolve(voices);
+      return;
+    }
+
+    const timer = window.setTimeout(() => {
+      window.speechSynthesis.onvoiceschanged = null;
+      resolve(window.speechSynthesis.getVoices());
+    }, 800);
+
+    window.speechSynthesis.onvoiceschanged = () => {
+      window.clearTimeout(timer);
+      window.speechSynthesis.onvoiceschanged = null;
+      resolve(window.speechSynthesis.getVoices());
+    };
+  });
+}
+
+function selectMariaVoice(voices) {
+  const exactGoogleUs = voices.find((voice) => voice.name === "Google US English" && voice.lang === "en-US");
+  if (exactGoogleUs) return exactGoogleUs;
+
+  const preferred = [
+    /Google US English/i,
+    /Google.*English.*United States/i,
+    /Microsoft Zira/i,
+    /Microsoft Aria/i,
+    /Jenny|Sara|Sonia|Female|Natural|Maria/i
+  ];
+
+  return preferred
+    .map((pattern) => voices.find((voice) => pattern.test(`${voice.name} ${voice.lang}`)))
+    .find(Boolean) || voices.find((voice) => voice.lang === "en-US") || voices[0];
+}
+
+function setMariaCheckout(tier, muted = false) {
+  const copy = t();
+  const premium = tier === "premium";
+  mariaFeeLane.textContent = `${premium ? copy.premiumConcierge : copy.standardConcierge} - ${premium ? "$1,400" : "$699"}`;
+  mariaFeeAmount.textContent = premium ? "$1,400" : "$699";
+  mariaCheckoutButton.dataset.tier = tier;
+  mariaCheckoutButton.disabled = muted;
+  mariaCheckoutPreview.classList.add("is-visible");
+  mariaCheckoutPreview.classList.toggle("is-muted", muted);
+}
+
+async function speakMariaGreeting(vehicle = selectedConciergeVehicle) {
+  if (!("speechSynthesis" in window)) return;
+  window.speechSynthesis.cancel();
+  const utterance = new SpeechSynthesisUtterance(mariaCopy().voiceGreeting(vehicle));
+  const voices = await getMariaVoices();
+  const warmVoice = selectMariaVoice(voices);
+  if (warmVoice) utterance.voice = warmVoice;
+  utterance.lang = warmVoice?.lang || "en-US";
+  utterance.rate = 0.92;
+  utterance.pitch = 1.04;
+  utterance.volume = 0.86;
+  console.info(`Maria selected voice: ${warmVoice ? `${warmVoice.name} (${warmVoice.lang})` : "browser default"}`);
+  window.speechSynthesis.speak(utterance);
+}
+
+function openMariaWidget(vehicle = null, shouldSpeak = false) {
+  selectedConciergeVehicle = vehicle;
+  if (vehicle) {
+    setMariaValue("vehicle", `${vehicle.year} ${vehicle.make} ${vehicle.model}`, true);
+    setMariaValue("mileage", vehicle.mileage, true);
+    setMariaValue("question", `I am interested in the ${vehicle.year} ${vehicle.make} ${vehicle.model}.`, true);
+  }
+
+  const copy = mariaCopy();
+  mariaWidgetTitle.textContent = copy.title;
+  mariaWidgetMessage.textContent = vehicle ? copy.vehicleReply(vehicle) : copy.message;
+  mariaWidgetState.textContent = copy.stateReady;
+  mariaReply.textContent = vehicle ? copy.vehicleReply(vehicle) : copy.initialReply;
+  mariaCheckoutPreview.classList.remove("is-visible", "is-muted");
+  mariaCheckoutButton.disabled = false;
+  mariaPopover.classList.add("open");
+  mariaPopover.setAttribute("aria-hidden", "false");
+  mariaLauncher.style.display = "none";
+  if (shouldSpeak) speakMariaGreeting(vehicle);
+}
+
+function closeMariaWidget() {
+  mariaPopover.classList.remove("open");
+  mariaPopover.setAttribute("aria-hidden", "true");
+  mariaLauncher.style.display = "";
+  if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+}
+
+function prepareMariaRequest() {
+  const copy = mariaCopy();
+  const data = new FormData(mariaWidgetForm);
+  const tier = mariaLikelyTier(data);
+  const hasConsent = data.get("consent") === "on";
+  const sensitive = mariaHasSensitiveQuestion(data.get("question"));
+
+  setMariaCheckout(tier, !hasConsent || sensitive);
+
+  if (!hasConsent) {
+    mariaWidgetState.textContent = copy.stateConsent;
+    mariaReply.textContent = copy.consentReply;
+    return;
+  }
+
+  if (sensitive) {
+    mariaWidgetState.textContent = copy.stateTeam;
+    mariaReply.textContent = `${copy.guardrailReply} ${copy.readyReply}`;
+    return;
+  }
+
+  mariaWidgetState.textContent = copy.stateCheckout;
+  mariaReply.textContent = `${copy.readyReply} ${copy.checkoutReply}`;
+}
+
 function updateTierFromVehicle() {
   const result = evaluateTier();
   setTier(result.tier, result.reason);
@@ -681,7 +952,7 @@ function requestVehicle(index) {
   renderModels(vehicle.make);
   vehicleModelInput.value = vehicle.model;
   setTier(vehicle.tier, t().tierShowroom);
-  document.querySelector("#source").scrollIntoView({ behavior: "smooth", block: "start" });
+  openMariaWidget(vehicle, true);
 }
 
 function buildLeadSummary(data) {
@@ -712,6 +983,27 @@ grid.addEventListener("click", (event) => {
   requestVehicle(Number(button.dataset.index));
 });
 
+mariaLauncher.addEventListener("click", () => openMariaWidget(null, false));
+mariaClose.addEventListener("click", closeMariaWidget);
+mariaSpeak.addEventListener("click", () => speakMariaGreeting());
+mariaMainIntake.addEventListener("click", () => {
+  closeMariaWidget();
+});
+mariaWidgetForm.addEventListener("input", () => {
+  if (mariaPopover.classList.contains("open")) {
+    mariaWidgetState.textContent = mariaCopy().stateCollecting;
+  }
+});
+mariaWidgetForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  prepareMariaRequest();
+});
+mariaCheckoutButton.addEventListener("click", () => {
+  const tier = mariaCheckoutButton.dataset.tier || "premium";
+  const checkoutUrl = STRIPE_CHECKOUT_URLS[tier];
+  if (checkoutUrl) window.location.href = checkoutUrl;
+});
+
 vehicleMakeSelect.addEventListener("change", () => {
   renderModels(vehicleMakeSelect.value);
   vehicleModelInput.value = "";
@@ -734,6 +1026,42 @@ tierSelect.addEventListener("change", () => {
   setTier(tierSelect.value, t().tierManual);
 });
 
+function applyMariaLanguage() {
+  const copy = mariaCopy();
+  setText("#mariaLauncher span", copy.launcher);
+  setText("#mariaWidgetKicker", copy.kicker);
+  setText("#mariaWidgetTitle", copy.title);
+  setText("#mariaWidgetMessage", selectedConciergeVehicle ? copy.vehicleReply(selectedConciergeVehicle) : copy.message);
+  setText("#mariaWidgetState", copy.stateReady);
+  setText("#mariaNameLabel", copy.nameLabel);
+  setText("#mariaVehicleLabel", copy.vehicleLabel);
+  setText("#mariaDestinationLabel", copy.destinationLabel);
+  setText("#mariaBudgetLabel", copy.budgetLabel);
+  setText("#mariaMileageLabel", copy.mileageLabel);
+  setText("#mariaTimelineLabel", copy.timelineLabel);
+  setText("#mariaContactLabel", copy.contactLabel);
+  setText("#mariaQuestionLabel", copy.questionLabel);
+  setText("#mariaConsentLabel", copy.consentLabel);
+  setText("#mariaPrepare", copy.prepareButton);
+  setText("#mariaMainIntake", copy.mainIntake);
+  setText("#mariaSpeak", copy.speak);
+  setText("#mariaCheckoutButton", copy.checkoutButton);
+  setText("#mariaPaymentNote", copy.paymentNote);
+  if (!mariaReply.textContent || mariaReply.textContent.includes("Hi, I'm Maria") || mariaReply.textContent.includes("Hola, soy Maria")) {
+    mariaReply.textContent = copy.initialReply;
+  }
+  mariaClose.setAttribute("aria-label", copy.close);
+  mariaLauncher.setAttribute("aria-label", copy.launcher);
+  setPlaceholder("#mariaName", currentLanguage === "es" ? "Nombre del cliente" : "Client name");
+  setPlaceholder("#mariaVehicle", currentLanguage === "es" ? "2024 Mercedes-Benz G-Class" : "2024 Mercedes-Benz G-Class");
+  setPlaceholder("#mariaDestination", currentLanguage === "es" ? "Jamaica" : "Jamaica");
+  setPlaceholder("#mariaBudget", "$75,000");
+  setPlaceholder("#mariaMileage", currentLanguage === "es" ? "Menos de 25,000 mi" : "Under 25,000 mi");
+  setPlaceholder("#mariaContact", "name@example.com");
+  setPlaceholder("#mariaQuestion", currentLanguage === "es" ? "Version, color, envio, tiempo..." : "Trim, color, shipping needs, timing...");
+  t().selects.timelineOptions.forEach((text, index) => setOptionText(mariaField("timeline"), index, text));
+}
+
 function applyLanguage(lang) {
   currentLanguage = lang;
   const copy = t();
@@ -752,6 +1080,8 @@ function applyLanguage(lang) {
   atlWidgetLabel.textContent = copy.atlWidget.label;
   atlTimeLabel.textContent = copy.atlWidget.time;
   atlWeatherLabel.textContent = copy.atlWidget.weather;
+  atlStatusLabel.textContent = copy.atlWidget.status;
+  atlStatus.textContent = copy.atlWidget.statusText;
   if (!atlWeatherData) atlWeather.textContent = copy.atlWidget.loadingWeather;
   updateAtlantaClock();
   updateAtlantaWeatherText();
@@ -776,7 +1106,7 @@ function applyLanguage(lang) {
   });
   setText(".contact-card .eyebrow", copy.businessEyebrow);
   setText(".disclosure-copy h2", copy.disclosureTitle);
-  setAllText(".disclosure-copy p", copy.disclosureCopy);
+  setAllText(".disclosure-copy > p", copy.disclosureCopy);
   setText(".footer p:first-child", copy.footer);
   setText("#poweredByLine", copy.poweredBy);
 
@@ -826,6 +1156,7 @@ function applyLanguage(lang) {
   setText(".eligibility-panel p", copy.eligibilityNote);
   setText(".form-actions .button", copy.startIntake);
   if (formNote.textContent) formNote.textContent = copy.formDemo;
+  applyMariaLanguage();
 
   const contactParagraphs = document.querySelectorAll(".contact-card p:not(.eyebrow)");
   if (contactParagraphs[0]) contactParagraphs[0].innerHTML = `<strong>${copy.dba}</strong> Alpha Platinum Auto Broker`;
