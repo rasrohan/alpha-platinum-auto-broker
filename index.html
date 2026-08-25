@@ -6,7 +6,7 @@
   <title>Alpha Platinum Auto Broker | Premium Vehicle Procurement Concierge</title>
   <meta name="description" content="Alpha Platinum Auto Broker helps qualified buyers source premium U.S. vehicles through licensed dealer relationships in Georgia and South Florida.">
   <link rel="preload" href="showroom-hero.png" as="image">
-  <link rel="stylesheet" href="styles.css?v=20260824-voice-telemetry">
+  <link rel="stylesheet" href="styles.css?v=20260824-maria-conductor">
 </head>
 <body>
   <header class="topbar">
@@ -330,6 +330,7 @@
             <i aria-hidden="true"></i>
             <strong id="mariaWidgetState">Ready</strong>
           </div>
+          <p class="maria-lead-id"><span id="mariaLeadLabel">Lead ID</span>: <strong id="mariaLeadId">APAB-preview</strong></p>
         </div>
       </div>
       <form class="maria-widget-form" id="mariaWidgetForm">
@@ -339,6 +340,7 @@
           <label><span id="mariaDestinationLabel">Destination</span><input id="mariaDestination" name="destination" placeholder="Jamaica"></label>
           <label><span id="mariaBudgetLabel">Budget</span><input id="mariaBudget" name="budget" placeholder="$75,000"></label>
         </div>
+        <label><span id="mariaAddressLabel">Address / destination details</span><input id="mariaAddress" name="address" autocomplete="street-address" placeholder="Kingston, Jamaica"></label>
         <div class="maria-field-row">
           <label><span id="mariaMileageLabel">Maximum mileage</span><input id="mariaMileage" name="mileage" placeholder="Under 25,000 mi"></label>
           <label>
@@ -364,6 +366,10 @@
           <button class="button secondary full" id="mariaCheckoutButton" type="button">Continue to secure website checkout</button>
           <small id="mariaPaymentNote">Payments are completed through secure Alpha Platinum website checkout. Maria does not collect card details in chat.</small>
         </div>
+        <div class="maria-handoff-actions" id="mariaHandoffActions" aria-hidden="true">
+          <a class="button secondary full" id="mariaEmailHandoff" href="mailto:rowtronicconsulting@gmail.com">Email handoff</a>
+          <a class="button secondary full" id="mariaWhatsAppHandoff" href="https://wa.me/16783870355">WhatsApp handoff</a>
+        </div>
       </section>
       <div class="maria-widget-actions">
         <a class="button secondary" id="mariaMainIntake" href="#source">Open full intake</a>
@@ -377,6 +383,6 @@
     <p id="poweredByLine">Powered by Rowtronic LLC | Custom Web Design & AI Receptionist Agents | +1 (404) 664-1309</p>
   </footer>
 
-  <script src="app.js?v=20260824-voice-telemetry"></script>
+  <script src="app.js?v=20260824-maria-conductor"></script>
 </body>
 </html>

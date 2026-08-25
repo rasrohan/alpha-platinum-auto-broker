@@ -282,6 +282,7 @@ const mariaTranslations = {
     vehicleLabel: "What vehicle are you looking for?",
     destinationLabel: "Destination",
     budgetLabel: "Budget",
+    addressLabel: "Address / destination details",
     mileageLabel: "Maximum mileage",
     timelineLabel: "Timeline",
     contactLabel: "Email or WhatsApp",
@@ -295,13 +296,29 @@ const mariaTranslations = {
     close: "Close Maria assistant",
     checkoutButton: "Continue to secure website checkout",
     paymentNote: "Payments are completed through secure Alpha Platinum website checkout. Maria does not collect card details in chat.",
-    initialReply: "Hi, I'm Maria. Tell me a little about your dream car and I will prepare it clearly for the team.",
+    leadLabel: "Lead ID",
+    initialReply: "Welcome to Alpha Platinum. I'm Maria, your AI concierge. Tell me what vehicle you want and I will help build your buyer packet.",
     consentReply: "I can prepare the request, but I need your consent before Alpha Platinum / Rowtronic can contact you about it.",
     guardrailReply: "I do not want to guess on that. I can add your question to the buyer request and have the Alpha Platinum team follow up with the right answer.",
     readyReply: "You are in the right place. I will prepare this clearly for the Alpha Platinum team.",
     checkoutReply: "Payments are completed through secure Alpha Platinum website checkout. I do not collect card details in chat.",
     resetReply: "Maria is reset. Tell me what vehicle you want to source.",
     voiceUnavailable: "Voice preview is not ready on this device. You can continue with the chat request.",
+    nextPrompts: {
+      name: "May I have the buyer's full name first?",
+      vehicle: "What vehicle should I help you find?",
+      destination: "What destination country should I prepare this for?",
+      address: "Please add the street address, port, or destination details you want us to confirm.",
+      budget: "What budget range should I note in USD?",
+      mileage: "What maximum mileage should I use for the search?",
+      contact: "What email or WhatsApp should the team use for follow-up?",
+      consent: "Please confirm consent so Alpha Platinum / Rowtronic can follow up about this request.",
+      ready: "I have the core details. Review the packet and press Prepare buyer request when ready."
+    },
+    confirmLine: (name, address) => `Let me confirm the spelling of the name: ${name || "the buyer"}. I have the address or destination details as ${address || "not provided yet"}. Is that correct?`,
+    packetReady: (leadId, tierLabel, fee) => `Your buyer packet is ready. Reference number ${leadId}. Based on your request, this looks like ${tierLabel} - ${fee}. You can continue to secure checkout when ready.`,
+    handoffEmail: "Email handoff",
+    handoffWhatsApp: "WhatsApp handoff",
     vehicleReply: (vehicle) => `I can help you request the ${vehicle.year} ${vehicle.make} ${vehicle.model}. Add your destination, budget, mileage, timeline, and contact details when ready.`,
     voiceGreeting: (vehicle) => vehicle
       ? `Hi, I'm Maria. I can help prepare a request for the ${vehicle.year} ${vehicle.make} ${vehicle.model}.`
@@ -322,6 +339,7 @@ const mariaTranslations = {
     vehicleLabel: "Que vehiculo buscas?",
     destinationLabel: "Destino",
     budgetLabel: "Presupuesto",
+    addressLabel: "Direccion / detalles de destino",
     mileageLabel: "Millaje maximo",
     timelineLabel: "Tiempo",
     contactLabel: "Email o WhatsApp",
@@ -335,13 +353,29 @@ const mariaTranslations = {
     close: "Cerrar asistente Maria",
     checkoutButton: "Continuar al checkout seguro",
     paymentNote: "Los pagos se completan por el checkout seguro de Alpha Platinum. Maria no recopila datos de tarjeta en el chat.",
-    initialReply: "Hola, soy Maria. Cuentame un poco sobre el vehiculo que buscas y lo preparare claramente para el equipo.",
+    leadLabel: "Lead ID",
+    initialReply: "Bienvenido a Alpha Platinum. Soy Maria, tu conserje AI. Dime que vehiculo buscas y te ayudo a preparar el paquete del comprador.",
     consentReply: "Puedo preparar la solicitud, pero necesito tu consentimiento antes de que Alpha Platinum / Rowtronic pueda contactarte.",
     guardrailReply: "No quiero adivinar esa respuesta. Puedo agregar tu pregunta a la solicitud para que el equipo de Alpha Platinum responda correctamente.",
     readyReply: "Estas en el lugar correcto. Preparare esto claramente para el equipo de Alpha Platinum.",
     checkoutReply: "Los pagos se completan por el checkout seguro de Alpha Platinum. No recopilo datos de tarjeta en el chat.",
     resetReply: "Maria fue reiniciada. Dime que vehiculo quieres buscar.",
     voiceUnavailable: "La vista previa de voz no esta lista en este dispositivo. Puedes continuar con la solicitud por chat.",
+    nextPrompts: {
+      name: "Puedo tener el nombre completo del comprador?",
+      vehicle: "Que vehiculo quieres que busque?",
+      destination: "Para que pais de destino preparo esto?",
+      address: "Agrega la direccion, puerto o detalles de destino que debemos confirmar.",
+      budget: "Que presupuesto en USD debo anotar?",
+      mileage: "Que millaje maximo debo usar para la busqueda?",
+      contact: "Que email o WhatsApp debe usar el equipo para seguimiento?",
+      consent: "Confirma el consentimiento para que Alpha Platinum / Rowtronic pueda dar seguimiento.",
+      ready: "Tengo los datos principales. Revisa el paquete y presiona Preparar solicitud cuando estes listo."
+    },
+    confirmLine: (name, address) => `Permiteme confirmar la ortografia del nombre: ${name || "el comprador"}. Tengo la direccion o detalles de destino como ${address || "no indicado todavia"}. Es correcto?`,
+    packetReady: (leadId, tierLabel, fee) => `Tu paquete de comprador esta listo. Referencia ${leadId}. Segun tu solicitud, parece ${tierLabel} - ${fee}. Puedes continuar al checkout seguro cuando estes listo.`,
+    handoffEmail: "Email handoff",
+    handoffWhatsApp: "WhatsApp handoff",
     vehicleReply: (vehicle) => `Puedo ayudarte a solicitar el ${vehicle.year} ${vehicle.make} ${vehicle.model}. Agrega destino, presupuesto, millaje, tiempo y contacto cuando estes listo.`,
     voiceGreeting: (vehicle) => vehicle
       ? `Hola, soy Maria. Puedo ayudarte a preparar una solicitud para el ${vehicle.year} ${vehicle.make} ${vehicle.model}.`
@@ -550,11 +584,15 @@ const mariaWidgetForm = document.querySelector("#mariaWidgetForm");
 const mariaWidgetState = document.querySelector("#mariaWidgetState");
 const mariaWidgetTitle = document.querySelector("#mariaWidgetTitle");
 const mariaWidgetMessage = document.querySelector("#mariaWidgetMessage");
+const mariaLeadId = document.querySelector("#mariaLeadId");
 const mariaReply = document.querySelector("#mariaReply");
 const mariaCheckoutPreview = document.querySelector("#mariaCheckoutPreview");
 const mariaFeeLane = document.querySelector("#mariaFeeLane");
 const mariaFeeAmount = document.querySelector("#mariaFeeAmount");
 const mariaCheckoutButton = document.querySelector("#mariaCheckoutButton");
+const mariaHandoffActions = document.querySelector("#mariaHandoffActions");
+const mariaEmailHandoff = document.querySelector("#mariaEmailHandoff");
+const mariaWhatsAppHandoff = document.querySelector("#mariaWhatsAppHandoff");
 const mariaMainIntake = document.querySelector("#mariaMainIntake");
 const mariaSpeak = document.querySelector("#mariaSpeak");
 
@@ -563,6 +601,7 @@ let selectedConciergeVehicle = null;
 let mariaNudgeTimer = null;
 let mariaHasEngaged = false;
 let cachedMariaVoices = [];
+let currentMariaLeadId = createMariaLeadId();
 
 function t() {
   return translations[currentLanguage];
@@ -786,6 +825,17 @@ function mariaCopy() {
   return mariaTranslations[currentLanguage] || mariaTranslations.en;
 }
 
+function createMariaLeadId() {
+  const datePart = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "America/New_York",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit"
+  }).format(new Date()).replace(/-/g, "");
+  const sequence = String(Math.floor(Math.random() * 9000) + 1000);
+  return `APAB-${datePart}-${sequence}`;
+}
+
 function isMariaVoicePreviewAvailable() {
   return "speechSynthesis" in window;
 }
@@ -798,6 +848,81 @@ function setMariaValue(name, value, force = false) {
   const field = mariaField(name);
   if (!field || (!force && field.value)) return;
   field.value = value || "";
+}
+
+function getMariaWidgetData() {
+  const data = new FormData(mariaWidgetForm);
+  return {
+    name: `${data.get("name") || ""}`.trim(),
+    vehicle: `${data.get("vehicle") || ""}`.trim(),
+    destination: `${data.get("destination") || ""}`.trim(),
+    address: `${data.get("address") || ""}`.trim(),
+    budget: `${data.get("budget") || ""}`.trim(),
+    mileage: `${data.get("mileage") || ""}`.trim(),
+    timeline: `${data.get("timeline") || ""}`.trim(),
+    contact: `${data.get("contact") || ""}`.trim(),
+    question: `${data.get("question") || ""}`.trim(),
+    consent: data.get("consent") === "on"
+  };
+}
+
+function mariaPromptForData(data = getMariaWidgetData()) {
+  const prompts = mariaCopy().nextPrompts;
+  if (!data.name) return prompts.name;
+  if (!data.vehicle) return `${mariaCopy().confirmLine(data.name, data.address)} ${prompts.vehicle}`;
+  if (!data.destination) return prompts.destination;
+  if (!data.address) return prompts.address;
+  if (!data.budget) return prompts.budget;
+  if (!data.mileage) return prompts.mileage;
+  if (!data.contact) return prompts.contact;
+  if (!data.consent) return prompts.consent;
+  return `${mariaCopy().confirmLine(data.name, data.address)} ${prompts.ready}`;
+}
+
+function mariaTierLabel(tier) {
+  return tier === "premium" ? mariaCopy().premiumConcierge || t().premiumConcierge : t().standardConcierge;
+}
+
+function mariaTierFee(tier) {
+  return tier === "premium" ? "$1,400" : "$699";
+}
+
+function buildMariaLeadSummary(data, tier) {
+  const tierLabel = mariaTierLabel(tier);
+  const fee = mariaTierFee(tier);
+  return [
+    "ALPHA PLATINUM MARIA BUYER PACKET",
+    "",
+    `Lead ID: ${currentMariaLeadId}`,
+    `Buyer: ${data.name || "[missing]"}`,
+    `Contact: ${data.contact || "[missing]"}`,
+    `Address / destination details: ${data.address || "[missing]"}`,
+    `Vehicle: ${data.vehicle || "[missing]"}`,
+    `Destination: ${data.destination || "[missing]"}`,
+    `Budget: ${data.budget || "[missing]"}`,
+    `Maximum mileage: ${data.mileage || "[missing]"}`,
+    `Timeline: ${data.timeline || "[missing]"}`,
+    `Customer notes: ${data.question || "None provided"}`,
+    `Likely tier: ${tierLabel}`,
+    `Concierge fee: ${fee}`,
+    `Consent: ${data.consent ? "confirmed" : "missing"}`,
+    "",
+    `Maria confirmation: ${mariaCopy().confirmLine(data.name, data.address)}`,
+    "Payment boundary: Maria routes to approved website Stripe checkout and never collects card details in chat.",
+    "Human-only: final price, availability, dealer paperwork, title, export, customs, taxes, and finance questions."
+  ].join("\n");
+}
+
+function updateMariaHandoffLinks(summary) {
+  const subject = encodeURIComponent(`Alpha Platinum Maria Lead ${currentMariaLeadId}`);
+  const body = encodeURIComponent(summary);
+  mariaEmailHandoff.href = `mailto:rowtronicconsulting@gmail.com?subject=${subject}&body=${body}`;
+  mariaWhatsAppHandoff.href = `https://wa.me/16783870355?text=${body}`;
+}
+
+function setMariaHandoffVisible(visible) {
+  mariaHandoffActions.classList.toggle("is-visible", visible);
+  mariaHandoffActions.setAttribute("aria-hidden", String(!visible));
 }
 
 function parseMariaAmount(value) {
@@ -941,6 +1066,12 @@ function setMariaCheckout(tier, muted = false) {
   mariaCheckoutPreview.classList.toggle("is-muted", muted);
 }
 
+function updateMariaConductorReply() {
+  if (!mariaPopover.classList.contains("open")) return;
+  mariaWidgetState.textContent = mariaCopy().stateCollecting;
+  mariaReply.textContent = mariaPromptForData();
+}
+
 function speakMariaGreeting(vehicle = selectedConciergeVehicle) {
   const copy = mariaCopy();
   if (!isMariaVoicePreviewAvailable()) {
@@ -996,6 +1127,8 @@ function speakMariaGreeting(vehicle = selectedConciergeVehicle) {
 function resetMariaWidget() {
   const copy = mariaCopy();
   selectedConciergeVehicle = null;
+  currentMariaLeadId = createMariaLeadId();
+  mariaLeadId.textContent = currentMariaLeadId;
   mariaWidgetForm.reset();
   mariaWidgetTitle.textContent = copy.title;
   mariaWidgetMessage.textContent = copy.message;
@@ -1004,6 +1137,7 @@ function resetMariaWidget() {
   mariaCheckoutPreview.classList.remove("is-visible", "is-muted");
   mariaCheckoutButton.disabled = false;
   mariaCheckoutButton.dataset.tier = "";
+  setMariaHandoffVisible(false);
   if ("speechSynthesis" in window) window.speechSynthesis.cancel();
 }
 
@@ -1031,6 +1165,7 @@ function openMariaWidget(vehicle = null, shouldSpeak = false) {
   mariaHasEngaged = true;
   hideMariaNudge();
   selectedConciergeVehicle = vehicle;
+  mariaLeadId.textContent = currentMariaLeadId;
   if (vehicle) {
     setMariaValue("vehicle", `${vehicle.year} ${vehicle.make} ${vehicle.model}`, true);
     setMariaValue("mileage", vehicle.mileage, true);
@@ -1041,9 +1176,10 @@ function openMariaWidget(vehicle = null, shouldSpeak = false) {
   mariaWidgetTitle.textContent = copy.title;
   mariaWidgetMessage.textContent = vehicle ? copy.vehicleReply(vehicle) : copy.message;
   mariaWidgetState.textContent = copy.stateReady;
-  mariaReply.textContent = vehicle ? copy.vehicleReply(vehicle) : copy.initialReply;
+  mariaReply.textContent = vehicle ? mariaPromptForData() : copy.initialReply;
   mariaCheckoutPreview.classList.remove("is-visible", "is-muted");
   mariaCheckoutButton.disabled = false;
+  setMariaHandoffVisible(false);
   mariaPopover.classList.add("open");
   mariaPopover.setAttribute("aria-hidden", "false");
   mariaLauncher.style.display = "none";
@@ -1069,26 +1205,35 @@ function applyMariaVoiceAvailability() {
 function prepareMariaRequest() {
   const copy = mariaCopy();
   const data = new FormData(mariaWidgetForm);
+  const packet = getMariaWidgetData();
   const tier = mariaLikelyTier(data);
+  const tierLabel = mariaTierLabel(tier);
+  const fee = mariaTierFee(tier);
   const hasConsent = data.get("consent") === "on";
   const sensitive = mariaHasSensitiveQuestion(data.get("question"));
+  const summary = buildMariaLeadSummary(packet, tier);
 
   setMariaCheckout(tier, !hasConsent || sensitive);
+  updateMariaHandoffLinks(summary);
+  console.info(summary);
 
   if (!hasConsent) {
     mariaWidgetState.textContent = copy.stateConsent;
     mariaReply.textContent = copy.consentReply;
+    setMariaHandoffVisible(false);
     return;
   }
 
   if (sensitive) {
     mariaWidgetState.textContent = copy.stateTeam;
-    mariaReply.textContent = `${copy.guardrailReply} ${copy.readyReply}`;
+    mariaReply.textContent = `${copy.guardrailReply} ${copy.confirmLine(packet.name, packet.address)}`;
+    setMariaHandoffVisible(true);
     return;
   }
 
   mariaWidgetState.textContent = copy.stateCheckout;
-  mariaReply.textContent = `${copy.readyReply} ${copy.checkoutReply}`;
+  mariaReply.textContent = `${copy.packetReady(currentMariaLeadId, tierLabel, fee)} ${copy.checkoutReply}`;
+  setMariaHandoffVisible(true);
 }
 
 function updateTierFromVehicle() {
@@ -1152,9 +1297,7 @@ mariaMainIntake.addEventListener("click", () => {
   closeMariaWidget();
 });
 mariaWidgetForm.addEventListener("input", () => {
-  if (mariaPopover.classList.contains("open")) {
-    mariaWidgetState.textContent = mariaCopy().stateCollecting;
-  }
+  updateMariaConductorReply();
 });
 mariaWidgetForm.addEventListener("submit", (event) => {
   event.preventDefault();
@@ -1202,6 +1345,7 @@ function applyMariaLanguage() {
   setText("#mariaVehicleLabel", copy.vehicleLabel);
   setText("#mariaDestinationLabel", copy.destinationLabel);
   setText("#mariaBudgetLabel", copy.budgetLabel);
+  setText("#mariaAddressLabel", copy.addressLabel);
   setText("#mariaMileageLabel", copy.mileageLabel);
   setText("#mariaTimelineLabel", copy.timelineLabel);
   setText("#mariaContactLabel", copy.contactLabel);
@@ -1213,6 +1357,9 @@ function applyMariaLanguage() {
   setText("#mariaReset", copy.reset);
   setText("#mariaCheckoutButton", copy.checkoutButton);
   setText("#mariaPaymentNote", copy.paymentNote);
+  setText("#mariaLeadLabel", copy.leadLabel);
+  setText("#mariaEmailHandoff", copy.handoffEmail);
+  setText("#mariaWhatsAppHandoff", copy.handoffWhatsApp);
   if (!mariaReply.textContent || mariaReply.textContent.includes("Hi, I'm Maria") || mariaReply.textContent.includes("Hola, soy Maria")) {
     mariaReply.textContent = copy.initialReply;
   }
@@ -1223,6 +1370,7 @@ function applyMariaLanguage() {
   setPlaceholder("#mariaName", currentLanguage === "es" ? "Nombre del cliente" : "Client name");
   setPlaceholder("#mariaVehicle", currentLanguage === "es" ? "2024 Mercedes-Benz G-Class" : "2024 Mercedes-Benz G-Class");
   setPlaceholder("#mariaDestination", currentLanguage === "es" ? "Jamaica" : "Jamaica");
+  setPlaceholder("#mariaAddress", currentLanguage === "es" ? "Kingston, Jamaica" : "Kingston, Jamaica");
   setPlaceholder("#mariaBudget", "$75,000");
   setPlaceholder("#mariaMileage", currentLanguage === "es" ? "Menos de 25,000 mi" : "Under 25,000 mi");
   setPlaceholder("#mariaContact", "name@example.com");
@@ -1369,6 +1517,7 @@ renderCountries();
 renderMakes();
 renderColors();
 renderInventory();
+mariaLeadId.textContent = currentMariaLeadId;
 applyLanguage("en");
 updateAtlantaClock();
 fetchAtlantaWeather();

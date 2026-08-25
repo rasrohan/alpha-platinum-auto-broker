@@ -1009,6 +1009,25 @@ textarea:focus {
   box-shadow: 0 0 16px rgba(62, 183, 173, 0.82);
 }
 
+.maria-lead-id {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  align-items: center;
+  margin-top: 8px;
+  padding: 7px 9px;
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(215, 222, 226, 0.18);
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.maria-lead-id strong {
+  color: var(--platinum);
+}
+
 .maria-widget-form {
   display: grid;
   gap: 12px;
@@ -1082,6 +1101,16 @@ textarea:focus {
 .maria-checkout-preview.is-muted {
   display: grid;
   opacity: 0.72;
+}
+
+.maria-handoff-actions {
+  display: none;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.maria-handoff-actions.is-visible {
+  display: grid;
 }
 
 .maria-checkout-preview span {
