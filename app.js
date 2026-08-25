@@ -892,14 +892,35 @@ function chooseMariaVoice(voices, language = currentLanguage) {
   };
 }
 
-function logMariaVoiceDiagnostics(voices, selectedVoice, preference, fallbackUsed) {
+function mariaSpeechState() {
+  if (!isMariaVoicePreviewAvailable()) {
+    return {
+      available: false,
+      speaking: false,
+      pending: false,
+      paused: false
+    };
+  }
+
+  return {
+    available: true,
+    speaking: window.speechSynthesis.speaking,
+    pending: window.speechSynthesis.pending,
+    paused: window.speechSynthesis.paused
+  };
+}
+
+function logMariaVoiceDiagnostics(voices, selectedVoice, preference, fallbackUsed, stage = "voice-selected", extra = {}) {
   console.info("Maria voice diagnostics", {
+    stage,
     userAgent: navigator.userAgent,
     appLanguage: currentLanguage,
     preferredLanguage: preference.lang,
     preferredVoiceHint: preference.preferredName,
     selectedVoice: selectedVoice ? `${selectedVoice.name} (${selectedVoice.lang})` : "browser default by utterance.lang",
     fallbackUsed,
+    speechState: mariaSpeechState(),
+    ...extra,
     availableVoices: voices.map((voice) => ({
       name: voice.name,
       lang: voice.lang,
@@ -930,6 +951,11 @@ function speakMariaGreeting(vehicle = selectedConciergeVehicle) {
   const utterance = new SpeechSynthesisUtterance(copy.voiceGreeting(vehicle));
   const voices = cachedMariaVoices.length ? cachedMariaVoices : refreshMariaVoices();
   const { voice: warmVoice, preference, fallbackUsed } = chooseMariaVoice(voices);
+  const buttonPressedAt = performance.now();
+  logMariaVoiceDiagnostics(voices, warmVoice, preference, fallbackUsed, "button-pressed", {
+    textLength: utterance.text.length,
+    beforeSpeak: mariaSpeechState()
+  });
   if (warmVoice) utterance.voice = warmVoice;
   utterance.lang = warmVoice?.lang || preference.lang;
   utterance.rate = 0.92;
@@ -937,11 +963,34 @@ function speakMariaGreeting(vehicle = selectedConciergeVehicle) {
   utterance.volume = 0.86;
   utterance.onstart = () => {
     mariaWidgetState.textContent = mariaCopy().stateReady;
+    console.info("Maria speech started", {
+      elapsedMs: Math.round(performance.now() - buttonPressedAt),
+      speechState: mariaSpeechState()
+    });
+  };
+  utterance.onend = () => {
+    console.info("Maria speech ended", {
+      durationMs: Math.round(performance.now() - buttonPressedAt),
+      speechState: mariaSpeechState()
+    });
+  };
+  utterance.onerror = (event) => {
+    console.info("Maria speech error", {
+      error: event.error,
+      elapsedMs: Math.round(performance.now() - buttonPressedAt),
+      speechState: mariaSpeechState()
+    });
   };
   window.speechSynthesis.resume();
-  logMariaVoiceDiagnostics(voices, warmVoice, preference, fallbackUsed);
+  logMariaVoiceDiagnostics(voices, warmVoice, preference, fallbackUsed, "before-speak", {
+    afterResume: mariaSpeechState()
+  });
   console.info(`Maria selected voice: ${warmVoice ? `${warmVoice.name} (${warmVoice.lang})` : `browser default (${preference.lang})`}`);
   window.speechSynthesis.speak(utterance);
+  console.info("Maria speak issued", {
+    elapsedMs: Math.round(performance.now() - buttonPressedAt),
+    speechState: mariaSpeechState()
+  });
 }
 
 function resetMariaWidget() {
