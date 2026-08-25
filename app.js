@@ -786,13 +786,8 @@ function mariaCopy() {
   return mariaTranslations[currentLanguage] || mariaTranslations.en;
 }
 
-function isIOSDevice() {
-  return /iPad|iPhone|iPod/i.test(navigator.userAgent)
-    || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
-}
-
 function isMariaVoicePreviewAvailable() {
-  return "speechSynthesis" in window && !isIOSDevice();
+  return "speechSynthesis" in window;
 }
 
 function mariaField(name) {
@@ -852,18 +847,23 @@ function refreshMariaVoices() {
   return cachedMariaVoices;
 }
 
-function selectMariaVoice(voices, language = currentLanguage) {
-  const desiredLanguage = language === "es" ? "es" : "en";
-  const languageVoices = voices.filter((voice) => voice.lang?.toLowerCase().startsWith(desiredLanguage));
-  if (!languageVoices.length) return null;
+function mariaVoicePreference(language = currentLanguage) {
+  return language === "es"
+    ? { lang: "es-US", languageRoot: "es", preferredName: "Google español de Estados Unidos" }
+    : { lang: "en-US", languageRoot: "en", preferredName: "Google US English" };
+}
 
-  const preferred = desiredLanguage === "es"
+function chooseMariaVoice(voices, language = currentLanguage) {
+  const preference = mariaVoicePreference(language);
+  const preferred = preference.languageRoot === "es"
     ? [
+        new RegExp(`^${preference.preferredName}$`, "i"),
         /Google.*espa/i,
         /Google.*Spanish/i,
         /Paulina|Monica|Luciana|Marisol|Maria/i
       ]
     : [
+        new RegExp(`^${preference.preferredName}$`, "i"),
         /Google US English/i,
         /Google.*English.*United States/i,
         /Samantha|Ava|Nicky|Susan|Victoria/i,
@@ -872,11 +872,41 @@ function selectMariaVoice(voices, language = currentLanguage) {
         /Jenny|Sara|Sonia|Female|Natural|Maria/i
       ];
 
-  return preferred
-    .map((pattern) => languageVoices.find((voice) => pattern.test(`${voice.name} ${voice.lang}`)))
+  const exactLocaleVoices = voices.filter((voice) => voice.lang?.toLowerCase() === preference.lang.toLowerCase());
+  const languageVoices = voices.filter((voice) => voice.lang?.toLowerCase().startsWith(preference.languageRoot));
+  const voice = preferred
+    .map((pattern) => exactLocaleVoices.find((item) => pattern.test(`${item.name} ${item.lang}`)))
     .find(Boolean)
-    || languageVoices.find((voice) => voice.lang === (desiredLanguage === "es" ? "es-US" : "en-US"))
-    || languageVoices[0];
+    || exactLocaleVoices[0]
+    || preferred
+      .map((pattern) => languageVoices.find((item) => pattern.test(`${item.name} ${item.lang}`)))
+      .find(Boolean)
+    || languageVoices[0]
+    || voices.find((item) => item.default)
+    || null;
+
+  return {
+    voice,
+    preference,
+    fallbackUsed: !voice || voice.name !== preference.preferredName || voice.lang !== preference.lang
+  };
+}
+
+function logMariaVoiceDiagnostics(voices, selectedVoice, preference, fallbackUsed) {
+  console.info("Maria voice diagnostics", {
+    userAgent: navigator.userAgent,
+    appLanguage: currentLanguage,
+    preferredLanguage: preference.lang,
+    preferredVoiceHint: preference.preferredName,
+    selectedVoice: selectedVoice ? `${selectedVoice.name} (${selectedVoice.lang})` : "browser default by utterance.lang",
+    fallbackUsed,
+    availableVoices: voices.map((voice) => ({
+      name: voice.name,
+      lang: voice.lang,
+      localService: voice.localService,
+      default: voice.default
+    }))
+  });
 }
 
 function setMariaCheckout(tier, muted = false) {
@@ -899,14 +929,9 @@ function speakMariaGreeting(vehicle = selectedConciergeVehicle) {
   window.speechSynthesis.cancel();
   const utterance = new SpeechSynthesisUtterance(copy.voiceGreeting(vehicle));
   const voices = cachedMariaVoices.length ? cachedMariaVoices : refreshMariaVoices();
-  const warmVoice = selectMariaVoice(voices);
-  if (voices.length && !warmVoice) {
-    mariaWidgetState.textContent = copy.voiceUnavailable;
-    console.info("Maria voice preview blocked: no matching language voice available.");
-    return;
-  }
+  const { voice: warmVoice, preference, fallbackUsed } = chooseMariaVoice(voices);
   if (warmVoice) utterance.voice = warmVoice;
-  utterance.lang = warmVoice?.lang || (currentLanguage === "es" ? "es-US" : "en-US");
+  utterance.lang = warmVoice?.lang || preference.lang;
   utterance.rate = 0.92;
   utterance.pitch = 1.04;
   utterance.volume = 0.86;
@@ -914,7 +939,8 @@ function speakMariaGreeting(vehicle = selectedConciergeVehicle) {
     mariaWidgetState.textContent = mariaCopy().stateReady;
   };
   window.speechSynthesis.resume();
-  console.info(`Maria selected voice: ${warmVoice ? `${warmVoice.name} (${warmVoice.lang})` : "browser default"}`);
+  logMariaVoiceDiagnostics(voices, warmVoice, preference, fallbackUsed);
+  console.info(`Maria selected voice: ${warmVoice ? `${warmVoice.name} (${warmVoice.lang})` : `browser default (${preference.lang})`}`);
   window.speechSynthesis.speak(utterance);
 }
 
