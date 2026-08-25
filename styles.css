@@ -895,7 +895,7 @@ textarea:focus {
   bottom: clamp(16px, 4vw, 34px);
   z-index: 40;
   width: min(470px, calc(100vw - 32px));
-  max-height: calc(100vh - 32px);
+  max-height: calc(100dvh - 32px);
   overflow: auto;
   opacity: 0;
   pointer-events: none;
@@ -923,12 +923,13 @@ textarea:focus {
 }
 
 .maria-top-actions {
-  position: absolute;
-  top: 10px;
-  right: 10px;
+  position: sticky;
+  top: 0;
   z-index: 2;
   display: flex;
   gap: 8px;
+  justify-content: flex-end;
+  margin: -10px -10px -4px 0;
 }
 
 .maria-close,
@@ -981,7 +982,7 @@ textarea:focus {
 }
 
 .maria-widget-card h2 {
-  margin: 4px 104px 8px 0;
+  margin: 4px 0 8px 0;
   color: var(--platinum);
   font-size: clamp(1.15rem, 3vw, 1.55rem);
 }
@@ -1033,6 +1034,46 @@ textarea:focus {
   gap: 12px;
 }
 
+.maria-conversation {
+  display: grid;
+  gap: 8px;
+  max-height: 150px;
+  overflow: auto;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(215, 222, 226, 0.12);
+}
+
+.maria-message {
+  max-width: 94%;
+  padding: 9px 10px;
+  margin: 0;
+  color: var(--platinum);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(215, 222, 226, 0.13);
+  font-size: 0.88rem;
+  line-height: 1.35;
+}
+
+.maria-message.visitor {
+  justify-self: end;
+  border-color: rgba(62, 183, 173, 0.3);
+  background: rgba(62, 183, 173, 0.1);
+}
+
+.maria-widget-form [data-maria-step],
+.maria-widget-form > .button.primary {
+  display: none;
+}
+
+.maria-widget-form [data-maria-step].is-active {
+  display: grid;
+}
+
+.maria-widget-form.is-final-step > .button.primary {
+  display: inline-flex;
+}
+
 .maria-widget-form label {
   display: grid;
   gap: 7px;
@@ -1059,7 +1100,6 @@ textarea:focus {
 }
 
 .maria-field-row {
-  display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
 }
@@ -1084,6 +1124,12 @@ textarea:focus {
   padding: 14px;
   background: rgba(255, 255, 255, 0.045);
   border: 1px solid rgba(215, 222, 226, 0.13);
+}
+
+.maria-step-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
 }
 
 .maria-checkout-preview {
@@ -1278,13 +1324,40 @@ textarea:focus {
 
   .maria-popover {
     right: 12px;
-    bottom: 12px;
+    top: 10px;
+    bottom: auto;
     width: calc(100vw - 24px);
+    max-height: calc(100dvh - 20px);
   }
 
   .maria-widget-head,
   .maria-field-row {
     grid-template-columns: 1fr;
+  }
+
+  .maria-widget-card {
+    max-height: calc(100dvh - 20px);
+    overflow: auto;
+    padding: 16px;
+  }
+
+  .maria-top-actions {
+    margin: -6px -6px -2px 0;
+    background: rgba(8, 12, 14, 0.86);
+    backdrop-filter: blur(8px);
+  }
+
+  .maria-widget-card h2 {
+    font-size: 1.18rem;
+  }
+
+  .maria-widget-card p:not(.eyebrow),
+  .maria-widget-result {
+    font-size: 0.9rem;
+  }
+
+  .maria-conversation {
+    max-height: 118px;
   }
 
   .maria-widget-head img {
