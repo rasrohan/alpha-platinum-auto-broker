@@ -38,10 +38,10 @@ const translations = {
     lanesCopy2: "Dealer names are treated as prospective or verified sourcing relationships only. Public partner claims should wait until permission or a formal agreement exists.",
     sourceEyebrow: "Custom Procurement Intake",
     sourceTitle: "Tell us what you want. We will find it.",
-    sourceCopy: "Submit the desired make, model, budget, destination, and timing. Alpha Platinum reviews export eligibility, confirms the right procurement tier, then begins active sourcing after the concierge fee is paid through Stripe.",
-    currentTier: "Current procurement tier",
-    standardConcierge: "Standard Concierge",
-    premiumConcierge: "Premium / Export Concierge",
+    sourceCopy: "Submit the desired make, model, budget, destination, and timing. Alpha Platinum reviews the request, confirms the right concierge service tier, then begins active sourcing after the concierge service fee is paid through Stripe.",
+    currentTier: "Current concierge service tier",
+    standardConcierge: "Standard Concierge Service",
+    premiumConcierge: "Premium Concierge Service",
     labels: {
       fullName: "Full name",
       email: "Email",
@@ -56,7 +56,7 @@ const translations = {
       customColor: "Custom color",
       destination: "Destination port / city",
       timeline: "Purchase timeline",
-      tier: "Procurement tier",
+      tier: "Concierge service tier",
       specs: "Must-have specs"
     },
     placeholders: {
@@ -78,9 +78,9 @@ const translations = {
       timeline: "Select timing",
       mileageOptions: ["Under 15,000 mi", "Under 25,000 mi", "Under 40,000 mi", "Under 60,000 mi", "Flexible"],
       timelineOptions: ["Ready now", "Within 14 days", "Within 30 days", "Researching options"],
-      tierOptions: ["Standard Concierge - $699", "Premium / Export Concierge - $1,400"]
+      tierOptions: ["Standard Concierge Service - $699", "Premium Concierge Service - $1,400"]
     },
-    tierDefault: "Standard tier applies until the request requires premium sourcing.",
+    tierDefault: "Standard tier applies until the request requires premium sourcing. Concierge fees do not include vehicle price, shipping, taxes, customs, title, dealer, or export costs.",
     tierPremiumDetected: "Premium sourcing criteria detected.",
     tierManual: "Tier was manually selected for this intake.",
     tierShowroom: "Showroom vehicle is pre-classified for premium concierge sourcing.",
@@ -168,10 +168,10 @@ const translations = {
     lanesCopy2: "Los nombres de concesionarios se tratan solamente como relaciones prospectivas o verificadas de búsqueda. Cualquier declaración pública de alianza debe esperar permiso o un acuerdo formal.",
     sourceEyebrow: "Intake de Procuración Personalizada",
     sourceTitle: "Dinos qué quieres. Nosotros lo buscamos.",
-    sourceCopy: "Envía la marca, modelo, presupuesto, destino y tiempo deseado. Alpha Platinum revisa la elegibilidad de exportación, confirma el nivel correcto de procuración y comienza la búsqueda activa después de pagar la tarifa de conserje por Stripe.",
-    currentTier: "Nivel actual de procuración",
-    standardConcierge: "Conserje Estándar",
-    premiumConcierge: "Conserje Premium / Exportación",
+    sourceCopy: "Envía la marca, modelo, presupuesto, destino y tiempo deseado. Alpha Platinum revisa la solicitud, confirma el nivel correcto de servicio concierge y comienza la búsqueda activa después de pagar la tarifa de servicio concierge por Stripe.",
+    currentTier: "Nivel actual de servicio concierge",
+    standardConcierge: "Servicio Concierge Estándar",
+    premiumConcierge: "Servicio Concierge Premium",
     labels: {
       fullName: "Nombre completo",
       email: "Correo electrónico",
@@ -186,7 +186,7 @@ const translations = {
       customColor: "Color personalizado",
       destination: "Puerto / ciudad de destino",
       timeline: "Tiempo de compra",
-      tier: "Nivel de procuración",
+      tier: "Nivel de servicio concierge",
       specs: "Especificaciones importantes"
     },
     placeholders: {
@@ -208,9 +208,9 @@ const translations = {
       timeline: "Selecciona tiempo",
       mileageOptions: ["Menos de 15,000 mi", "Menos de 25,000 mi", "Menos de 40,000 mi", "Menos de 60,000 mi", "Flexible"],
       timelineOptions: ["Listo ahora", "Dentro de 14 días", "Dentro de 30 días", "Investigando opciones"],
-      tierOptions: ["Conserje Estándar - $699", "Conserje Premium / Exportación - $1,400"]
+      tierOptions: ["Servicio Concierge Estándar - $699", "Servicio Concierge Premium - $1,400"]
     },
-    tierDefault: "El nivel estándar aplica hasta que la solicitud requiera búsqueda premium.",
+    tierDefault: "El nivel estándar aplica hasta que la solicitud requiera búsqueda premium. Las tarifas concierge no incluyen precio del vehículo, envío, impuestos, aduana, título, dealer ni costos de exportación.",
     tierPremiumDetected: "Se detectaron criterios de búsqueda premium.",
     tierManual: "El nivel fue seleccionado manualmente para este intake.",
     tierShowroom: "Este vehículo del showroom está preclasificado para conserje premium.",
@@ -297,7 +297,7 @@ const mariaTranslations = {
     reset: "Reset",
     close: "Close Maria assistant",
     checkoutButton: "Continue to secure website checkout",
-    paymentNote: "Payments are completed through secure Alpha Platinum website checkout. Maria does not collect card details in chat.",
+    paymentNote: "This is the concierge service fee only. It does not include vehicle price, shipping, taxes, customs, title, dealer, or export costs. Maria does not collect card details in chat.",
     leadLabel: "Lead ID",
     initialReply: "Welcome to Alpha Platinum. I'm Maria, your AI concierge. Tell me what vehicle you want and I will help build your buyer packet.",
     consentReply: "I can prepare the request, but I need your consent before Alpha Platinum / Rowtronic can contact you about it.",
@@ -320,7 +320,7 @@ const mariaTranslations = {
       },
       noExtraNotes: "No extra notes",
       confirmLine: (name, address) => `Let me confirm the spelling of the name: ${name || "the buyer"}. I have the address or destination details as ${address || "not provided yet"}. Is that correct?`,
-    packetReady: (leadId, tierLabel, fee) => `Your buyer packet is ready. Reference number ${leadId}. Based on your request, this looks like ${tierLabel} - ${fee}. You can continue to secure checkout when ready.`,
+    packetReady: (leadId, tierLabel, fee) => `Your buyer packet is ready. Reference number ${leadId}. Based on your request, this looks like ${tierLabel} with a ${fee} concierge service fee. Vehicle price, shipping, taxes, customs, title, dealer, and export costs are separate.`,
     handoffEmail: "Email handoff",
     handoffWhatsApp: "WhatsApp handoff",
     back: "Back",
@@ -362,7 +362,7 @@ const mariaTranslations = {
     reset: "Limpiar",
     close: "Cerrar asistente Maria",
     checkoutButton: "Continuar al checkout seguro",
-    paymentNote: "Los pagos se completan por el checkout seguro de Alpha Platinum. Maria no recopila datos de tarjeta en el chat.",
+    paymentNote: "Esta es solo la tarifa de servicio concierge. No incluye precio del vehículo, envío, impuestos, aduana, título, dealer ni costos de exportación. Maria no recopila datos de tarjeta en el chat.",
     leadLabel: "Lead ID",
     initialReply: "Bienvenido a Alpha Platinum. Soy Maria, tu conserje AI. Dime que vehiculo buscas y te ayudo a preparar el paquete del comprador.",
     consentReply: "Puedo preparar la solicitud, pero necesito tu consentimiento antes de que Alpha Platinum / Rowtronic pueda contactarte.",
@@ -385,7 +385,7 @@ const mariaTranslations = {
       },
       noExtraNotes: "Sin notas adicionales",
       confirmLine: (name, address) => `Permiteme confirmar la ortografia del nombre: ${name || "el comprador"}. Tengo la direccion o detalles de destino como ${address || "no indicado todavia"}. Es correcto?`,
-    packetReady: (leadId, tierLabel, fee) => `Tu paquete de comprador esta listo. Referencia ${leadId}. Segun tu solicitud, parece ${tierLabel} - ${fee}. Puedes continuar al checkout seguro cuando estes listo.`,
+    packetReady: (leadId, tierLabel, fee) => `Tu paquete de comprador esta listo. Referencia ${leadId}. Segun tu solicitud, parece ${tierLabel} con una tarifa de servicio concierge de ${fee}. Precio del vehículo, envío, impuestos, aduana, título, dealer y exportación son costos separados.`,
     handoffEmail: "Email handoff",
     handoffWhatsApp: "WhatsApp handoff",
     back: "Atras",
@@ -1044,7 +1044,7 @@ function buildMariaLeadSummary(data, tier) {
     `Timeline: ${data.timeline || "[missing]"}`,
     `Customer notes: ${data.question || "None provided"}`,
     `Likely tier: ${tierLabel}`,
-    `Concierge fee: ${fee}`,
+    `Concierge service fee only: ${fee}`,
     `Consent: ${data.consent ? "confirmed" : "missing"}`,
     "",
     `Maria confirmation: ${mariaCopy().confirmLine(data.name, data.address)}`,
@@ -1198,7 +1198,7 @@ function logMariaVoiceDiagnostics(voices, selectedVoice, preference, fallbackUse
 function setMariaCheckout(tier, muted = false) {
   const copy = t();
   const premium = tier === "premium";
-  mariaFeeLane.textContent = `${premium ? copy.premiumConcierge : copy.standardConcierge} - ${premium ? "$1,400" : "$699"}`;
+  mariaFeeLane.textContent = `${premium ? copy.premiumConcierge : copy.standardConcierge} - concierge service fee only`;
   mariaFeeAmount.textContent = premium ? "$1,400" : "$699";
   mariaCheckoutButton.dataset.tier = tier;
   mariaCheckoutButton.disabled = muted;
