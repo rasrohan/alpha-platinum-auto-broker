@@ -456,6 +456,7 @@ h3 {
 }
 
 .vehicle-visual {
+  position: relative;
   min-height: 190px;
   display: grid;
   place-items: end start;
@@ -472,6 +473,24 @@ h3 {
   font-size: 0.78rem;
   font-weight: 800;
   letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.vehicle-visual strong {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  max-width: 180px;
+  padding: 6px 8px;
+  color: var(--platinum);
+  background: rgba(8, 12, 14, 0.76);
+  border: 1px solid rgba(62, 183, 173, 0.34);
+  box-shadow: 0 0 18px rgba(62, 183, 173, 0.16);
+  font-size: 0.64rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  line-height: 1.2;
+  text-align: right;
   text-transform: uppercase;
 }
 

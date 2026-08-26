@@ -27,6 +27,7 @@ const translations = {
     },
     showroomEyebrow: "Virtual Showroom",
     showroomTitle: "Featured sourcing opportunities",
+    showroomDisclaimer: "Vehicles displayed are representative target profiles and recent procurement models available through our licensed U.S. dealer network. Vehicles are not owned inventory. Selecting a model sets your preferred target specifications for custom sourcing. Real-time dealer availability, market pricing, and VIN selection are verified during human review.",
     aboutEyebrow: "Built From Real Service Experience",
     aboutTitle: "A concierge desk for serious vehicle buyers",
     aboutCopy: "Alpha Platinum Auto Broker was registered in Georgia in 2023 after years of seeing the same opportunity: overseas buyers want access to premium U.S. vehicles, but they need a trustworthy local process to help find, verify, and coordinate the right deal.",
@@ -101,7 +102,7 @@ const translations = {
     processEyebrow: "Concierge Sourcing Process",
     processTitle: "From dream vehicle to serious sourcing request",
     steps: [
-      ["Choose the target", "Select a showroom vehicle or tell us the exact year, make, model, budget, mileage, color, and destination you want."],
+      ["Choose the target", "Choose a target specification profile from our showroom or submit your custom year, make, model, budget, and destination."],
       ["Confirm the request", "We review the vehicle goal, buyer readiness, destination, and sourcing level before active work begins."],
       ["Search real options", "Alpha Platinum checks available dealer inventory and presents serious options for the buyer to review."],
       ["Coordinate next steps", "The team supports communication, inspection questions, dealer handoff, and logistics guidance."]
@@ -128,7 +129,8 @@ const translations = {
       tier: "Tier",
       premium: "Premium",
       standard: "Standard",
-      request: "Request This Vehicle",
+      request: "Source Similar Target Spec",
+      targetBadge: "Sourcing Target Example",
       verify: "Verify",
       source: "Source"
     },
@@ -157,6 +159,7 @@ const translations = {
     },
     showroomEyebrow: "Showroom Virtual",
     showroomTitle: "Oportunidades destacadas de búsqueda",
+    showroomDisclaimer: "Los vehículos mostrados son perfiles objetivo representativos y modelos recientes de procuración disponibles mediante nuestra red de concesionarios autorizados en EE. UU. No son inventario propio. Seleccionar un modelo define tus especificaciones objetivo para búsqueda personalizada. La disponibilidad real, precios de mercado y selección de VIN se verifican durante revisión humana.",
     aboutEyebrow: "Construido Desde Experiencia Real de Servicio",
     aboutTitle: "Un escritorio conserje para compradores serios",
     aboutCopy: "Alpha Platinum Auto Broker fue registrado en Georgia en 2023 después de años viendo la misma oportunidad: compradores internacionales quieren acceso a vehículos premium de EE. UU., pero necesitan un proceso local confiable para ayudar a encontrar, verificar y coordinar la compra correcta.",
@@ -231,7 +234,7 @@ const translations = {
     processEyebrow: "Proceso de Busqueda Concierge",
     processTitle: "Del vehiculo sonado a una solicitud seria",
     steps: [
-      ["Elige el objetivo", "Selecciona un vehiculo del showroom o dinos ano, marca, modelo, presupuesto, millaje, color y destino."],
+      ["Elige el objetivo", "Elige un perfil de especificación objetivo del showroom o envía tu año, marca, modelo, presupuesto y destino personalizado."],
       ["Confirma la solicitud", "Revisamos el objetivo, preparacion del comprador, destino y nivel de busqueda antes de comenzar."],
       ["Buscamos opciones reales", "Alpha Platinum revisa inventario disponible de dealers y presenta opciones serias para el comprador."],
       ["Coordinamos proximos pasos", "El equipo apoya comunicacion, preguntas de inspeccion, handoff al dealer y orientacion logistica."]
@@ -258,7 +261,8 @@ const translations = {
       tier: "Nivel",
       premium: "Premium",
       standard: "Estándar",
-      request: "Solicitar Este Vehículo",
+      request: "Buscar Spec Similar",
+      targetBadge: "Ejemplo de Búsqueda",
       verify: "Verificar",
       source: "Buscar"
     },
@@ -774,6 +778,7 @@ function renderInventory() {
     <article class="vehicle-card">
       <div class="vehicle-visual" aria-hidden="true">
         <span>${vehicle.region}</span>
+        <strong>${copy.targetBadge}</strong>
       </div>
       <div class="vehicle-body">
         <div class="vehicle-title">
@@ -1604,6 +1609,7 @@ function applyLanguage(lang) {
   updateAtlantaWeatherText();
   setText("#showroom .eyebrow", copy.showroomEyebrow);
   setText("#showroom h2", copy.showroomTitle);
+  setText("#showroomDisclaimer", copy.showroomDisclaimer);
   setText("#about .eyebrow", copy.aboutEyebrow);
   setText("#about h2", copy.aboutTitle);
   setText("#about .section-heading p:not(.eyebrow)", copy.aboutCopy);
