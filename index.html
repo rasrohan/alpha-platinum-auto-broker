@@ -6,7 +6,7 @@
   <title>Alpha Platinum Auto Broker | Premium Vehicle Procurement Concierge</title>
   <meta name="description" content="Alpha Platinum Auto Broker helps qualified buyers source premium U.S. vehicles through licensed dealer relationships in Georgia and South Florida.">
   <link rel="preload" href="showroom-hero.png" as="image">
-  <link rel="stylesheet" href="styles.css?v=20260825-fee-clarity">
+  <link rel="stylesheet" href="styles.css?v=20260826-maria-institution">
 </head>
 <body>
   <header class="topbar">
@@ -335,6 +335,10 @@
       </div>
       <form class="maria-widget-form" id="mariaWidgetForm">
         <div class="maria-conversation" id="mariaConversation" aria-live="polite"></div>
+        <div class="maria-step-meter" aria-hidden="true">
+          <span id="mariaStepLabel">Step 1 of 8</span>
+          <i><b id="mariaStepProgress"></b></i>
+        </div>
         <label data-maria-step="name"><span id="mariaNameLabel">Full name</span><input id="mariaName" name="name" autocomplete="name" placeholder="Client name"></label>
         <label data-maria-step="vehicle"><span id="mariaVehicleLabel">What vehicle are you looking for?</span><input id="mariaVehicle" name="vehicle" placeholder="2024 Mercedes-Benz G-Class"></label>
         <div class="maria-field-row" data-maria-step="destination">
@@ -356,6 +360,11 @@
         </div>
         <label data-maria-step="contact"><span id="mariaContactLabel">Email or WhatsApp</span><input id="mariaContact" name="contact" autocomplete="email" placeholder="name@example.com"></label>
         <label data-maria-step="question"><span id="mariaQuestionLabel">Anything else Maria should add?</span><textarea id="mariaQuestion" name="question" rows="3" placeholder="Trim, color, shipping needs, timing..."></textarea></label>
+        <div class="maria-confirm-card" data-maria-step="confirm">
+          <strong id="mariaConfirmTitle">Confirm buyer details</strong>
+          <p id="mariaConfirmSummary">Review the buyer name, destination details, and vehicle request before Maria prepares the packet.</p>
+          <label class="maria-check-row"><input id="mariaConfirm" name="confirm" type="checkbox"><span id="mariaConfirmLabel">The buyer name and destination details look correct.</span></label>
+        </div>
         <label class="maria-check-row" data-maria-step="consent"><input id="mariaConsent" name="consent" type="checkbox"><span id="mariaConsentLabel">I consent to Alpha Platinum / Rowtronic contacting me about this request.</span></label>
         <div class="maria-step-actions">
           <button class="button secondary" id="mariaBack" type="button">Back</button>
@@ -378,7 +387,7 @@
       </section>
       <div class="maria-widget-actions">
         <a class="button secondary" id="mariaMainIntake" href="#source">Open full intake</a>
-        <button class="button secondary" id="mariaSpeak" type="button">Hear greeting</button>
+        <button class="button secondary" id="mariaSpeak" type="button" hidden>Hear greeting</button>
       </div>
     </div>
   </aside>
@@ -388,6 +397,6 @@
     <p id="poweredByLine">Powered by Rowtronic LLC | Custom Web Design & AI Receptionist Agents | +1 (404) 664-1309</p>
   </footer>
 
-  <script src="app.js?v=20260825-fee-clarity"></script>
+  <script src="app.js?v=20260826-maria-institution"></script>
 </body>
 </html>

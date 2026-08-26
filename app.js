@@ -279,6 +279,7 @@ const mariaTranslations = {
     stateTeam: "Team review",
     stateConsent: "Consent needed",
     stateConfirming: "Confirming details",
+    stateVerifying: "Verifying buyer details",
     stateHandoff: "Handoff ready",
     nameLabel: "Full name",
     vehicleLabel: "What vehicle are you looking for?",
@@ -289,6 +290,8 @@ const mariaTranslations = {
     timelineLabel: "Timeline",
     contactLabel: "Email or WhatsApp",
     questionLabel: "Anything else Maria should add?",
+    confirmTitle: "Confirm buyer details",
+    confirmLabel: "The buyer name and destination details look correct.",
     consentLabel: "I consent to Alpha Platinum / Rowtronic contacting me about this request.",
     prepareButton: "Prepare buyer request",
     mainIntake: "Open full intake",
@@ -315,11 +318,14 @@ const mariaTranslations = {
         mileage: "What maximum mileage should I use for the search?",
         contact: "What email or WhatsApp should the team use for follow-up?",
         question: "Any trim, color, title, shipping, or timing details I should add?",
+        confirm: "Please review the buyer name and destination details before I prepare the packet.",
         consent: "Please confirm consent so Alpha Platinum / Rowtronic can follow up about this request.",
         ready: "I have the core details. Review the packet and press Prepare buyer request when ready."
       },
       noExtraNotes: "No extra notes",
-      confirmLine: (name, address) => `Let me confirm the spelling of the name: ${name || "the buyer"}. I have the address or destination details as ${address || "not provided yet"}. Is that correct?`,
+      stepLabel: (current, total) => `Step ${current} of ${total}`,
+      confirmLine: (name, address) => `Let me confirm the spelling of the buyer name: ${name || "the buyer"}. I have the address or destination details as: ${address || "not provided yet"}.`,
+      confirmSummary: (data) => `Buyer: ${data.name || "[missing]"} | Vehicle: ${data.vehicle || "[missing]"} | Destination: ${data.destination || "[missing]"} | Details: ${data.address || "[missing]"}`,
     packetReady: (leadId, tierLabel, fee) => `Your buyer packet is ready. Reference number ${leadId}. Based on your request, this looks like ${tierLabel} with a ${fee} concierge service fee. Vehicle price, shipping, taxes, customs, title, dealer, and export costs are separate.`,
     handoffEmail: "Email handoff",
     handoffWhatsApp: "WhatsApp handoff",
@@ -344,6 +350,7 @@ const mariaTranslations = {
     stateTeam: "Revision del equipo",
     stateConsent: "Falta consentimiento",
     stateConfirming: "Confirmando datos",
+    stateVerifying: "Verificando datos",
     stateHandoff: "Handoff listo",
     nameLabel: "Nombre completo",
     vehicleLabel: "Que vehiculo buscas?",
@@ -354,6 +361,8 @@ const mariaTranslations = {
     timelineLabel: "Tiempo",
     contactLabel: "Email o WhatsApp",
     questionLabel: "Algo mas que Maria deba agregar?",
+    confirmTitle: "Confirmar datos del comprador",
+    confirmLabel: "El nombre del comprador y los detalles de destino se ven correctos.",
     consentLabel: "Acepto que Alpha Platinum / Rowtronic me contacte sobre esta solicitud.",
     prepareButton: "Preparar solicitud",
     mainIntake: "Abrir intake completo",
@@ -380,11 +389,14 @@ const mariaTranslations = {
         mileage: "Que millaje maximo debo usar para la busqueda?",
         contact: "Que email o WhatsApp debe usar el equipo para seguimiento?",
         question: "Hay version, color, titulo, envio o tiempo que debo agregar?",
+        confirm: "Revisa el nombre del comprador y los detalles de destino antes de preparar el paquete.",
         consent: "Confirma el consentimiento para que Alpha Platinum / Rowtronic pueda dar seguimiento.",
         ready: "Tengo los datos principales. Revisa el paquete y presiona Preparar solicitud cuando estes listo."
       },
       noExtraNotes: "Sin notas adicionales",
-      confirmLine: (name, address) => `Permiteme confirmar la ortografia del nombre: ${name || "el comprador"}. Tengo la direccion o detalles de destino como ${address || "no indicado todavia"}. Es correcto?`,
+      stepLabel: (current, total) => `Paso ${current} de ${total}`,
+      confirmLine: (name, address) => `Permiteme confirmar la ortografia del comprador: ${name || "el comprador"}. Tengo la direccion o detalles de destino como: ${address || "no indicado todavia"}.`,
+      confirmSummary: (data) => `Comprador: ${data.name || "[falta]"} | Vehiculo: ${data.vehicle || "[falta]"} | Destino: ${data.destination || "[falta]"} | Detalles: ${data.address || "[falta]"}`,
     packetReady: (leadId, tierLabel, fee) => `Tu paquete de comprador esta listo. Referencia ${leadId}. Segun tu solicitud, parece ${tierLabel} con una tarifa de servicio concierge de ${fee}. Precio del vehículo, envío, impuestos, aduana, título, dealer y exportación son costos separados.`,
     handoffEmail: "Email handoff",
     handoffWhatsApp: "WhatsApp handoff",
@@ -602,6 +614,8 @@ const mariaWidgetTitle = document.querySelector("#mariaWidgetTitle");
 const mariaWidgetMessage = document.querySelector("#mariaWidgetMessage");
 const mariaLeadId = document.querySelector("#mariaLeadId");
 const mariaConversation = document.querySelector("#mariaConversation");
+const mariaStepLabel = document.querySelector("#mariaStepLabel");
+const mariaStepProgress = document.querySelector("#mariaStepProgress");
 const mariaReply = document.querySelector("#mariaReply");
 const mariaCheckoutPreview = document.querySelector("#mariaCheckoutPreview");
 const mariaFeeLane = document.querySelector("#mariaFeeLane");
@@ -612,6 +626,7 @@ const mariaEmailHandoff = document.querySelector("#mariaEmailHandoff");
 const mariaWhatsAppHandoff = document.querySelector("#mariaWhatsAppHandoff");
 const mariaMainIntake = document.querySelector("#mariaMainIntake");
 const mariaSpeak = document.querySelector("#mariaSpeak");
+const mariaConfirmSummary = document.querySelector("#mariaConfirmSummary");
 const mariaBack = document.querySelector("#mariaBack");
 const mariaNext = document.querySelector("#mariaNext");
 const mariaStepPanels = Array.from(document.querySelectorAll("[data-maria-step]"));
@@ -625,7 +640,7 @@ let currentMariaLeadId = createMariaLeadId();
 let mariaStepIndex = 0;
 let mariaConversationLog = [];
 
-const mariaStepOrder = ["name", "vehicle", "destination", "address", "mileage", "contact", "question", "consent"];
+const mariaStepOrder = ["name", "vehicle", "destination", "address", "mileage", "contact", "question", "confirm", "consent"];
 
 function t() {
   return translations[currentLanguage];
@@ -895,6 +910,7 @@ function getMariaWidgetData() {
     timeline: `${data.get("timeline") || ""}`.trim(),
     contact: `${data.get("contact") || ""}`.trim(),
     question: `${data.get("question") || ""}`.trim(),
+    confirm: data.get("confirm") === "on",
     consent: data.get("consent") === "on"
   };
 }
@@ -909,6 +925,7 @@ function mariaStepPrompt(step, data = getMariaWidgetData()) {
     mileage: data.budget ? prompts.mileage : prompts.budget,
     contact: prompts.contact,
     question: prompts.question,
+    confirm: `${mariaCopy().confirmLine(data.name, data.address)} ${prompts.confirm}`,
     consent: prompts.consent
   };
   return promptMap[step] || prompts.ready;
@@ -923,6 +940,7 @@ function isMariaStepComplete(step, data = getMariaWidgetData()) {
     mileage: Boolean(data.mileage && data.timeline),
     contact: Boolean(data.contact),
     question: true,
+    confirm: data.confirm,
     consent: data.consent
   };
   return Boolean(checks[step]);
@@ -939,6 +957,8 @@ function stepIndexForMariaStep(step) {
 
 function addMariaConversation(role, text) {
   if (!text) return;
+  const lastEntry = mariaConversationLog[mariaConversationLog.length - 1];
+  if (lastEntry?.role === role && lastEntry?.text === text) return;
   mariaConversationLog.push({ role, text });
   mariaConversationLog = mariaConversationLog.slice(-5);
   mariaConversation.innerHTML = mariaConversationLog
@@ -953,6 +973,7 @@ function setMariaEngineState(state) {
     listening: copy.stateReady,
     qualifying: copy.stateCollecting,
     confirming: copy.stateConfirming,
+    verifying: copy.stateVerifying,
     checkout: copy.stateCheckout,
     handoff: copy.stateHandoff,
     consent: copy.stateConsent,
@@ -971,7 +992,10 @@ function setMariaStep(index) {
   mariaWidgetForm.classList.toggle("is-final-step", activeStep === "consent");
   mariaBack.disabled = mariaStepIndex === 0;
   mariaNext.textContent = mariaStepIndex === mariaStepOrder.length - 1 ? mariaCopy().prepareButton : mariaCopy().next;
-  setMariaEngineState(activeStep === "consent" ? "confirming" : "qualifying");
+  mariaStepLabel.textContent = mariaCopy().stepLabel(mariaStepIndex + 1, mariaStepOrder.length);
+  mariaStepProgress.style.width = `${((mariaStepIndex + 1) / mariaStepOrder.length) * 100}%`;
+  mariaConfirmSummary.textContent = mariaCopy().confirmSummary(getMariaWidgetData());
+  setMariaEngineState(activeStep === "confirm" ? "verifying" : activeStep === "consent" ? "confirming" : "qualifying");
   mariaReply.textContent = mariaStepPrompt(activeStep);
   addMariaConversation("maria", mariaStepPrompt(activeStep));
 }
@@ -997,7 +1021,8 @@ function advanceMariaStep() {
     address: data.address,
     mileage: `${data.mileage}${data.timeline ? ` / ${data.timeline}` : ""}`,
     contact: data.contact,
-    question: data.question || mariaCopy().noExtraNotes
+    question: data.question || mariaCopy().noExtraNotes,
+    confirm: mariaCopy().confirmLine(data.name, data.address)
   }[activeStep];
   addMariaConversation("visitor", visitorText);
 
@@ -1015,6 +1040,7 @@ function mariaPromptForData(data = getMariaWidgetData()) {
   if (!data.budget) return prompts.budget;
   if (!data.mileage) return prompts.mileage;
   if (!data.contact) return prompts.contact;
+  if (!data.confirm) return `${mariaCopy().confirmLine(data.name, data.address)} ${prompts.confirm}`;
   if (!data.consent) return prompts.consent;
   return `${mariaCopy().confirmLine(data.name, data.address)} ${prompts.ready}`;
 }
@@ -1045,6 +1071,7 @@ function buildMariaLeadSummary(data, tier) {
     `Customer notes: ${data.question || "None provided"}`,
     `Likely tier: ${tierLabel}`,
     `Concierge service fee only: ${fee}`,
+    `Buyer details verified by visitor: ${data.confirm ? "yes" : "missing"}`,
     `Consent: ${data.consent ? "confirmed" : "missing"}`,
     "",
     `Maria confirmation: ${mariaCopy().confirmLine(data.name, data.address)}`,
@@ -1312,6 +1339,8 @@ function openMariaWidget(vehicle = null, shouldSpeak = false) {
     setMariaValue("vehicle", `${vehicle.year} ${vehicle.make} ${vehicle.model}`, true);
     setMariaValue("mileage", vehicle.mileage, true);
     setMariaValue("question", `I am interested in the ${vehicle.year} ${vehicle.make} ${vehicle.model}.`, true);
+    mariaField("confirm").checked = false;
+    mariaField("consent").checked = false;
   }
 
   const copy = mariaCopy();
@@ -1353,17 +1382,26 @@ function prepareMariaRequest() {
   const tierLabel = mariaTierLabel(tier);
   const fee = mariaTierFee(tier);
   const hasConsent = data.get("consent") === "on";
+  const hasConfirmation = data.get("confirm") === "on";
   const sensitive = mariaHasSensitiveQuestion(data.get("question"));
   const summary = buildMariaLeadSummary(packet, tier);
 
-  setMariaCheckout(tier, !hasConsent || sensitive);
-  updateMariaHandoffLinks(summary);
   console.info(summary);
+
+  if (!hasConfirmation) {
+    setMariaEngineState("verifying");
+    mariaReply.textContent = `${copy.confirmLine(packet.name, packet.address)} ${copy.nextPrompts.confirm}`;
+    setMariaStep(stepIndexForMariaStep("confirm"));
+    mariaCheckoutPreview.classList.remove("is-visible", "is-muted");
+    setMariaHandoffVisible(false);
+    return;
+  }
 
   if (!hasConsent) {
     setMariaEngineState("consent");
     mariaReply.textContent = copy.consentReply;
     setMariaStep(stepIndexForMariaStep("consent"));
+    mariaCheckoutPreview.classList.remove("is-visible", "is-muted");
     setMariaHandoffVisible(false);
     return;
   }
@@ -1372,11 +1410,15 @@ function prepareMariaRequest() {
     setMariaEngineState("team");
     mariaReply.textContent = `${copy.guardrailReply} ${copy.confirmLine(packet.name, packet.address)}`;
     addMariaConversation("maria", mariaReply.textContent);
+    mariaCheckoutPreview.classList.remove("is-visible", "is-muted");
+    updateMariaHandoffLinks(summary);
     setMariaHandoffVisible(true);
     return;
   }
 
   setMariaEngineState("checkout");
+  setMariaCheckout(tier, false);
+  updateMariaHandoffLinks(summary);
   mariaReply.textContent = `${copy.packetReady(currentMariaLeadId, tierLabel, fee)} ${copy.checkoutReply}`;
   addMariaConversation("maria", mariaReply.textContent);
   setMariaEngineState("handoff");
@@ -1499,6 +1541,8 @@ function applyMariaLanguage() {
   setText("#mariaTimelineLabel", copy.timelineLabel);
   setText("#mariaContactLabel", copy.contactLabel);
   setText("#mariaQuestionLabel", copy.questionLabel);
+  setText("#mariaConfirmTitle", copy.confirmTitle);
+  setText("#mariaConfirmLabel", copy.confirmLabel);
   setText("#mariaConsentLabel", copy.consentLabel);
   setText("#mariaPrepare", copy.prepareButton);
   setText("#mariaMainIntake", copy.mainIntake);
@@ -1529,6 +1573,8 @@ function applyMariaLanguage() {
   applyMariaVoiceAvailability();
   if (mariaPopover.classList.contains("open")) {
     setMariaStep(mariaStepIndex);
+  } else {
+    mariaStepLabel.textContent = copy.stepLabel(mariaStepIndex + 1, mariaStepOrder.length);
   }
   t().selects.timelineOptions.forEach((text, index) => setOptionText(mariaField("timeline"), index, text));
 }
