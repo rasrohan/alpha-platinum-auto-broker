@@ -1,0 +1,38 @@
+{
+  "voiceProvider": "openai",
+  "recommendedVoice": "marin",
+  "fallbackVoice": "cedar",
+  "model": "gpt-4o-mini-tts",
+  "clips": [
+    {
+      "id": "welcome",
+      "file": "maria-welcome.mp3",
+      "text": "Hi, I'm Maria with Alpha Platinum. I can help prepare your vehicle request clearly for our team to review.",
+      "instructions": "Speak with a warm, calm, polished luxury concierge tone. Keep the pace steady and reassuring."
+    },
+    {
+      "id": "vehicle",
+      "file": "maria-vehicle-selected.mp3",
+      "text": "I see you selected a sourcing target example. I will use it as a target specification and help prepare a similar vehicle request.",
+      "instructions": "Speak with a warm, calm, polished luxury concierge tone. Keep the pace steady and reassuring."
+    },
+    {
+      "id": "confirm",
+      "file": "maria-confirm-details.mp3",
+      "text": "Before I prepare the buyer packet, please review the buyer name, destination details, and vehicle request for accuracy.",
+      "instructions": "Speak with a warm, calm, polished luxury concierge tone. Keep the pace steady and reassuring."
+    },
+    {
+      "id": "consent",
+      "file": "maria-consent-payment.mp3",
+      "text": "Please confirm consent so Alpha Platinum and Rowtronic can follow up about this request. The concierge service fee is separate from vehicle price, shipping, taxes, title, dealer, customs, and export costs.",
+      "instructions": "Speak with a warm, calm, polished luxury concierge tone. Keep the pace steady and reassuring."
+    },
+    {
+      "id": "handoff",
+      "file": "maria-handoff-ready.mp3",
+      "text": "Your buyer packet is ready. Use your lead ID as the payment reference, then the Alpha Platinum team can review and follow up.",
+      "instructions": "Speak with a warm, calm, polished luxury concierge tone. Keep the pace steady and reassuring."
+    }
+  ]
+}

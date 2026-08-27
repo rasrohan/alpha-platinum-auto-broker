@@ -3,6 +3,14 @@ const STRIPE_CHECKOUT_URLS = {
   premium: "https://buy.stripe.com/7sY8wPepQ9gi2g2czf73G05"
 };
 
+const MARIA_AUDIO_CLIPS = {
+  welcome: "assets/audio/maria-welcome.mp3",
+  vehicle: "assets/audio/maria-vehicle-selected.mp3",
+  confirm: "assets/audio/maria-confirm-details.mp3",
+  consent: "assets/audio/maria-consent-payment.mp3",
+  handoff: "assets/audio/maria-handoff-ready.mp3"
+};
+
 const translations = {
   en: {
     pageTitle: "Alpha Platinum Auto Broker | Premium Vehicle Procurement Concierge",
@@ -299,8 +307,8 @@ const mariaTranslations = {
     consentLabel: "I consent to Alpha Platinum / Rowtronic contacting me about this request.",
     prepareButton: "Prepare buyer request",
     mainIntake: "Open full intake",
-    speak: "Hear greeting",
-    speakUnavailable: "Voice preview unavailable",
+    speak: "Play Maria intro",
+    speakUnavailable: "Maria voice coming soon",
     reset: "Reset",
     close: "Close Maria assistant",
     checkoutButton: "Continue to secure website checkout",
@@ -312,7 +320,7 @@ const mariaTranslations = {
     readyReply: "You are in the right place. I will prepare this clearly for the Alpha Platinum team.",
     checkoutReply: "Payments are completed through secure Alpha Platinum website checkout. I do not collect card details in chat.",
     resetReply: "Maria is reset. Tell me what vehicle you want to source.",
-    voiceUnavailable: "Voice preview is not ready on this device. You can continue with the chat request.",
+    voiceUnavailable: "Maria voice is being prepared. You can continue with the chat request.",
       nextPrompts: {
         name: "May I have the buyer's full name first?",
         vehicle: "What vehicle should I help you find?",
@@ -338,6 +346,13 @@ const mariaTranslations = {
     conversationGreeting: "Welcome to Alpha Platinum. I can help prepare your buyer packet before the team reviews it.",
     conversationVehicle: (vehicle) => `I see you selected the ${vehicle.year} ${vehicle.make} ${vehicle.model}. I will help shape this into a clean request.`,
     vehicleReply: (vehicle) => `I can help you request the ${vehicle.year} ${vehicle.make} ${vehicle.model}. Add your destination, budget, mileage, timeline, and contact details when ready.`,
+    audioLabels: {
+      welcome: "Play Maria intro",
+      vehicle: "Play vehicle intro",
+      confirm: "Play confirmation prompt",
+      consent: "Play consent note",
+      handoff: "Play handoff note"
+    },
     voiceGreeting: (vehicle) => vehicle
       ? `Hi, I'm Maria. I can help prepare a request for the ${vehicle.year} ${vehicle.make} ${vehicle.model}.`
       : "Hi, I'm Maria. I can help prepare your vehicle request for the Alpha Platinum team."
@@ -370,8 +385,8 @@ const mariaTranslations = {
     consentLabel: "Acepto que Alpha Platinum / Rowtronic me contacte sobre esta solicitud.",
     prepareButton: "Preparar solicitud",
     mainIntake: "Abrir intake completo",
-    speak: "Escuchar saludo",
-    speakUnavailable: "Voz no disponible",
+    speak: "Reproducir intro de Maria",
+    speakUnavailable: "Voz de Maria proximamente",
     reset: "Limpiar",
     close: "Cerrar asistente Maria",
     checkoutButton: "Continuar al checkout seguro",
@@ -383,7 +398,7 @@ const mariaTranslations = {
     readyReply: "Estas en el lugar correcto. Preparare esto claramente para el equipo de Alpha Platinum.",
     checkoutReply: "Los pagos se completan por el checkout seguro de Alpha Platinum. No recopilo datos de tarjeta en el chat.",
     resetReply: "Maria fue reiniciada. Dime que vehiculo quieres buscar.",
-    voiceUnavailable: "La vista previa de voz no esta lista en este dispositivo. Puedes continuar con la solicitud por chat.",
+    voiceUnavailable: "La voz de Maria se esta preparando. Puedes continuar con la solicitud por chat.",
       nextPrompts: {
         name: "Puedo tener el nombre completo del comprador?",
         vehicle: "Que vehiculo quieres que busque?",
@@ -409,6 +424,13 @@ const mariaTranslations = {
     conversationGreeting: "Bienvenido a Alpha Platinum. Puedo ayudarte a preparar el paquete del comprador antes de que el equipo lo revise.",
     conversationVehicle: (vehicle) => `Veo que seleccionaste el ${vehicle.year} ${vehicle.make} ${vehicle.model}. Te ayudare a convertirlo en una solicitud clara.`,
     vehicleReply: (vehicle) => `Puedo ayudarte a solicitar el ${vehicle.year} ${vehicle.make} ${vehicle.model}. Agrega destino, presupuesto, millaje, tiempo y contacto cuando estes listo.`,
+    audioLabels: {
+      welcome: "Reproducir intro de Maria",
+      vehicle: "Reproducir intro del vehiculo",
+      confirm: "Reproducir confirmacion",
+      consent: "Reproducir nota de consentimiento",
+      handoff: "Reproducir nota de handoff"
+    },
     voiceGreeting: (vehicle) => vehicle
       ? `Hola, soy Maria. Puedo ayudarte a preparar una solicitud para el ${vehicle.year} ${vehicle.make} ${vehicle.model}.`
       : "Hola, soy Maria. Puedo ayudarte a preparar tu solicitud de vehiculo para el equipo de Alpha Platinum."
@@ -643,6 +665,9 @@ let cachedMariaVoices = [];
 let currentMariaLeadId = createMariaLeadId();
 let mariaStepIndex = 0;
 let mariaConversationLog = [];
+let mariaAudioPlayer = null;
+let mariaAudioClip = "welcome";
+let mariaAudioAvailable = false;
 
 const mariaStepOrder = ["name", "vehicle", "destination", "address", "mileage", "contact", "question", "confirm", "consent"];
 
@@ -893,6 +918,72 @@ function isMariaVoicePreviewAvailable() {
   return "speechSynthesis" in window;
 }
 
+function mariaAudioLabel(clip = mariaAudioClip) {
+  return mariaCopy().audioLabels?.[clip] || mariaCopy().speak;
+}
+
+function setMariaAudioClip(clip) {
+  mariaAudioClip = MARIA_AUDIO_CLIPS[clip] ? clip : "welcome";
+  if (mariaAudioAvailable) {
+    mariaSpeak.textContent = mariaAudioLabel(mariaAudioClip);
+    mariaSpeak.title = mariaAudioLabel(mariaAudioClip);
+  }
+}
+
+function setMariaAudioAvailable(available) {
+  mariaAudioAvailable = available;
+  mariaSpeak.hidden = !available;
+  mariaSpeak.disabled = !available;
+  mariaSpeak.setAttribute("aria-disabled", String(!available));
+  mariaSpeak.textContent = available ? mariaAudioLabel(mariaAudioClip) : mariaCopy().speakUnavailable;
+  mariaSpeak.title = available ? mariaAudioLabel(mariaAudioClip) : mariaCopy().voiceUnavailable;
+}
+
+async function detectMariaAudio() {
+  const url = MARIA_AUDIO_CLIPS.welcome;
+  if (!url || location.protocol === "file:") {
+    setMariaAudioAvailable(false);
+    return;
+  }
+
+  try {
+    const response = await fetch(`${url}?v=20260827-maria-voice-lane`, {
+      method: "HEAD",
+      cache: "no-store"
+    });
+    setMariaAudioAvailable(response.ok);
+  } catch (error) {
+    setMariaAudioAvailable(false);
+  }
+}
+
+function playMariaAudio(clip = mariaAudioClip) {
+  if (!mariaAudioAvailable) {
+    mariaWidgetState.textContent = mariaCopy().voiceUnavailable;
+    return;
+  }
+
+  if ("speechSynthesis" in window) window.speechSynthesis.cancel();
+  if (mariaAudioPlayer) {
+    mariaAudioPlayer.pause();
+    mariaAudioPlayer.currentTime = 0;
+  }
+
+  const src = MARIA_AUDIO_CLIPS[clip] || MARIA_AUDIO_CLIPS.welcome;
+  mariaAudioPlayer = new Audio(`${src}?v=20260827-maria-voice-lane`);
+  mariaWidgetState.textContent = mariaAudioLabel(clip);
+  mariaAudioPlayer.addEventListener("ended", () => {
+    mariaWidgetState.textContent = mariaCopy().stateReady;
+  }, { once: true });
+  mariaAudioPlayer.addEventListener("error", () => {
+    setMariaAudioAvailable(false);
+    mariaWidgetState.textContent = mariaCopy().voiceUnavailable;
+  }, { once: true });
+  mariaAudioPlayer.play().catch(() => {
+    mariaWidgetState.textContent = mariaCopy().voiceUnavailable;
+  });
+}
+
 function mariaField(name) {
   return mariaWidgetForm?.elements[name];
 }
@@ -1001,6 +1092,9 @@ function setMariaStep(index) {
   mariaStepProgress.style.width = `${((mariaStepIndex + 1) / mariaStepOrder.length) * 100}%`;
   mariaConfirmSummary.textContent = mariaCopy().confirmSummary(getMariaWidgetData());
   setMariaEngineState(activeStep === "confirm" ? "verifying" : activeStep === "consent" ? "confirming" : "qualifying");
+  if (activeStep === "confirm") setMariaAudioClip("confirm");
+  else if (activeStep === "consent") setMariaAudioClip("consent");
+  else setMariaAudioClip(selectedConciergeVehicle ? "vehicle" : "welcome");
   mariaReply.textContent = mariaStepPrompt(activeStep);
   addMariaConversation("maria", mariaStepPrompt(activeStep));
 }
@@ -1301,6 +1395,7 @@ function resetMariaWidget() {
   selectedConciergeVehicle = null;
   currentMariaLeadId = createMariaLeadId();
   mariaLeadId.textContent = currentMariaLeadId;
+  setMariaAudioClip("welcome");
   mariaWidgetForm.reset();
   mariaConversationLog = [];
   addMariaConversation("maria", copy.conversationGreeting);
@@ -1340,6 +1435,7 @@ function openMariaWidget(vehicle = null, shouldSpeak = false) {
   hideMariaNudge();
   selectedConciergeVehicle = vehicle;
   mariaLeadId.textContent = currentMariaLeadId;
+  setMariaAudioClip(vehicle ? "vehicle" : "welcome");
   if (vehicle) {
     setMariaValue("vehicle", `${vehicle.year} ${vehicle.make} ${vehicle.model}`, true);
     setMariaValue("mileage", vehicle.mileage, true);
@@ -1371,12 +1467,7 @@ function closeMariaWidget() {
 }
 
 function applyMariaVoiceAvailability() {
-  const copy = mariaCopy();
-  const available = isMariaVoicePreviewAvailable();
-  mariaSpeak.disabled = !available;
-  mariaSpeak.setAttribute("aria-disabled", String(!available));
-  mariaSpeak.title = available ? copy.speak : copy.voiceUnavailable;
-  mariaSpeak.textContent = available ? copy.speak : copy.speakUnavailable;
+  setMariaAudioAvailable(mariaAudioAvailable);
 }
 
 function prepareMariaRequest() {
@@ -1426,6 +1517,7 @@ function prepareMariaRequest() {
   updateMariaHandoffLinks(summary);
   mariaReply.textContent = `${copy.packetReady(currentMariaLeadId, tierLabel, fee)} ${copy.checkoutReply}`;
   addMariaConversation("maria", mariaReply.textContent);
+  setMariaAudioClip("handoff");
   setMariaEngineState("handoff");
   setMariaHandoffVisible(true);
 }
@@ -1486,7 +1578,7 @@ mariaLauncher.addEventListener("click", () => openMariaWidget(null, false));
 mariaNudge.addEventListener("click", () => openMariaWidget(null, false));
 mariaClose.addEventListener("click", closeMariaWidget);
 mariaReset.addEventListener("click", resetMariaWidget);
-mariaSpeak.addEventListener("click", () => speakMariaGreeting());
+mariaSpeak.addEventListener("click", () => playMariaAudio());
 mariaBack.addEventListener("click", () => setMariaStep(mariaStepIndex - 1));
 mariaNext.addEventListener("click", advanceMariaStep);
 mariaMainIntake.addEventListener("click", () => {
@@ -1735,6 +1827,8 @@ if ("speechSynthesis" in window) {
     window.speechSynthesis.onvoiceschanged = refreshMariaVoices;
   }
 }
+setMariaAudioAvailable(false);
+detectMariaAudio();
 scheduleMariaNudge();
 setInterval(updateAtlantaClock, 1000);
 setInterval(fetchAtlantaWeather, 900000);
