@@ -940,17 +940,25 @@ function setMariaAudioAvailable(available) {
 }
 
 async function detectMariaAudio() {
-  const url = MARIA_AUDIO_CLIPS.welcome;
-  if (!url || location.protocol === "file:") {
+  if (location.protocol === "file:") {
     setMariaAudioAvailable(false);
     return;
   }
 
   try {
-    const response = await fetch(`${url}?v=20260827-maria-voice-lane`, {
-      method: "HEAD",
+    const manifestResponse = await fetch("assets/audio/maria-voice-manifest.json?v=20260827-maria-voice-lane", {
       cache: "no-store"
     });
+    if (!manifestResponse.ok) {
+      setMariaAudioAvailable(false);
+      return;
+    }
+    const manifest = await manifestResponse.json();
+    if (!manifest.audioReady) {
+      setMariaAudioAvailable(false);
+      return;
+    }
+    const response = await fetch(`${MARIA_AUDIO_CLIPS.welcome}?v=20260827-maria-voice-lane`, { method: "HEAD", cache: "no-store" });
     setMariaAudioAvailable(response.ok);
   } catch (error) {
     setMariaAudioAvailable(false);
