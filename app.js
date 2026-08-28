@@ -1798,8 +1798,9 @@ function applyLanguage(lang) {
   });
 }
 
-languageToggle.addEventListener("click", () => {
-  applyLanguage(currentLanguage === "en" ? "es" : "en");
+languageToggle.addEventListener("click", (event) => {
+  const requestedLanguage = event.target.closest("[data-lang]")?.dataset.lang;
+  applyLanguage(requestedLanguage || (currentLanguage === "en" ? "es" : "en"));
 });
 
 intakeForm.addEventListener("submit", (event) => {
