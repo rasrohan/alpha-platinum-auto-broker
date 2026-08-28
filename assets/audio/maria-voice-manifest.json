@@ -3,7 +3,7 @@
   "recommendedVoice": "marin",
   "fallbackVoice": "cedar",
   "model": "gpt-4o-mini-tts",
-  "audioReady": false,
+  "audioReady": true,
   "clips": [
     {
       "id": "welcome",
