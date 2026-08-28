@@ -4,11 +4,20 @@ const STRIPE_CHECKOUT_URLS = {
 };
 
 const MARIA_AUDIO_CLIPS = {
-  welcome: "assets/audio/maria-welcome.mp3",
-  vehicle: "assets/audio/maria-vehicle-selected.mp3",
-  confirm: "assets/audio/maria-confirm-details.mp3",
-  consent: "assets/audio/maria-consent-payment.mp3",
-  handoff: "assets/audio/maria-handoff-ready.mp3"
+  en: {
+    welcome: "assets/audio/maria-welcome.mp3",
+    vehicle: "assets/audio/maria-vehicle-selected.mp3",
+    confirm: "assets/audio/maria-confirm-details.mp3",
+    consent: "assets/audio/maria-consent-payment.mp3",
+    handoff: "assets/audio/maria-handoff-ready.mp3"
+  },
+  es: {
+    welcome: "assets/audio/maria-welcome-es.mp3",
+    vehicle: "assets/audio/maria-vehicle-selected-es.mp3",
+    confirm: "assets/audio/maria-confirm-details-es.mp3",
+    consent: "assets/audio/maria-consent-payment-es.mp3",
+    handoff: "assets/audio/maria-handoff-ready-es.mp3"
+  }
 };
 
 const translations = {
@@ -922,8 +931,13 @@ function mariaAudioLabel(clip = mariaAudioClip) {
   return mariaCopy().audioLabels?.[clip] || mariaCopy().speak;
 }
 
+function mariaAudioSource(clip = mariaAudioClip, language = currentLanguage) {
+  const languageClips = MARIA_AUDIO_CLIPS[language] || MARIA_AUDIO_CLIPS.en;
+  return languageClips[clip] || languageClips.welcome || MARIA_AUDIO_CLIPS.en.welcome;
+}
+
 function setMariaAudioClip(clip) {
-  mariaAudioClip = MARIA_AUDIO_CLIPS[clip] ? clip : "welcome";
+  mariaAudioClip = mariaAudioSource(clip) ? clip : "welcome";
   if (mariaAudioAvailable) {
     mariaSpeak.textContent = mariaAudioLabel(mariaAudioClip);
     mariaSpeak.title = mariaAudioLabel(mariaAudioClip);
@@ -946,7 +960,7 @@ async function detectMariaAudio() {
   }
 
   try {
-    const manifestResponse = await fetch("assets/audio/maria-voice-manifest.json?v=20260827-maria-voice-lane", {
+    const manifestResponse = await fetch("assets/audio/maria-voice-manifest.json?v=20260828-maria-audio-lang", {
       cache: "no-store"
     });
     if (!manifestResponse.ok) {
@@ -958,7 +972,7 @@ async function detectMariaAudio() {
       setMariaAudioAvailable(false);
       return;
     }
-    const response = await fetch(`${MARIA_AUDIO_CLIPS.welcome}?v=20260827-maria-voice-lane`, { method: "HEAD", cache: "no-store" });
+    const response = await fetch(`${mariaAudioSource("welcome")}?v=20260828-maria-audio-lang`, { method: "HEAD", cache: "no-store" });
     setMariaAudioAvailable(response.ok);
   } catch (error) {
     setMariaAudioAvailable(false);
@@ -977,8 +991,8 @@ function playMariaAudio(clip = mariaAudioClip) {
     mariaAudioPlayer.currentTime = 0;
   }
 
-  const src = MARIA_AUDIO_CLIPS[clip] || MARIA_AUDIO_CLIPS.welcome;
-  mariaAudioPlayer = new Audio(`${src}?v=20260827-maria-voice-lane`);
+  const src = mariaAudioSource(clip);
+  mariaAudioPlayer = new Audio(`${src}?v=20260828-maria-audio-lang`);
   mariaWidgetState.textContent = mariaAudioLabel(clip);
   mariaAudioPlayer.addEventListener("ended", () => {
     mariaWidgetState.textContent = mariaCopy().stateReady;

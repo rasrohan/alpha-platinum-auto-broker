@@ -34,6 +34,36 @@
       "file": "maria-handoff-ready.mp3",
       "text": "Your buyer packet is ready. Use your lead ID as the payment reference, then the Alpha Platinum team can review and follow up.",
       "instructions": "Speak with a warm, calm, polished luxury concierge tone. Keep the pace steady and reassuring."
+    },
+    {
+      "id": "welcome-es",
+      "file": "maria-welcome-es.mp3",
+      "text": "Hola, soy Maria de Alpha Platinum. Puedo ayudarte a preparar claramente tu solicitud de vehículo para que nuestro equipo la revise.",
+      "instructions": "Speak in Spanish with a warm, calm, polished luxury concierge tone. Keep the pace steady and reassuring."
+    },
+    {
+      "id": "vehicle-es",
+      "file": "maria-vehicle-selected-es.mp3",
+      "text": "Veo que seleccionaste un ejemplo de objetivo de búsqueda. Lo usaré como especificación objetivo y te ayudaré a preparar una solicitud para un vehículo similar.",
+      "instructions": "Speak in Spanish with a warm, calm, polished luxury concierge tone. Keep the pace steady and reassuring."
+    },
+    {
+      "id": "confirm-es",
+      "file": "maria-confirm-details-es.mp3",
+      "text": "Antes de preparar el paquete del comprador, por favor revisa el nombre del comprador, los detalles de destino y la solicitud del vehículo para confirmar que todo está correcto.",
+      "instructions": "Speak in Spanish with a warm, calm, polished luxury concierge tone. Keep the pace steady and reassuring."
+    },
+    {
+      "id": "consent-es",
+      "file": "maria-consent-payment-es.mp3",
+      "text": "Por favor confirma tu consentimiento para que Alpha Platinum y Rowtronic puedan dar seguimiento a esta solicitud. La tarifa de servicio concierge es separada del precio del vehículo, envío, impuestos, título, dealer, aduana y costos de exportación.",
+      "instructions": "Speak in Spanish with a warm, calm, polished luxury concierge tone. Keep the pace steady and reassuring."
+    },
+    {
+      "id": "handoff-es",
+      "file": "maria-handoff-ready-es.mp3",
+      "text": "Tu paquete de comprador está listo. Usa tu Lead ID como referencia de pago, y luego el equipo de Alpha Platinum podrá revisar y dar seguimiento.",
+      "instructions": "Speak in Spanish with a warm, calm, polished luxury concierge tone. Keep the pace steady and reassuring."
     }
   ]
 }
