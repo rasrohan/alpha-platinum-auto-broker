@@ -960,7 +960,7 @@ async function detectMariaAudio() {
   }
 
   try {
-    const manifestResponse = await fetch("assets/audio/maria-voice-manifest.json?v=20260828-maria-audio-lang", {
+    const manifestResponse = await fetch("assets/audio/maria-voice-manifest.json?v=20260831-maria-mobile-drawer", {
       cache: "no-store"
     });
     if (!manifestResponse.ok) {
@@ -972,7 +972,7 @@ async function detectMariaAudio() {
       setMariaAudioAvailable(false);
       return;
     }
-    const response = await fetch(`${mariaAudioSource("welcome")}?v=20260828-maria-audio-lang`, { method: "HEAD", cache: "no-store" });
+    const response = await fetch(`${mariaAudioSource("welcome")}?v=20260831-maria-mobile-drawer`, { method: "HEAD", cache: "no-store" });
     setMariaAudioAvailable(response.ok);
   } catch (error) {
     setMariaAudioAvailable(false);
@@ -992,7 +992,7 @@ function playMariaAudio(clip = mariaAudioClip) {
   }
 
   const src = mariaAudioSource(clip);
-  mariaAudioPlayer = new Audio(`${src}?v=20260828-maria-audio-lang`);
+  mariaAudioPlayer = new Audio(`${src}?v=20260831-maria-mobile-drawer`);
   mariaWidgetState.textContent = mariaAudioLabel(clip);
   mariaAudioPlayer.addEventListener("ended", () => {
     mariaWidgetState.textContent = mariaCopy().stateReady;
