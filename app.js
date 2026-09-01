@@ -7,6 +7,12 @@ const MARIA_AUDIO_CLIPS = {
   en: {
     welcome: "assets/audio/maria-welcome.mp3",
     vehicle: "assets/audio/maria-vehicle-selected.mp3",
+    "vehicle-g550": "assets/audio/maria-vehicle-g550.mp3",
+    "vehicle-porsche-911": "assets/audio/maria-vehicle-porsche-911.mp3",
+    "vehicle-bmw-m5": "assets/audio/maria-vehicle-bmw-m5.mp3",
+    "vehicle-range-rover-sport": "assets/audio/maria-vehicle-range-rover-sport.mp3",
+    "vehicle-cadillac-escalade": "assets/audio/maria-vehicle-cadillac-escalade.mp3",
+    "vehicle-lexus-lx600": "assets/audio/maria-vehicle-lexus-lx600.mp3",
     confirm: "assets/audio/maria-confirm-details.mp3",
     consent: "assets/audio/maria-consent-payment.mp3",
     handoff: "assets/audio/maria-handoff-ready.mp3"
@@ -14,6 +20,12 @@ const MARIA_AUDIO_CLIPS = {
   es: {
     welcome: "assets/audio/maria-welcome-es.mp3",
     vehicle: "assets/audio/maria-vehicle-selected-es.mp3",
+    "vehicle-g550": "assets/audio/maria-vehicle-g550-es.mp3",
+    "vehicle-porsche-911": "assets/audio/maria-vehicle-porsche-911-es.mp3",
+    "vehicle-bmw-m5": "assets/audio/maria-vehicle-bmw-m5-es.mp3",
+    "vehicle-range-rover-sport": "assets/audio/maria-vehicle-range-rover-sport-es.mp3",
+    "vehicle-cadillac-escalade": "assets/audio/maria-vehicle-cadillac-escalade-es.mp3",
+    "vehicle-lexus-lx600": "assets/audio/maria-vehicle-lexus-lx600-es.mp3",
     confirm: "assets/audio/maria-confirm-details-es.mp3",
     consent: "assets/audio/maria-consent-payment-es.mp3",
     handoff: "assets/audio/maria-handoff-ready-es.mp3"
@@ -44,7 +56,7 @@ const translations = {
     },
     showroomEyebrow: "Virtual Showroom",
     showroomTitle: "Featured sourcing opportunities",
-    showroomDisclaimer: "Vehicles displayed are representative target profiles and recent procurement models available through our licensed U.S. dealer network. Vehicles are not owned inventory. Selecting a model sets your preferred target specifications for custom sourcing. Real-time dealer availability, market pricing, and VIN selection are verified during human review.",
+    showroomDisclaimer: "Vehicles displayed are representative target profiles and recent procurement models available through our licensed U.S. dealer network. Vehicles are not owned inventory. Selecting a model sets your preferred target specifications for custom sourcing. Real-time dealer availability, market pricing, and VIN selection are verified during the dealer sales team review.",
     aboutEyebrow: "Built From Real Service Experience",
     aboutTitle: "A concierge desk for serious vehicle buyers",
     aboutCopy: "Alpha Platinum Auto Broker was registered in Georgia in 2023 after years of seeing the same opportunity: overseas buyers want access to premium U.S. vehicles, but they need a trustworthy local process to help find, verify, and coordinate the right deal.",
@@ -177,7 +189,7 @@ const translations = {
     },
     showroomEyebrow: "Showroom Virtual",
     showroomTitle: "Oportunidades destacadas de búsqueda",
-    showroomDisclaimer: "Los vehículos mostrados son perfiles objetivo representativos y modelos recientes de procuración disponibles mediante nuestra red de concesionarios autorizados en EE. UU. No son inventario propio. Seleccionar un modelo define tus especificaciones objetivo para búsqueda personalizada. La disponibilidad real, precios de mercado y selección de VIN se verifican durante revisión humana.",
+    showroomDisclaimer: "Los vehículos mostrados son perfiles objetivo representativos y modelos recientes de procuración disponibles mediante nuestra red de concesionarios autorizados en EE. UU. No son inventario propio. Seleccionar un modelo define tus especificaciones objetivo para búsqueda personalizada. La disponibilidad real, precios de mercado y selección de VIN se verifican durante la revisión del equipo de ventas del concesionario.",
     aboutEyebrow: "Construido Desde Experiencia Real de Servicio",
     aboutTitle: "Un escritorio conserje para compradores serios",
     aboutCopy: "Alpha Platinum Auto Broker fue registrado en Georgia en 2023 después de años viendo la misma oportunidad: compradores internacionales quieren acceso a vehículos premium de EE. UU., pero necesitan un proceso local confiable para ayudar a encontrar, verificar y coordinar la compra correcta.",
@@ -547,6 +559,7 @@ const inventory = [
     port: "Savannah / Brunswick",
     status: "Verify",
     tier: "premium",
+    audioClip: "vehicle-g550",
     note: "Luxury SUV target for export-minded buyers. Dealer identity released after verified inquiry."
   },
   {
@@ -559,6 +572,7 @@ const inventory = [
     port: "Savannah / Brunswick",
     status: "Verify",
     tier: "premium",
+    audioClip: "vehicle-porsche-911",
     note: "Sports coupe target spec. Availability and final pricing confirmed through licensed selling dealer."
   },
   {
@@ -571,6 +585,7 @@ const inventory = [
     port: "Savannah / Brunswick",
     status: "Verify",
     tier: "premium",
+    audioClip: "vehicle-bmw-m5",
     note: "Performance sedan target for clients seeking clean, high-spec U.S. inventory."
   },
   {
@@ -583,6 +598,7 @@ const inventory = [
     port: "Miami / Port Everglades",
     status: "Source",
     tier: "premium",
+    audioClip: "vehicle-range-rover-sport",
     note: "South Florida target category for clients who want newer luxury SUVs."
   },
   {
@@ -595,6 +611,7 @@ const inventory = [
     port: "Client destination",
     status: "Source",
     tier: "premium",
+    audioClip: "vehicle-cadillac-escalade",
     note: "Large SUV target for executive transport, family, and export buyers."
   },
   {
@@ -607,6 +624,7 @@ const inventory = [
     port: "Client destination",
     status: "Source",
     tier: "premium",
+    audioClip: "vehicle-lexus-lx600",
     note: "Reliability-focused luxury SUV target with international buyer appeal."
   }
 ];
@@ -930,6 +948,7 @@ function isMariaVoicePreviewAvailable() {
 }
 
 function mariaAudioLabel(clip = mariaAudioClip) {
+  if (`${clip}`.startsWith("vehicle-")) return mariaCopy().audioLabels?.vehicle || mariaCopy().speak;
   return mariaCopy().audioLabels?.[clip] || mariaCopy().speak;
 }
 
@@ -962,7 +981,7 @@ async function detectMariaAudio() {
   }
 
   try {
-    const manifestResponse = await fetch("assets/audio/maria-voice-manifest.json?v=20260831-maria-mobile-drawer", {
+    const manifestResponse = await fetch("assets/audio/maria-voice-manifest.json?v=20260901-vehicle-audio", {
       cache: "no-store"
     });
     if (!manifestResponse.ok) {
@@ -974,7 +993,7 @@ async function detectMariaAudio() {
       setMariaAudioAvailable(false);
       return;
     }
-    const response = await fetch(`${mariaAudioSource("welcome")}?v=20260831-maria-mobile-drawer`, { method: "HEAD", cache: "no-store" });
+    const response = await fetch(`${mariaAudioSource("welcome")}?v=20260901-vehicle-audio`, { method: "HEAD", cache: "no-store" });
     setMariaAudioAvailable(response.ok);
   } catch (error) {
     setMariaAudioAvailable(false);
@@ -994,7 +1013,7 @@ function playMariaAudio(clip = mariaAudioClip) {
   }
 
   const src = mariaAudioSource(clip);
-  mariaAudioPlayer = new Audio(`${src}?v=20260831-maria-mobile-drawer`);
+  mariaAudioPlayer = new Audio(`${src}?v=20260901-vehicle-audio`);
   mariaWidgetState.textContent = mariaAudioLabel(clip);
   mariaAudioPlayer.addEventListener("ended", () => {
     mariaWidgetState.textContent = mariaCopy().stateReady;
@@ -1118,7 +1137,7 @@ function setMariaStep(index) {
   setMariaEngineState(activeStep === "confirm" ? "verifying" : activeStep === "consent" ? "confirming" : "qualifying");
   if (activeStep === "confirm") setMariaAudioClip("confirm");
   else if (activeStep === "consent") setMariaAudioClip("consent");
-  else setMariaAudioClip(selectedConciergeVehicle ? "vehicle" : "welcome");
+  else setMariaAudioClip(selectedConciergeVehicle?.audioClip || (selectedConciergeVehicle ? "vehicle" : "welcome"));
   mariaReply.textContent = mariaStepPrompt(activeStep);
   addMariaConversation("maria", mariaStepPrompt(activeStep));
 }
@@ -1199,7 +1218,7 @@ function buildMariaLeadSummary(data, tier) {
     "",
     `Maria confirmation: ${mariaCopy().confirmLine(data.name, data.address)}`,
     "Payment boundary: Maria routes to approved website Stripe checkout and never collects card details in chat.",
-    "Human-only: final price, availability, dealer paperwork, title, export, customs, taxes, and finance questions."
+    "Dealer sales team review: final price, availability, dealer paperwork, title, export, customs, taxes, and finance questions."
   ].join("\n");
 }
 
@@ -1459,7 +1478,7 @@ function openMariaWidget(vehicle = null, shouldSpeak = false) {
   hideMariaNudge();
   selectedConciergeVehicle = vehicle;
   mariaLeadId.textContent = currentMariaLeadId;
-  setMariaAudioClip(vehicle ? "vehicle" : "welcome");
+  setMariaAudioClip(vehicle?.audioClip || (vehicle ? "vehicle" : "welcome"));
   if (vehicle) {
     setMariaValue("vehicle", `${vehicle.year} ${vehicle.make} ${vehicle.model}`, true);
     setMariaValue("mileage", vehicle.mileage, true);

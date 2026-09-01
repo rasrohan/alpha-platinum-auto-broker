@@ -18,6 +18,42 @@
       "instructions": "Speak with a warm, calm, polished luxury concierge tone. Keep the pace steady and reassuring."
     },
     {
+      "id": "vehicle-g550",
+      "file": "maria-vehicle-g550.mp3",
+      "text": "I see you selected the 2023 Mercedes-Benz G 550. I will use that as your target specification and help prepare a clean sourcing request.",
+      "instructions": "Speak with a warm, calm, polished luxury concierge tone. Emphasize the full vehicle name clearly."
+    },
+    {
+      "id": "vehicle-porsche-911",
+      "file": "maria-vehicle-porsche-911.mp3",
+      "text": "I see you selected the 2022 Porsche 911 Carrera. I will use that as your target specification and help prepare a clean sourcing request.",
+      "instructions": "Speak with a warm, calm, polished luxury concierge tone. Emphasize the full vehicle name clearly."
+    },
+    {
+      "id": "vehicle-bmw-m5",
+      "file": "maria-vehicle-bmw-m5.mp3",
+      "text": "I see you selected the 2021 BMW M5 Competition. I will use that as your target specification and help prepare a clean sourcing request.",
+      "instructions": "Speak with a warm, calm, polished luxury concierge tone. Emphasize the full vehicle name clearly."
+    },
+    {
+      "id": "vehicle-range-rover-sport",
+      "file": "maria-vehicle-range-rover-sport.mp3",
+      "text": "I see you selected the 2024 Range Rover Sport. I will use that as your target specification and help prepare a clean sourcing request.",
+      "instructions": "Speak with a warm, calm, polished luxury concierge tone. Emphasize the full vehicle name clearly."
+    },
+    {
+      "id": "vehicle-cadillac-escalade",
+      "file": "maria-vehicle-cadillac-escalade.mp3",
+      "text": "I see you selected the 2023 Cadillac Escalade. I will use that as your target specification and help prepare a clean sourcing request.",
+      "instructions": "Speak with a warm, calm, polished luxury concierge tone. Emphasize the full vehicle name clearly."
+    },
+    {
+      "id": "vehicle-lexus-lx600",
+      "file": "maria-vehicle-lexus-lx600.mp3",
+      "text": "I see you selected the 2022 Lexus LX 600. I will use that as your target specification and help prepare a clean sourcing request.",
+      "instructions": "Speak with a warm, calm, polished luxury concierge tone. Emphasize the full vehicle name clearly."
+    },
+    {
       "id": "confirm",
       "file": "maria-confirm-details.mp3",
       "text": "Before I prepare the buyer packet, please review the buyer name, destination details, and vehicle request for accuracy.",
@@ -46,6 +82,42 @@
       "file": "maria-vehicle-selected-es.mp3",
       "text": "Veo que seleccionaste un ejemplo de objetivo de búsqueda. Lo usaré como especificación objetivo y te ayudaré a preparar una solicitud para un vehículo similar.",
       "instructions": "Speak in Spanish with a warm, calm, polished luxury concierge tone. Keep the pace steady and reassuring."
+    },
+    {
+      "id": "vehicle-g550-es",
+      "file": "maria-vehicle-g550-es.mp3",
+      "text": "Veo que seleccionaste el 2023 Mercedes-Benz G 550. Lo usaré como tu especificación objetivo y te ayudaré a preparar una solicitud de búsqueda clara.",
+      "instructions": "Speak in Spanish with a warm, calm, polished luxury concierge tone. Emphasize the full vehicle name clearly."
+    },
+    {
+      "id": "vehicle-porsche-911-es",
+      "file": "maria-vehicle-porsche-911-es.mp3",
+      "text": "Veo que seleccionaste el 2022 Porsche 911 Carrera. Lo usaré como tu especificación objetivo y te ayudaré a preparar una solicitud de búsqueda clara.",
+      "instructions": "Speak in Spanish with a warm, calm, polished luxury concierge tone. Emphasize the full vehicle name clearly."
+    },
+    {
+      "id": "vehicle-bmw-m5-es",
+      "file": "maria-vehicle-bmw-m5-es.mp3",
+      "text": "Veo que seleccionaste el 2021 BMW M5 Competition. Lo usaré como tu especificación objetivo y te ayudaré a preparar una solicitud de búsqueda clara.",
+      "instructions": "Speak in Spanish with a warm, calm, polished luxury concierge tone. Emphasize the full vehicle name clearly."
+    },
+    {
+      "id": "vehicle-range-rover-sport-es",
+      "file": "maria-vehicle-range-rover-sport-es.mp3",
+      "text": "Veo que seleccionaste el 2024 Range Rover Sport. Lo usaré como tu especificación objetivo y te ayudaré a preparar una solicitud de búsqueda clara.",
+      "instructions": "Speak in Spanish with a warm, calm, polished luxury concierge tone. Emphasize the full vehicle name clearly."
+    },
+    {
+      "id": "vehicle-cadillac-escalade-es",
+      "file": "maria-vehicle-cadillac-escalade-es.mp3",
+      "text": "Veo que seleccionaste el 2023 Cadillac Escalade. Lo usaré como tu especificación objetivo y te ayudaré a preparar una solicitud de búsqueda clara.",
+      "instructions": "Speak in Spanish with a warm, calm, polished luxury concierge tone. Emphasize the full vehicle name clearly."
+    },
+    {
+      "id": "vehicle-lexus-lx600-es",
+      "file": "maria-vehicle-lexus-lx600-es.mp3",
+      "text": "Veo que seleccionaste el 2022 Lexus LX 600. Lo usaré como tu especificación objetivo y te ayudaré a preparar una solicitud de búsqueda clara.",
+      "instructions": "Speak in Spanish with a warm, calm, polished luxury concierge tone. Emphasize the full vehicle name clearly."
     },
     {
       "id": "confirm-es",
