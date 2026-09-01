@@ -30,6 +30,10 @@ body {
   line-height: 1.5;
 }
 
+body.maria-open {
+  overflow: hidden;
+}
+
 a {
   color: inherit;
 }
@@ -915,7 +919,7 @@ textarea:focus {
   z-index: 40;
   width: min(470px, calc(100vw - 32px));
   max-height: calc(100dvh - 32px);
-  overflow: auto;
+  overflow: visible;
   opacity: 0;
   pointer-events: none;
   transform: translateY(18px) scale(0.98);
@@ -932,6 +936,9 @@ textarea:focus {
   position: relative;
   display: grid;
   gap: 16px;
+  max-height: inherit;
+  overflow: auto;
+  overscroll-behavior: contain;
   padding: 22px;
   background:
     radial-gradient(circle at 88% 14%, rgba(62, 183, 173, 0.2), transparent 30%),
@@ -944,11 +951,14 @@ textarea:focus {
 .maria-top-actions {
   position: sticky;
   top: 0;
-  z-index: 2;
+  z-index: 5;
   display: flex;
   gap: 8px;
   justify-content: flex-end;
-  margin: -10px -10px -4px 0;
+  margin: -10px -10px -4px;
+  padding: 0 0 6px;
+  background: linear-gradient(180deg, rgba(9, 12, 15, 0.98), rgba(9, 12, 15, 0.72));
+  backdrop-filter: blur(10px);
 }
 
 .maria-close,
@@ -1389,11 +1399,14 @@ textarea:focus {
   }
 
   .maria-popover {
-    right: 12px;
-    top: 10px;
-    bottom: auto;
+    right: max(10px, env(safe-area-inset-right));
+    top: max(10px, env(safe-area-inset-top));
+    bottom: max(10px, env(safe-area-inset-bottom));
+    left: max(10px, env(safe-area-inset-left));
     width: calc(100vw - 24px);
-    max-height: calc(100dvh - 20px);
+    max-height: none;
+    height: calc(100svh - 20px);
+    width: auto;
   }
 
   .maria-widget-head,
@@ -1402,16 +1415,28 @@ textarea:focus {
   }
 
   .maria-widget-card {
-    max-height: calc(100dvh - 20px);
+    height: 100%;
+    max-height: 100%;
     overflow: auto;
     gap: 12px;
-    padding: 14px;
+    padding: 12px;
+    -webkit-overflow-scrolling: touch;
   }
 
   .maria-top-actions {
-    margin: -6px -6px -2px 0;
-    background: rgba(8, 12, 14, 0.86);
-    backdrop-filter: blur(8px);
+    top: 0;
+    margin: -4px -4px 0;
+    padding: 4px 4px 8px;
+  }
+
+  .maria-close,
+  .maria-reset {
+    min-width: 44px;
+    min-height: 44px;
+  }
+
+  .maria-reset {
+    padding: 0 12px;
   }
 
   .maria-widget-card h2 {

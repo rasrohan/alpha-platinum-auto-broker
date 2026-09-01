@@ -1475,6 +1475,7 @@ function openMariaWidget(vehicle = null, shouldSpeak = false) {
   mariaCheckoutButton.disabled = false;
   setMariaHandoffVisible(false);
   mariaPopover.classList.add("open");
+  document.body.classList.add("maria-open");
   mariaPopover.setAttribute("aria-hidden", "false");
   mariaLauncher.style.display = "none";
   setMariaStep(stepIndexForMariaStep(firstIncompleteMariaStep()));
@@ -1483,6 +1484,7 @@ function openMariaWidget(vehicle = null, shouldSpeak = false) {
 
 function closeMariaWidget() {
   mariaPopover.classList.remove("open");
+  document.body.classList.remove("maria-open");
   mariaPopover.setAttribute("aria-hidden", "true");
   mariaLauncher.style.display = "";
   if ("speechSynthesis" in window) window.speechSynthesis.cancel();
