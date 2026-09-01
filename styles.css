@@ -625,9 +625,19 @@ h3 {
   display: block;
 }
 
+.fee-box small {
+  display: block;
+  max-width: 34rem;
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+
 #feeAmount {
   color: var(--teal);
   font-size: 1.7rem;
+  white-space: nowrap;
 }
 
 .form-grid {

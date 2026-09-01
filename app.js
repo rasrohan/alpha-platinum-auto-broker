@@ -56,10 +56,11 @@ const translations = {
     lanesCopy2: "Dealer names are treated as prospective or verified sourcing relationships only. Public partner claims should wait until permission or a formal agreement exists.",
     sourceEyebrow: "Custom Procurement Intake",
     sourceTitle: "Tell us what you want. We will find it.",
-    sourceCopy: "Submit the desired make, model, budget, destination, and timing. Alpha Platinum reviews the request, confirms the right concierge service tier, then begins active sourcing after the concierge service fee is paid through Stripe.",
-    currentTier: "Current concierge service tier",
-    standardConcierge: "Standard Concierge Service",
-    premiumConcierge: "Premium Concierge Service",
+    sourceCopy: "Submit the desired make, model, budget, destination, and timing. Alpha Platinum reviews the request, confirms the right concierge service fee lane, then begins active sourcing after the concierge service fee is paid through Stripe.",
+    currentTier: "Estimated concierge service fee only",
+    feeBoundary: "Vehicle price, shipping, taxes, title, dealer, customs, and export costs are separate.",
+    standardConcierge: "Standard Concierge",
+    premiumConcierge: "Premium Concierge",
     labels: {
       fullName: "Full name",
       email: "Email",
@@ -96,7 +97,7 @@ const translations = {
       timeline: "Select timing",
       mileageOptions: ["Under 15,000 mi", "Under 25,000 mi", "Under 40,000 mi", "Under 60,000 mi", "Flexible"],
       timelineOptions: ["Ready now", "Within 14 days", "Within 30 days", "Researching options"],
-      tierOptions: ["Standard Concierge Service - $699", "Premium Concierge Service - $1,400"]
+      tierOptions: ["Standard Concierge - $699 service fee only", "Premium Concierge - $1,400 service fee only"]
     },
     tierDefault: "Standard tier applies until the request requires premium sourcing. Concierge fees do not include vehicle price, shipping, taxes, customs, title, dealer, or export costs.",
     tierPremiumDetected: "Premium sourcing criteria detected.",
@@ -188,10 +189,11 @@ const translations = {
     lanesCopy2: "Los nombres de concesionarios se tratan solamente como relaciones prospectivas o verificadas de búsqueda. Cualquier declaración pública de alianza debe esperar permiso o un acuerdo formal.",
     sourceEyebrow: "Intake de Procuración Personalizada",
     sourceTitle: "Dinos qué quieres. Nosotros lo buscamos.",
-    sourceCopy: "Envía la marca, modelo, presupuesto, destino y tiempo deseado. Alpha Platinum revisa la solicitud, confirma el nivel correcto de servicio concierge y comienza la búsqueda activa después de pagar la tarifa de servicio concierge por Stripe.",
-    currentTier: "Nivel actual de servicio concierge",
-    standardConcierge: "Servicio Concierge Estándar",
-    premiumConcierge: "Servicio Concierge Premium",
+    sourceCopy: "Envía la marca, modelo, presupuesto, destino y tiempo deseado. Alpha Platinum revisa la solicitud, confirma la tarifa correcta de servicio concierge y comienza la búsqueda activa después de pagar la tarifa de servicio concierge por Stripe.",
+    currentTier: "Tarifa estimada de servicio concierge solamente",
+    feeBoundary: "Precio del vehículo, envío, impuestos, título, dealer, aduana y costos de exportación son separados.",
+    standardConcierge: "Concierge Estándar",
+    premiumConcierge: "Concierge Premium",
     labels: {
       fullName: "Nombre completo",
       email: "Correo electrónico",
@@ -228,7 +230,7 @@ const translations = {
       timeline: "Selecciona tiempo",
       mileageOptions: ["Menos de 15,000 mi", "Menos de 25,000 mi", "Menos de 40,000 mi", "Menos de 60,000 mi", "Flexible"],
       timelineOptions: ["Listo ahora", "Dentro de 14 días", "Dentro de 30 días", "Investigando opciones"],
-      tierOptions: ["Servicio Concierge Estándar - $699", "Servicio Concierge Premium - $1,400"]
+      tierOptions: ["Concierge Estándar - $699 tarifa de servicio solamente", "Concierge Premium - $1,400 tarifa de servicio solamente"]
     },
     tierDefault: "El nivel estándar aplica hasta que la solicitud requiera búsqueda premium. Las tarifas concierge no incluyen precio del vehículo, envío, impuestos, aduana, título, dealer ni costos de exportación.",
     tierPremiumDetected: "Se detectaron criterios de búsqueda premium.",
@@ -1737,6 +1739,7 @@ function applyLanguage(lang) {
   setText(".source-panel h2", copy.sourceTitle);
   setText(".source-panel p:not(.eyebrow)", copy.sourceCopy);
   setText(".fee-box span", copy.currentTier);
+  setText("#feeBoundary", copy.feeBoundary);
   setText("#process .eyebrow", copy.processEyebrow);
   setText("#process h2", copy.processTitle);
   document.querySelectorAll(".steps article").forEach((article, index) => {
