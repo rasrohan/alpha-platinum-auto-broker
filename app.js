@@ -1453,6 +1453,16 @@ function resetMariaWidget() {
   if ("speechSynthesis" in window) window.speechSynthesis.cancel();
 }
 
+function startFreshMariaPacket() {
+  currentMariaLeadId = createMariaLeadId();
+  mariaLeadId.textContent = currentMariaLeadId;
+  mariaWidgetForm.reset();
+  mariaCheckoutPreview.classList.remove("is-visible", "is-muted");
+  mariaCheckoutButton.disabled = false;
+  mariaCheckoutButton.dataset.tier = "";
+  setMariaHandoffVisible(false);
+}
+
 function hideMariaNudge() {
   mariaNudge.classList.remove("is-visible");
   mariaLauncher.classList.remove("is-pulsing");
@@ -1476,6 +1486,7 @@ function scheduleMariaNudge() {
 function openMariaWidget(vehicle = null, shouldSpeak = false) {
   mariaHasEngaged = true;
   hideMariaNudge();
+  if (vehicle) startFreshMariaPacket();
   selectedConciergeVehicle = vehicle;
   mariaLeadId.textContent = currentMariaLeadId;
   setMariaAudioClip(vehicle?.audioClip || (vehicle ? "vehicle" : "welcome"));
