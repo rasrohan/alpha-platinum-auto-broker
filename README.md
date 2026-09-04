@@ -32,7 +32,7 @@ July 16 update: removed the public Maria explainer and visible protocol language
 
 Later list: consider replacing the simple EN/ES toggle with a compact dropdown language selector that can support English, Spanish, Arabic, French, German, Portuguese, and other buyer-market languages.
 
-September 4 update: added a Weekly Sourcing Spotlight lane for EJ's rotating 7-day featured target. The public card must stay framed as a target spec, not owned inventory, with dealer availability and final pricing verified during the dealer sales team review.
+September 4 update: added a compact Weekly Sourcing Spotlight lane using the top three showroom cards, followed by three Featured Sourcing Opportunities. Public cards must stay framed as target specs, not owned inventory, with dealer availability and final pricing verified during the dealer sales team review.
 
 ## Operations
 
@@ -84,7 +84,7 @@ Edit the `inventory` array in `app.js`. Each vehicle card is generated from that
 
 ## Weekly Sourcing Spotlight
 
-Edit the `weeklySpotlight` object in `app.js` for the featured 7-day target. Use `EJ Weekly Sourcing Target Template.md` to collect the weekly vehicle details before updating the site.
+Use the first three vehicles in the `inventory` array in `app.js` for the weekly 7-day spotlight row. Use the remaining vehicles for the standard Featured Sourcing Opportunities row. Use `EJ Weekly Sourcing Target Template.md` to collect the weekly vehicle details before updating the site.
 
 Keep the weekly spotlight compliant:
 

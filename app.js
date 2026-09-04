@@ -56,15 +56,12 @@ const translations = {
     },
     showroomEyebrow: "Virtual Showroom",
     showroomTitle: "Featured sourcing opportunities",
+    opportunityEyebrow: "Curated Sourcing Opportunities",
     showroomDisclaimer: "Vehicles displayed are representative target profiles and recent procurement models available through our licensed U.S. dealer network. Vehicles are not owned inventory. Selecting a model sets your preferred target specifications for custom sourcing. Real-time dealer availability, market pricing, and VIN selection are verified during the dealer sales team review.",
-    weeklyEyebrow: "Weekly Sourcing Spotlight",
     weeklyTitle: "Featured Sourcing Target of the Week",
-    weeklyCopy: "A rotating high-interest target selected for qualified buyers. This is a sourcing target, not owned inventory.",
-    weeklyAvailability: "Dealer availability and final pricing are verified during the dealer sales team review and remain subject to prior sale.",
+    weeklyCopy: "Three rotating high-interest target specs selected for qualified buyers this week. These are sourcing targets, not owned inventory.",
     weeklyBadge: "Weekly Sourcing Spotlight",
     weeklyWindow: "Week of September 1, 2026",
-    weeklyCta: "Source This Weekly Target Spec",
-    weeklySoldProtocol: "If this unit sells mid-week, it may be moved to Recently Sourced while we continue sourcing similar specs.",
     weeklyMariaNote: (vehicle) => `I am interested in the weekly sourcing spotlight: ${vehicle.year} ${vehicle.make} ${vehicle.model}.`,
     aboutEyebrow: "Built From Real Service Experience",
     aboutTitle: "A concierge desk for serious vehicle buyers",
@@ -198,15 +195,12 @@ const translations = {
     },
     showroomEyebrow: "Showroom Virtual",
     showroomTitle: "Oportunidades destacadas de búsqueda",
+    opportunityEyebrow: "Oportunidades Curadas",
     showroomDisclaimer: "Los vehículos mostrados son perfiles objetivo representativos y modelos recientes de procuración disponibles mediante nuestra red de concesionarios autorizados en EE. UU. No son inventario propio. Seleccionar un modelo define tus especificaciones objetivo para búsqueda personalizada. La disponibilidad real, precios de mercado y selección de VIN se verifican durante la revisión del equipo de ventas del concesionario.",
-    weeklyEyebrow: "Spotlight Semanal de Búsqueda",
     weeklyTitle: "Objetivo Destacado de Búsqueda de la Semana",
-    weeklyCopy: "Un objetivo rotativo de alto interés seleccionado para compradores calificados. Es un objetivo de búsqueda, no inventario propio.",
-    weeklyAvailability: "La disponibilidad del dealer y el precio final se verifican durante la revisión del equipo de ventas del concesionario y quedan sujetos a venta previa.",
+    weeklyCopy: "Tres specs objetivo rotativos de alto interés seleccionados para compradores calificados esta semana. Son objetivos de búsqueda, no inventario propio.",
     weeklyBadge: "Spotlight Semanal",
     weeklyWindow: "Semana del 1 de septiembre de 2026",
-    weeklyCta: "Buscar Este Spec Semanal",
-    weeklySoldProtocol: "Si esta unidad se vende durante la semana, puede pasar a Recientemente Buscado mientras seguimos buscando specs similares.",
     weeklyMariaNote: (vehicle) => `Estoy interesado en el spotlight semanal de búsqueda: ${vehicle.year} ${vehicle.make} ${vehicle.model}.`,
     aboutEyebrow: "Construido Desde Experiencia Real de Servicio",
     aboutTitle: "Un escritorio conserje para compradores serios",
@@ -647,22 +641,8 @@ const inventory = [
   }
 ];
 
-const weeklySpotlight = {
-  year: 2022,
-  make: "Porsche",
-  model: "911 Carrera",
-  mileage: "14,200 mi",
-  price: "Price on request",
-  region: "Georgia partner lane",
-  port: "Savannah / Brunswick",
-  status: "Verify",
-  tier: "premium",
-  audioClip: "vehicle-porsche-911",
-  note: "Sports coupe target spec. Availability and final pricing confirmed through licensed selling dealer."
-};
-
 const grid = document.querySelector("#inventoryGrid");
-const weeklyRequestButton = document.querySelector("#weeklyRequest");
+const weeklyGrid = document.querySelector("#weeklyGrid");
 const intakeForm = document.querySelector("#intakeForm");
 const intakeResetTab = document.querySelector("#intakeResetTab");
 const countrySelect = document.querySelector("#country");
@@ -859,13 +839,16 @@ async function fetchAtlantaWeather() {
   }
 }
 
-function renderInventory() {
+function renderVehicleCards(vehicles, startIndex, badgeLabel, requestNoteBuilder = null) {
   const copy = t().inventoryLabels;
-  grid.innerHTML = inventory.map((vehicle, index) => `
+  return vehicles.map((vehicle, index) => {
+    const inventoryIndex = startIndex + index;
+    const requestNote = requestNoteBuilder ? ` data-request-note="${escapeHtml(requestNoteBuilder(vehicle))}"` : "";
+    return `
     <article class="vehicle-card">
       <div class="vehicle-visual" aria-hidden="true">
         <span>${vehicle.region}</span>
-        <strong>${copy.targetBadge}</strong>
+        <strong>${badgeLabel}</strong>
       </div>
       <div class="vehicle-body">
         <div class="vehicle-title">
@@ -880,34 +863,22 @@ function renderInventory() {
         </div>
         <p class="vehicle-note">${vehicle.note}</p>
         <div class="card-actions">
-          <button class="button secondary" type="button" data-index="${index}">${copy.request}</button>
+          <button class="button secondary" type="button" data-index="${inventoryIndex}"${requestNote}>${copy.request}</button>
         </div>
       </div>
     </article>
-  `).join("");
+  `;
+  }).join("");
 }
 
-function renderWeeklySpotlight() {
+function renderInventory() {
   const copy = t();
-  const labels = copy.inventoryLabels;
-  setText("#weeklyEyebrow", copy.weeklyEyebrow);
+  const weeklyVehicles = inventory.slice(0, 3);
+  const opportunityVehicles = inventory.slice(3);
+  weeklyGrid.innerHTML = renderVehicleCards(weeklyVehicles, 0, copy.weeklyBadge, copy.weeklyMariaNote);
+  grid.innerHTML = renderVehicleCards(opportunityVehicles, 3, copy.inventoryLabels.targetBadge);
   setText("#weeklyTitle", copy.weeklyTitle);
   setText("#weeklyCopy", copy.weeklyCopy);
-  setText("#weeklyAvailability", copy.weeklyAvailability);
-  setText("#weeklyBadge", copy.weeklyBadge);
-  setText("#weeklyWindow", copy.weeklyWindow);
-  setText("#weeklyVehicleTitle", `${weeklySpotlight.year} ${weeklySpotlight.make} ${weeklySpotlight.model}`);
-  setText("#weeklyMileageLabel", labels.mileage);
-  setText("#weeklyMileage", weeklySpotlight.mileage);
-  setText("#weeklyPriceLabel", labels.price);
-  setText("#weeklyPrice", weeklySpotlight.price);
-  setText("#weeklyPortLabel", labels.port);
-  setText("#weeklyPort", weeklySpotlight.port);
-  setText("#weeklyTierLabel", labels.tier);
-  setText("#weeklyTier", weeklySpotlight.tier === "premium" ? labels.premium : labels.standard);
-  setText("#weeklyNote", weeklySpotlight.note);
-  setText("#weeklyRequest", copy.weeklyCta);
-  setText("#weeklySoldProtocol", copy.weeklySoldProtocol);
 }
 
 function renderCountries() {
@@ -1648,21 +1619,8 @@ function resetIntakeForm() {
   formNote.textContent = "";
 }
 
-function requestVehicle(index) {
-  const vehicle = inventory[index];
-  vehicleYearSelect.value = String(vehicle.year);
-  vehicleMakeSelect.value = vehicle.make;
-  renderModels(vehicle.make);
-  vehicleModelInput.value = vehicle.model;
-  setTier(vehicle.tier, t().tierShowroom);
-  openMariaWidget(vehicle, false);
-}
-
-function requestWeeklySpotlight() {
-  const vehicle = {
-    ...weeklySpotlight,
-    requestNote: t().weeklyMariaNote(weeklySpotlight)
-  };
+function requestVehicle(index, requestNote = "") {
+  const vehicle = requestNote ? { ...inventory[index], requestNote } : inventory[index];
   vehicleYearSelect.value = String(vehicle.year);
   vehicleMakeSelect.value = vehicle.make;
   renderModels(vehicle.make);
@@ -1696,10 +1654,14 @@ function buildLeadSummary(data) {
 grid.addEventListener("click", (event) => {
   const button = event.target.closest("button[data-index]");
   if (!button) return;
-  requestVehicle(Number(button.dataset.index));
+  requestVehicle(Number(button.dataset.index), button.dataset.requestNote || "");
 });
 
-weeklyRequestButton.addEventListener("click", requestWeeklySpotlight);
+weeklyGrid.addEventListener("click", (event) => {
+  const button = event.target.closest("button[data-index]");
+  if (!button) return;
+  requestVehicle(Number(button.dataset.index), button.dataset.requestNote || "");
+});
 
 mariaLauncher.addEventListener("click", () => openMariaWidget(null, false));
 mariaNudge.addEventListener("click", () => openMariaWidget(null, false));
@@ -1826,8 +1788,9 @@ function applyLanguage(lang) {
   if (!atlWeatherData) atlWeather.textContent = copy.atlWidget.loadingWeather;
   updateAtlantaClock();
   updateAtlantaWeatherText();
-  setText("#showroom .eyebrow", copy.showroomEyebrow);
-  setText("#showroom h2", copy.showroomTitle);
+  setText("#showroomEyebrow", copy.showroomEyebrow);
+  setText("#opportunityEyebrow", copy.opportunityEyebrow);
+  setText("#showroomTitle", copy.showroomTitle);
   setText("#showroomDisclaimer", copy.showroomDisclaimer);
   setText("#about .eyebrow", copy.aboutEyebrow);
   setText("#about h2", copy.aboutTitle);
@@ -1902,7 +1865,6 @@ function applyLanguage(lang) {
   intakeResetTab.setAttribute("aria-label", copy.resetIntake);
   if (formNote.textContent) formNote.textContent = copy.formDemo;
   applyMariaLanguage();
-  renderWeeklySpotlight();
 
   const contactParagraphs = document.querySelectorAll(".contact-card p:not(.eyebrow)");
   if (contactParagraphs[0]) contactParagraphs[0].innerHTML = `<strong>${copy.dba}</strong> Alpha Platinum Auto Broker`;
@@ -1944,7 +1906,6 @@ intakeForm.addEventListener("submit", (event) => {
 renderCountries();
 renderMakes();
 renderColors();
-renderWeeklySpotlight();
 renderInventory();
 mariaLeadId.textContent = currentMariaLeadId;
 applyLanguage("en");
