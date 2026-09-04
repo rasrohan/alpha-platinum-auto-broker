@@ -22,7 +22,7 @@ Contact fix: corrected bilingual contact rewriting so Lance Johnson and the oper
 
 June 21 update: replaced the native mobile select indicator with a custom light dropdown chevron so form arrows stay visible on dark fields in mobile browsers.
 
-July 1 update: added the Maria AI Receptionist bridge section. The public website remains the premium showroom/intake front door, while Maria owns conversational buyer intake and prepares the shared lead packet for Rowtronic / Alpha Platinum human review.
+July 1 update: added the Maria AI Receptionist bridge section. The public website remains the premium showroom/intake front door, while Maria owns conversational buyer intake and prepares the shared lead packet for Rowtronic / Alpha Platinum review.
 
 July 3 update: standardized the AI receptionist name to Maria and clarified the payment lane. Maria may explain Standard Concierge ($699) and Premium / Export Concierge ($1,400), then route buyers to secure website Stripe checkout. Maria must never collect card details in chat.
 
@@ -31,6 +31,8 @@ July 15 update: tested an Institution Ready Protocol design layer for internal s
 July 16 update: removed the public Maria explainer and visible protocol language so the shopper experience stays focused on finding vehicles. The assistant now appears as a small concierge pop-up after a buyer clicks a showroom vehicle. Payment, lead ID, and routing logic should stay behind the scenes.
 
 Later list: consider replacing the simple EN/ES toggle with a compact dropdown language selector that can support English, Spanish, Arabic, French, German, Portuguese, and other buyer-market languages.
+
+September 4 update: added a Weekly Sourcing Spotlight lane for EJ's rotating 7-day featured target. The public card must stay framed as a target spec, not owned inventory, with dealer availability and final pricing verified during the dealer sales team review.
 
 ## Operations
 
@@ -80,6 +82,17 @@ Settings -> Pages -> Deploy from a branch -> main -> /root
 
 Edit the `inventory` array in `app.js`. Each vehicle card is generated from that list.
 
+## Weekly Sourcing Spotlight
+
+Edit the `weeklySpotlight` object in `app.js` for the featured 7-day target. Use `EJ Weekly Sourcing Target Template.md` to collect the weekly vehicle details before updating the site.
+
+Keep the weekly spotlight compliant:
+
+- verify the vehicle/source status before it goes live
+- present the vehicle as a representative sourcing target, not owned inventory
+- keep pricing subject to dealer sales team review and prior sale
+- if the unit sells mid-week, update the badge/copy to Recently Sourced or swap in a new verified target
+
 ## Intake Eligibility
 
 The intake form requires the buyer to confirm:
@@ -115,7 +128,7 @@ Maria v1 stays focused on premium buyer intake:
 - eligibility and consent confirmations
 - Standard vs Premium / Export tier detection
 - secure website/Stripe payment routing after tier detection
-- copy-ready lead summary for human review
+- copy-ready lead summary for Alpha Platinum review
 
 Shared lead packet fields:
 

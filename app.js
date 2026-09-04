@@ -57,6 +57,15 @@ const translations = {
     showroomEyebrow: "Virtual Showroom",
     showroomTitle: "Featured sourcing opportunities",
     showroomDisclaimer: "Vehicles displayed are representative target profiles and recent procurement models available through our licensed U.S. dealer network. Vehicles are not owned inventory. Selecting a model sets your preferred target specifications for custom sourcing. Real-time dealer availability, market pricing, and VIN selection are verified during the dealer sales team review.",
+    weeklyEyebrow: "Weekly Sourcing Spotlight",
+    weeklyTitle: "Featured Sourcing Target of the Week",
+    weeklyCopy: "A rotating high-interest target selected for qualified buyers. This is a sourcing target, not owned inventory.",
+    weeklyAvailability: "Dealer availability and final pricing are verified during the dealer sales team review and remain subject to prior sale.",
+    weeklyBadge: "Weekly Sourcing Spotlight",
+    weeklyWindow: "Week of September 1, 2026",
+    weeklyCta: "Source This Weekly Target Spec",
+    weeklySoldProtocol: "If this unit sells mid-week, it may be moved to Recently Sourced while we continue sourcing similar specs.",
+    weeklyMariaNote: (vehicle) => `I am interested in the weekly sourcing spotlight: ${vehicle.year} ${vehicle.make} ${vehicle.model}.`,
     aboutEyebrow: "Built From Real Service Experience",
     aboutTitle: "A concierge desk for serious vehicle buyers",
     aboutCopy: "Alpha Platinum Auto Broker was registered in Georgia in 2023 after years of seeing the same opportunity: overseas buyers want access to premium U.S. vehicles, but they need a trustworthy local process to help find, verify, and coordinate the right deal.",
@@ -190,6 +199,15 @@ const translations = {
     showroomEyebrow: "Showroom Virtual",
     showroomTitle: "Oportunidades destacadas de búsqueda",
     showroomDisclaimer: "Los vehículos mostrados son perfiles objetivo representativos y modelos recientes de procuración disponibles mediante nuestra red de concesionarios autorizados en EE. UU. No son inventario propio. Seleccionar un modelo define tus especificaciones objetivo para búsqueda personalizada. La disponibilidad real, precios de mercado y selección de VIN se verifican durante la revisión del equipo de ventas del concesionario.",
+    weeklyEyebrow: "Spotlight Semanal de Búsqueda",
+    weeklyTitle: "Objetivo Destacado de Búsqueda de la Semana",
+    weeklyCopy: "Un objetivo rotativo de alto interés seleccionado para compradores calificados. Es un objetivo de búsqueda, no inventario propio.",
+    weeklyAvailability: "La disponibilidad del dealer y el precio final se verifican durante la revisión del equipo de ventas del concesionario y quedan sujetos a venta previa.",
+    weeklyBadge: "Spotlight Semanal",
+    weeklyWindow: "Semana del 1 de septiembre de 2026",
+    weeklyCta: "Buscar Este Spec Semanal",
+    weeklySoldProtocol: "Si esta unidad se vende durante la semana, puede pasar a Recientemente Buscado mientras seguimos buscando specs similares.",
+    weeklyMariaNote: (vehicle) => `Estoy interesado en el spotlight semanal de búsqueda: ${vehicle.year} ${vehicle.make} ${vehicle.model}.`,
     aboutEyebrow: "Construido Desde Experiencia Real de Servicio",
     aboutTitle: "Un escritorio conserje para compradores serios",
     aboutCopy: "Alpha Platinum Auto Broker fue registrado en Georgia en 2023 después de años viendo la misma oportunidad: compradores internacionales quieren acceso a vehículos premium de EE. UU., pero necesitan un proceso local confiable para ayudar a encontrar, verificar y coordinar la compra correcta.",
@@ -629,7 +647,22 @@ const inventory = [
   }
 ];
 
+const weeklySpotlight = {
+  year: 2022,
+  make: "Porsche",
+  model: "911 Carrera",
+  mileage: "14,200 mi",
+  price: "Price on request",
+  region: "Georgia partner lane",
+  port: "Savannah / Brunswick",
+  status: "Verify",
+  tier: "premium",
+  audioClip: "vehicle-porsche-911",
+  note: "Sports coupe target spec. Availability and final pricing confirmed through licensed selling dealer."
+};
+
 const grid = document.querySelector("#inventoryGrid");
+const weeklyRequestButton = document.querySelector("#weeklyRequest");
 const intakeForm = document.querySelector("#intakeForm");
 const intakeResetTab = document.querySelector("#intakeResetTab");
 const countrySelect = document.querySelector("#country");
@@ -852,6 +885,29 @@ function renderInventory() {
       </div>
     </article>
   `).join("");
+}
+
+function renderWeeklySpotlight() {
+  const copy = t();
+  const labels = copy.inventoryLabels;
+  setText("#weeklyEyebrow", copy.weeklyEyebrow);
+  setText("#weeklyTitle", copy.weeklyTitle);
+  setText("#weeklyCopy", copy.weeklyCopy);
+  setText("#weeklyAvailability", copy.weeklyAvailability);
+  setText("#weeklyBadge", copy.weeklyBadge);
+  setText("#weeklyWindow", copy.weeklyWindow);
+  setText("#weeklyVehicleTitle", `${weeklySpotlight.year} ${weeklySpotlight.make} ${weeklySpotlight.model}`);
+  setText("#weeklyMileageLabel", labels.mileage);
+  setText("#weeklyMileage", weeklySpotlight.mileage);
+  setText("#weeklyPriceLabel", labels.price);
+  setText("#weeklyPrice", weeklySpotlight.price);
+  setText("#weeklyPortLabel", labels.port);
+  setText("#weeklyPort", weeklySpotlight.port);
+  setText("#weeklyTierLabel", labels.tier);
+  setText("#weeklyTier", weeklySpotlight.tier === "premium" ? labels.premium : labels.standard);
+  setText("#weeklyNote", weeklySpotlight.note);
+  setText("#weeklyRequest", copy.weeklyCta);
+  setText("#weeklySoldProtocol", copy.weeklySoldProtocol);
 }
 
 function renderCountries() {
@@ -1493,7 +1549,7 @@ function openMariaWidget(vehicle = null, shouldSpeak = false) {
   if (vehicle) {
     setMariaValue("vehicle", `${vehicle.year} ${vehicle.make} ${vehicle.model}`, true);
     setMariaValue("mileage", vehicle.mileage, true);
-    setMariaValue("question", `I am interested in the ${vehicle.year} ${vehicle.make} ${vehicle.model}.`, true);
+    setMariaValue("question", vehicle.requestNote || `I am interested in the ${vehicle.year} ${vehicle.make} ${vehicle.model}.`, true);
     mariaField("confirm").checked = false;
     mariaField("consent").checked = false;
   }
@@ -1602,6 +1658,19 @@ function requestVehicle(index) {
   openMariaWidget(vehicle, false);
 }
 
+function requestWeeklySpotlight() {
+  const vehicle = {
+    ...weeklySpotlight,
+    requestNote: t().weeklyMariaNote(weeklySpotlight)
+  };
+  vehicleYearSelect.value = String(vehicle.year);
+  vehicleMakeSelect.value = vehicle.make;
+  renderModels(vehicle.make);
+  vehicleModelInput.value = vehicle.model;
+  setTier(vehicle.tier, t().tierShowroom);
+  openMariaWidget(vehicle, false);
+}
+
 function buildLeadSummary(data) {
   return [
     `Alpha Platinum intake request`,
@@ -1629,6 +1698,8 @@ grid.addEventListener("click", (event) => {
   if (!button) return;
   requestVehicle(Number(button.dataset.index));
 });
+
+weeklyRequestButton.addEventListener("click", requestWeeklySpotlight);
 
 mariaLauncher.addEventListener("click", () => openMariaWidget(null, false));
 mariaNudge.addEventListener("click", () => openMariaWidget(null, false));
@@ -1831,6 +1902,7 @@ function applyLanguage(lang) {
   intakeResetTab.setAttribute("aria-label", copy.resetIntake);
   if (formNote.textContent) formNote.textContent = copy.formDemo;
   applyMariaLanguage();
+  renderWeeklySpotlight();
 
   const contactParagraphs = document.querySelectorAll(".contact-card p:not(.eyebrow)");
   if (contactParagraphs[0]) contactParagraphs[0].innerHTML = `<strong>${copy.dba}</strong> Alpha Platinum Auto Broker`;
@@ -1872,6 +1944,7 @@ intakeForm.addEventListener("submit", (event) => {
 renderCountries();
 renderMakes();
 renderColors();
+renderWeeklySpotlight();
 renderInventory();
 mariaLeadId.textContent = currentMariaLeadId;
 applyLanguage("en");
