@@ -6,7 +6,7 @@
   <title>Alpha Platinum Auto Broker | Premium Vehicle Procurement Concierge</title>
   <meta name="description" content="Alpha Platinum Auto Broker helps qualified buyers source premium U.S. vehicles through licensed dealer relationships in Georgia and South Florida.">
   <link rel="preload" href="showroom-hero.png" as="image">
-  <link rel="stylesheet" href="styles.css?v=20260904-source-copy">
+  <link rel="stylesheet" href="styles.css?v=20260905-email-handoff">
 </head>
 <body>
   <header class="topbar">
@@ -389,8 +389,22 @@
           <small id="mariaPaymentNote">This is the concierge service fee only. It does not include vehicle price, shipping, taxes, customs, title, dealer, or export costs. Maria does not collect card details in chat.</small>
         </div>
         <div class="maria-handoff-actions" id="mariaHandoffActions" aria-hidden="true">
-          <a class="button secondary full" id="mariaEmailHandoff" href="mailto:rowtronicconsulting@gmail.com">Email handoff</a>
-          <a class="button secondary full" id="mariaWhatsAppHandoff" href="https://wa.me/16783870355">WhatsApp handoff</a>
+          <button class="button secondary full" id="mariaEmailHandoff" type="button" aria-expanded="false" aria-controls="mariaEmailOptions">Email request</button>
+          <div id="mariaEmailOptions" class="maria-email-options" hidden>
+            <p id="mariaEmailInstructions">Choose your email service, review the request, then press Send there. If no draft opens, copy the request below.</p>
+            <p class="maria-email-address">rowtronicconsulting@gmail.com</p>
+            <div class="maria-email-links">
+              <a class="button secondary" id="mariaGmailHandoff" href="https://mail.google.com/" target="_blank" rel="noopener noreferrer">Open Gmail</a>
+              <a class="button secondary" id="mariaMailAppHandoff" href="mailto:rowtronicconsulting@gmail.com">Open email app</a>
+            </div>
+            <button class="button secondary full" id="mariaCopyRequest" type="button">Copy full request</button>
+            <details id="mariaEmailDraftDetails">
+              <summary id="mariaEmailDraftLabel">Review full email</summary>
+              <textarea id="mariaEmailDraft" readonly rows="7" aria-labelledby="mariaEmailDraftLabel"></textarea>
+            </details>
+            <p id="mariaEmailStatus" class="maria-email-status" role="status" aria-live="polite"></p>
+          </div>
+          <a class="button secondary full" id="mariaWhatsAppHandoff" href="https://wa.me/16783870355" target="_blank" rel="noopener noreferrer">Open WhatsApp</a>
         </div>
       </section>
       <div class="maria-widget-actions">
@@ -405,6 +419,6 @@
     <p id="poweredByLine">Powered by Rowtronic LLC | Custom Web Design & AI Receptionist Agents | +1 (404) 664-1309</p>
   </footer>
 
-  <script src="app.js?v=20260904-source-copy"></script>
+  <script src="app.js?v=20260905-email-handoff"></script>
 </body>
 </html>

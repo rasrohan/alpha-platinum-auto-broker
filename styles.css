@@ -1253,6 +1253,57 @@ textarea:focus {
   display: grid;
 }
 
+.maria-email-options[hidden] {
+  display: none;
+}
+
+.maria-email-options {
+  display: grid;
+  gap: 10px;
+  min-width: 0;
+  padding: 12px 0;
+  border-block: 1px solid var(--line);
+}
+
+.maria-email-options p {
+  margin: 0;
+  overflow-wrap: anywhere;
+  font-size: 0.875rem;
+}
+
+.maria-email-links {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.maria-email-links .button {
+  min-width: 0;
+  min-height: 44px;
+  padding: 10px 8px;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.maria-email-options summary {
+  cursor: pointer;
+  padding: 10px 0;
+  font-size: 0.875rem;
+}
+
+#mariaEmailDraft {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  font-size: 1rem;
+  resize: vertical;
+}
+
+.maria-email-status:empty {
+  display: none;
+}
+
 .maria-checkout-preview span {
   color: var(--teal);
   font-weight: 900;

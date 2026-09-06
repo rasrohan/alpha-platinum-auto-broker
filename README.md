@@ -34,6 +34,10 @@ Later list: consider replacing the simple EN/ES toggle with a compact dropdown l
 
 September 4 update: added a compact Weekly Sourcing Spotlight lane using the top three showroom cards, followed by three Featured Sourcing Opportunities. Public cards must stay framed as target specs, not owned inventory, with dealer availability and final pricing verified during the dealer sales team review.
 
+September 6 update: replaced the single email handoff link with an Email request chooser. Buyers can open a Gmail draft, open their configured email app, or copy/review the complete request. EN/ES instructions clarify that the visitor reviews the draft and presses Send in their email service. Clipboard denial reveals selectable request text. Editing or resetting the packet clears the old handoff links. WhatsApp continues to use +1 (678) 387-0355; Lance's listed operations cell remains +1 (518) 698-7516.
+
+Email delivery boundary: these are visitor-sent drafts, not automatic email delivery. Gmail may require sign-in, and the email-app option requires a configured mail handler. A draft opening or copy success does not confirm that Alpha Platinum received the request. No mail-sending backend or verified payment-to-lead delivery was found connected in the reviewed website/prototype bridge. Those production integration checks remain open.
+
 ## Operations
 
 - Operations Manager: Lance Johnson

@@ -374,8 +374,16 @@ const mariaTranslations = {
       confirmLine: (name, address) => `Let me confirm the spelling of the buyer name: ${name || "the buyer"}. I have the address or destination details as: ${address || "not provided yet"}.`,
       confirmSummary: (data) => `Buyer: ${data.name || "[missing]"} | Vehicle: ${data.vehicle || "[missing]"} | Destination: ${data.destination || "[missing]"} | Details: ${data.address || "[missing]"}`,
     packetReady: (leadId, tierLabel, fee) => `Your buyer packet is ready. Reference number ${leadId}. Based on your request, this looks like ${tierLabel} with a ${fee} concierge service fee. Vehicle price, shipping, taxes, customs, title, dealer, and export costs are separate.`,
-    handoffEmail: "Email handoff",
-    handoffWhatsApp: "WhatsApp handoff",
+    handoffEmail: "Email request",
+    handoffWhatsApp: "Open WhatsApp",
+    emailInstructions: "Choose your email service, review the request, then press Send there. If no draft opens, copy the request below.",
+    openGmail: "Open Gmail",
+    openMailApp: "Open email app",
+    copyRequest: "Copy full request",
+    reviewEmail: "Review full email",
+    emailDraftNotice: "Your request has not been sent by this page. Review it and press Send in your email service. If the draft is missing details, copy the full request below.",
+    emailCopied: "Full email copied. Paste it into a message to rowtronicconsulting@gmail.com, then press Send.",
+    emailCopyFallback: "Select and copy the full email below, then paste it into your email service and send it to rowtronicconsulting@gmail.com.",
     back: "Back",
     next: "Next",
     conversationGreeting: "Welcome to Alpha Platinum. I can help prepare your buyer packet before the team reviews it.",
@@ -452,8 +460,16 @@ const mariaTranslations = {
       confirmLine: (name, address) => `Permiteme confirmar la ortografia del comprador: ${name || "el comprador"}. Tengo la direccion o detalles de destino como: ${address || "no indicado todavia"}.`,
       confirmSummary: (data) => `Comprador: ${data.name || "[falta]"} | Vehiculo: ${data.vehicle || "[falta]"} | Destino: ${data.destination || "[falta]"} | Detalles: ${data.address || "[falta]"}`,
     packetReady: (leadId, tierLabel, fee) => `Tu paquete de comprador esta listo. Referencia ${leadId}. Segun tu solicitud, parece ${tierLabel} con una tarifa de servicio concierge de ${fee}. Precio del vehículo, envío, impuestos, aduana, título, dealer y exportación son costos separados.`,
-    handoffEmail: "Email handoff",
-    handoffWhatsApp: "WhatsApp handoff",
+    handoffEmail: "Enviar solicitud por correo",
+    handoffWhatsApp: "Abrir WhatsApp",
+    emailInstructions: "Elige tu servicio de correo, revisa la solicitud y pulsa Enviar allí. Si no se abre un borrador, copia la solicitud de abajo.",
+    openGmail: "Abrir Gmail",
+    openMailApp: "Abrir app de correo",
+    copyRequest: "Copiar solicitud completa",
+    reviewEmail: "Revisar correo completo",
+    emailDraftNotice: "Esta página no ha enviado tu solicitud. Revísala y pulsa Enviar en tu servicio de correo. Si faltan datos en el borrador, copia la solicitud completa de abajo.",
+    emailCopied: "Correo completo copiado. Pégalo en un mensaje a rowtronicconsulting@gmail.com y pulsa Enviar.",
+    emailCopyFallback: "Selecciona y copia el correo completo de abajo. Pégalo en tu servicio de correo y envíalo a rowtronicconsulting@gmail.com.",
     back: "Atras",
     next: "Siguiente",
     conversationGreeting: "Bienvenido a Alpha Platinum. Puedo ayudarte a preparar el paquete del comprador antes de que el equipo lo revise.",
@@ -692,6 +708,13 @@ const mariaCheckoutButton = document.querySelector("#mariaCheckoutButton");
 const mariaHandoffActions = document.querySelector("#mariaHandoffActions");
 const mariaEmailHandoff = document.querySelector("#mariaEmailHandoff");
 const mariaWhatsAppHandoff = document.querySelector("#mariaWhatsAppHandoff");
+const mariaEmailOptions = document.querySelector("#mariaEmailOptions");
+const mariaGmailHandoff = document.querySelector("#mariaGmailHandoff");
+const mariaMailAppHandoff = document.querySelector("#mariaMailAppHandoff");
+const mariaCopyRequest = document.querySelector("#mariaCopyRequest");
+const mariaEmailDraft = document.querySelector("#mariaEmailDraft");
+const mariaEmailDraftDetails = document.querySelector("#mariaEmailDraftDetails");
+const mariaEmailStatus = document.querySelector("#mariaEmailStatus");
 const mariaMainIntake = document.querySelector("#mariaMainIntake");
 const mariaSpeak = document.querySelector("#mariaSpeak");
 const mariaConfirmSummary = document.querySelector("#mariaConfirmSummary");
@@ -710,6 +733,8 @@ let mariaConversationLog = [];
 let mariaAudioPlayer = null;
 let mariaAudioClip = "welcome";
 let mariaAudioAvailable = false;
+let mariaPreparedSummary = "";
+let mariaEmailStatusKey = "";
 
 const mariaStepOrder = ["name", "vehicle", "destination", "address", "mileage", "contact", "question", "confirm", "consent"];
 
@@ -1250,15 +1275,52 @@ function buildMariaLeadSummary(data, tier) {
 }
 
 function updateMariaHandoffLinks(summary) {
-  const subject = encodeURIComponent(`Alpha Platinum Maria Lead ${currentMariaLeadId}`);
-  const body = encodeURIComponent(summary);
-  mariaEmailHandoff.href = `mailto:rowtronicconsulting@gmail.com?subject=${subject}&body=${body}`;
-  mariaWhatsAppHandoff.href = `https://wa.me/16783870355?text=${body}`;
+  const recipient = "rowtronicconsulting@gmail.com";
+  const subject = `Alpha Platinum Maria Lead ${currentMariaLeadId}`;
+  const body = summary.replace(/\r?\n/g, "\r\n");
+  const gmailUrl = new URL("https://mail.google.com/mail/");
+  gmailUrl.search = new URLSearchParams({ view: "cm", fs: "1", to: recipient, su: subject, body }).toString();
+  mariaPreparedSummary = summary;
+  mariaMailAppHandoff.href = `mailto:${recipient}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  mariaGmailHandoff.href = gmailUrl.href;
+  mariaWhatsAppHandoff.href = `https://wa.me/16783870355?text=${encodeURIComponent(summary)}`;
+  mariaEmailDraft.value = `To: ${recipient}\nSubject: ${subject}\n\n${summary}`;
+}
+
+function setMariaEmailStatus(key) {
+  mariaEmailStatusKey = key;
+  mariaEmailStatus.textContent = key ? mariaCopy()[key] : "";
+}
+
+async function copyMariaEmailRequest() {
+  if (!mariaPreparedSummary) return;
+  const draft = mariaEmailDraft.value;
+  try {
+    if (!navigator.clipboard?.writeText) throw new Error("Clipboard unavailable");
+    await navigator.clipboard.writeText(draft);
+    if (mariaEmailDraft.value === draft) setMariaEmailStatus("emailCopied");
+  } catch {
+    if (mariaEmailDraft.value !== draft) return;
+    mariaEmailDraftDetails.open = true;
+    mariaEmailDraft.focus();
+    mariaEmailDraft.select();
+    mariaEmailDraft.setSelectionRange(0, draft.length);
+    setMariaEmailStatus("emailCopyFallback");
+  }
 }
 
 function setMariaHandoffVisible(visible) {
   mariaHandoffActions.classList.toggle("is-visible", visible);
   mariaHandoffActions.setAttribute("aria-hidden", String(!visible));
+  if (!visible) {
+    mariaPreparedSummary = "";
+    mariaEmailOptions.hidden = true;
+    mariaEmailHandoff.setAttribute("aria-expanded", "false");
+    mariaEmailDraft.value = "";
+    mariaEmailDraftDetails.open = false;
+    [mariaGmailHandoff, mariaMailAppHandoff, mariaWhatsAppHandoff].forEach((link) => link.removeAttribute("href"));
+    setMariaEmailStatus("");
+  }
 }
 
 function parseMariaAmount(value) {
@@ -1565,8 +1627,6 @@ function prepareMariaRequest() {
   const sensitive = mariaHasSensitiveQuestion(data.get("question"));
   const summary = buildMariaLeadSummary(packet, tier);
 
-  console.info(summary);
-
   if (!hasConfirmation) {
     setMariaEngineState("verifying");
     mariaReply.textContent = `${copy.confirmLine(packet.name, packet.address)} ${copy.nextPrompts.confirm}`;
@@ -1673,7 +1733,24 @@ mariaNext.addEventListener("click", advanceMariaStep);
 mariaMainIntake.addEventListener("click", () => {
   closeMariaWidget();
 });
+mariaEmailHandoff.addEventListener("click", () => {
+  if (!mariaPreparedSummary) return;
+  mariaEmailOptions.hidden = !mariaEmailOptions.hidden;
+  mariaEmailHandoff.setAttribute("aria-expanded", String(!mariaEmailOptions.hidden));
+});
+[mariaMailAppHandoff, mariaGmailHandoff].forEach((link) => {
+  link.addEventListener("click", (event) => {
+    if (!mariaPreparedSummary) {
+      event.preventDefault();
+      return;
+    }
+    setMariaEmailStatus("emailDraftNotice");
+  });
+});
+mariaCopyRequest.addEventListener("click", copyMariaEmailRequest);
 mariaWidgetForm.addEventListener("input", () => {
+  setMariaHandoffVisible(false);
+  mariaCheckoutPreview.classList.remove("is-visible", "is-muted");
   updateMariaConductorReply();
 });
 mariaWidgetForm.addEventListener("submit", (event) => {
@@ -1741,6 +1818,15 @@ function applyMariaLanguage() {
   setText("#mariaLeadLabel", copy.leadLabel);
   setText("#mariaEmailHandoff", copy.handoffEmail);
   setText("#mariaWhatsAppHandoff", copy.handoffWhatsApp);
+  setText("#mariaEmailInstructions", copy.emailInstructions);
+  setText("#mariaGmailHandoff", copy.openGmail);
+  setText("#mariaMailAppHandoff", copy.openMailApp);
+  setText("#mariaCopyRequest", copy.copyRequest);
+  setText("#mariaEmailDraftLabel", copy.reviewEmail);
+  setMariaEmailStatus(mariaEmailStatusKey);
+  if (mariaPreparedSummary) {
+    updateMariaHandoffLinks(buildMariaLeadSummary(getMariaWidgetData(), mariaLikelyTier(new FormData(mariaWidgetForm))));
+  }
   if (!mariaReply.textContent || mariaReply.textContent.includes("Hi, I'm Maria") || mariaReply.textContent.includes("Hola, soy Maria")) {
     mariaReply.textContent = copy.initialReply;
   }
