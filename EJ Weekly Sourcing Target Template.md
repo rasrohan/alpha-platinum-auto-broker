@@ -27,7 +27,7 @@ Use this for the rotating Featured Sourcing Target of the Week.
 - Target price or price note:
 - Nearest U.S. port:
 - Sourcing lane: Georgia / South Florida / Georgia + Florida / Other
-- Concierge fee lane: Standard Concierge - $699 / Premium Concierge - $1,400
+- Concierge fee lane: Standard Concierge - $699 / Premium Concierge - $1,499
 
 ## Public Card Copy
 

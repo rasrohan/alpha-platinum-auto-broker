@@ -6,7 +6,7 @@
   <title>Alpha Platinum Auto Broker | Premium Vehicle Procurement Concierge</title>
   <meta name="description" content="Alpha Platinum Auto Broker helps qualified buyers source premium U.S. vehicles through licensed dealer relationships in Georgia and South Florida.">
   <link rel="preload" href="showroom-hero.png" as="image">
-  <link rel="stylesheet" href="styles.css?v=20260905-email-handoff">
+  <link rel="stylesheet" href="styles.css?v=20260906-pricing-lock">
 </head>
 <body>
   <header class="topbar">
@@ -183,12 +183,10 @@
             Budget in USD
             <select id="budget" name="budget" required>
               <option value="">Select range</option>
-              <option>$25,000 - $35,000</option>
+              <option>$20,000 - $34,999</option>
               <option>$35,000 - $60,000</option>
-              <option>$42,000 - $45,000</option>
-              <option>$60,000 - $100,000</option>
-              <option>$100,000 - $175,000</option>
-              <option>$175,000+</option>
+              <option>$60,000 - $120,000</option>
+              <option>$120,000+ team review</option>
             </select>
           </label>
           <label>
@@ -227,12 +225,10 @@
             </select>
           </label>
           <label>
-            Concierge service tier
-            <select id="tier" name="tier">
-              <option value="standard">Standard Concierge - $699 service fee only</option>
-              <option value="premium">Premium Concierge - $1,400 service fee only</option>
-            </select>
-            <span class="tier-note" id="tierReason">Standard tier applies until the request requires premium sourcing. Concierge fees do not include vehicle price, shipping, taxes, customs, title, dealer, or export costs.</span>
+            <span id="tierLabel">Concierge service fee lane</span>
+            <input id="tierDisplay" class="readonly-tier" type="text" readonly value="Standard Concierge - $699 service fee only" aria-describedby="tierReason">
+            <input id="tier" name="tier" type="hidden" value="standard">
+            <span class="tier-note" id="tierReason">Fee lane is calculated from budget, destination, vehicle class, and sourcing complexity. Concierge fees do not include vehicle price, shipping, taxes, customs, title, dealer, or export costs.</span>
           </label>
           <label class="wide">
             Must-have specs
@@ -384,7 +380,7 @@
         <p id="mariaReply">Hi, I'm Maria. Tell me a little about your dream car and I will prepare it clearly for the team.</p>
         <div class="maria-checkout-preview" id="mariaCheckoutPreview">
           <span id="mariaFeeLane">Premium Concierge Service</span>
-          <strong id="mariaFeeAmount">$1,400</strong>
+          <strong id="mariaFeeAmount">$1,499</strong>
           <button class="button secondary full" id="mariaCheckoutButton" type="button">Continue to secure website checkout</button>
           <small id="mariaPaymentNote">This is the concierge service fee only. It does not include vehicle price, shipping, taxes, customs, title, dealer, or export costs. Maria does not collect card details in chat.</small>
         </div>
@@ -419,6 +415,6 @@
     <p id="poweredByLine">Powered by Rowtronic LLC | Custom Web Design & AI Receptionist Agents | +1 (404) 664-1309</p>
   </footer>
 
-  <script src="app.js?v=20260905-email-handoff"></script>
+  <script src="app.js?v=20260906-pricing-lock"></script>
 </body>
 </html>

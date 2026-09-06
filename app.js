@@ -115,16 +115,16 @@ const translations = {
       timeline: "Select timing",
       mileageOptions: ["Under 15,000 mi", "Under 25,000 mi", "Under 40,000 mi", "Under 60,000 mi", "Flexible"],
       timelineOptions: ["Ready now", "Within 14 days", "Within 30 days", "Researching options"],
-      tierOptions: ["Standard Concierge - $699 service fee only", "Premium Concierge - $1,400 service fee only"]
+      tierOptions: ["Standard Concierge - $699 service fee only", "Premium Concierge - $1,499 service fee only"]
     },
-    tierDefault: "Standard tier applies until the request requires premium sourcing. Concierge fees do not include vehicle price, shipping, taxes, customs, title, dealer, or export costs.",
-    tierPremiumDetected: "Premium sourcing criteria detected.",
-    tierManual: "Tier was manually selected for this intake.",
+    tierDefault: "Standard Concierge applies to $20K-$34,999 requests unless premium sourcing criteria apply. Concierge fees do not include vehicle price, shipping, taxes, customs, title, dealer, or export costs.",
+    tierPremiumDetected: "Premium Concierge applies to $35K-$120K requests and premium sourcing criteria.",
+    tierManual: "Fee lane is calculated from the intake details.",
     tierShowroom: "Showroom vehicle is pre-classified for premium concierge sourcing.",
     tierReasons: {
       premiumMake: (make) => `${make} is treated as a premium/luxury make`,
       premiumModel: (model) => `${model} is a premium or specialty model`,
-      budget: "target budget is above the standard sourcing band",
+      budget: "target budget is $35K or higher",
       lowMileage: "newer low-mileage search requires tighter sourcing",
       export: "international destination requires export-minded coordination"
     },
@@ -254,16 +254,16 @@ const translations = {
       timeline: "Selecciona tiempo",
       mileageOptions: ["Menos de 15,000 mi", "Menos de 25,000 mi", "Menos de 40,000 mi", "Menos de 60,000 mi", "Flexible"],
       timelineOptions: ["Listo ahora", "Dentro de 14 días", "Dentro de 30 días", "Investigando opciones"],
-      tierOptions: ["Concierge Estándar - $699 tarifa de servicio solamente", "Concierge Premium - $1,400 tarifa de servicio solamente"]
+      tierOptions: ["Concierge Estándar - $699 tarifa de servicio solamente", "Concierge Premium - $1,499 tarifa de servicio solamente"]
     },
-    tierDefault: "El nivel estándar aplica hasta que la solicitud requiera búsqueda premium. Las tarifas concierge no incluyen precio del vehículo, envío, impuestos, aduana, título, dealer ni costos de exportación.",
-    tierPremiumDetected: "Se detectaron criterios de búsqueda premium.",
-    tierManual: "El nivel fue seleccionado manualmente para este intake.",
+    tierDefault: "Concierge Estándar aplica a solicitudes de $20K-$34,999 salvo que existan criterios premium. Las tarifas concierge no incluyen precio del vehículo, envío, impuestos, aduana, título, dealer ni costos de exportación.",
+    tierPremiumDetected: "Concierge Premium aplica a solicitudes de $35K-$120K y criterios de búsqueda premium.",
+    tierManual: "La tarifa se calcula con los detalles del intake.",
     tierShowroom: "Este vehículo del showroom está preclasificado para conserje premium.",
     tierReasons: {
       premiumMake: (make) => `${make} se trata como una marca premium/de lujo`,
       premiumModel: (model) => `${model} es un modelo premium o especializado`,
-      budget: "el presupuesto objetivo está por encima del rango estándar",
+      budget: "el presupuesto objetivo es $35K o más",
       lowMileage: "una búsqueda reciente con bajo millaje requiere búsqueda más precisa",
       export: "el destino internacional requiere coordinación enfocada en exportación"
     },
@@ -673,6 +673,7 @@ const customColorWrap = document.querySelector("#customColorWrap");
 const customColorInput = document.querySelector("#customColor");
 const timelineSelect = document.querySelector("#timeline");
 const tierSelect = document.querySelector("#tier");
+const tierDisplay = document.querySelector("#tierDisplay");
 const feeAmount = document.querySelector("#feeAmount");
 const feeLabel = document.querySelector("#feeLabel");
 const tierReason = document.querySelector("#tierReason");
@@ -944,7 +945,7 @@ function getSelectedColor(data) {
 
 function getBudgetMinimum(value) {
   if (!value) return 0;
-  if (value.includes("$175,000+")) return 175000;
+  if (value.includes("$120,000+")) return 120000;
   const match = value.match(/\$([\d,]+)/);
   return match ? Number(match[1].replace(/,/g, "")) : 0;
 }
@@ -960,9 +961,21 @@ function evaluateTier() {
   const reasons = [];
   const reasonCopy = t().tierReasons;
 
+  if (budgetMinimum > 0) {
+    if (budgetMinimum >= 35000) {
+      reasons.push(reasonCopy.budget);
+      if (selectedMake?.premium) reasons.push(reasonCopy.premiumMake(make));
+      if (premiumModelTerms.some((term) => modelText.includes(term))) reasons.push(reasonCopy.premiumModel(model));
+      if (year >= 2023 && mileage <= 25000) reasons.push(reasonCopy.lowMileage);
+      if (countrySelect.value && countrySelect.value !== "United States") reasons.push(reasonCopy.export);
+      return { tier: "premium", reason: reasons.join("; ") };
+    }
+
+    return { tier: "standard", reason: t().tierDefault };
+  }
+
   if (selectedMake?.premium) reasons.push(reasonCopy.premiumMake(make));
   if (premiumModelTerms.some((term) => modelText.includes(term))) reasons.push(reasonCopy.premiumModel(model));
-  if (budgetMinimum >= 60000) reasons.push(reasonCopy.budget);
   if (year >= 2023 && budgetMinimum >= 35000 && mileage <= 25000) reasons.push(reasonCopy.lowMileage);
   if (countrySelect.value && countrySelect.value !== "United States") reasons.push(reasonCopy.export);
 
@@ -974,9 +987,11 @@ function evaluateTier() {
 
 function setTier(tier, reason = "") {
   const premium = tier === "premium";
-  feeAmount.textContent = premium ? "$1,400" : "$699";
+  const laneText = `${premium ? t().premiumConcierge : t().standardConcierge} - ${premium ? "$1,499" : "$699"} service fee only`;
+  feeAmount.textContent = premium ? "$1,499" : "$699";
   feeLabel.textContent = premium ? t().premiumConcierge : t().standardConcierge;
   tierSelect.value = tier;
+  if (tierDisplay) tierDisplay.value = laneText;
   tierReason.textContent = reason || (premium ? t().tierPremiumDetected : t().tierDefault);
 }
 
@@ -1244,7 +1259,7 @@ function mariaTierLabel(tier) {
 }
 
 function mariaTierFee(tier) {
-  return tier === "premium" ? "$1,400" : "$699";
+  return tier === "premium" ? "$1,499" : "$699";
 }
 
 function buildMariaLeadSummary(data, tier) {
@@ -1352,10 +1367,10 @@ function mariaLikelyTier(data) {
   const mileage = data.get("mileage") || "";
   const domesticDestinations = ["", "us", "usa", "u.s.", "u.s.a.", "united states", "united states of america"];
 
+  if (budget > 0) return budget >= 35000 ? "premium" : "standard";
   if (!domesticDestinations.includes(destination)) return "premium";
   if (premiumModelTerms.some((term) => vehicle.includes(term))) return "premium";
   if (vehicleMakes.some((item) => item.premium && vehicle.includes(item.make.toLowerCase()))) return "premium";
-  if (budget >= 60000) return "premium";
   if (year >= 2023 && budget >= 35000 && isMariaLowMileage(mileage)) return "premium";
   return "standard";
 }
@@ -1457,7 +1472,7 @@ function setMariaCheckout(tier, muted = false) {
   const copy = t();
   const premium = tier === "premium";
   mariaFeeLane.textContent = `${premium ? copy.premiumConcierge : copy.standardConcierge} - concierge service fee only`;
-  mariaFeeAmount.textContent = premium ? "$1,400" : "$699";
+  mariaFeeAmount.textContent = premium ? "$1,499" : "$699";
   mariaCheckoutButton.dataset.tier = tier;
   mariaCheckoutButton.disabled = muted;
   mariaCheckoutPreview.classList.add("is-visible");
@@ -1781,10 +1796,6 @@ vehicleColorSelect.addEventListener("change", () => {
   if (!custom) customColorInput.value = "";
 });
 
-tierSelect.addEventListener("change", () => {
-  setTier(tierSelect.value, t().tierManual);
-});
-
 intakeResetTab.addEventListener("click", resetIntakeForm);
 
 function applyMariaLanguage() {
@@ -1916,7 +1927,6 @@ function applyLanguage(lang) {
     ["#customColor", copy.labels.customColor],
     ["#destination", copy.labels.destination],
     ["#timeline", copy.labels.timeline],
-    ["#tier", copy.labels.tier],
     ["#specs", copy.labels.specs]
   ];
   labelMap.forEach(([selector, text]) => {
@@ -1941,9 +1951,9 @@ function applyLanguage(lang) {
   setOptionText(timelineSelect, 0, copy.selects.timeline);
   copy.selects.mileageOptions.forEach((text, index) => setOptionText(maxMileageSelect, index + 1, text));
   copy.selects.timelineOptions.forEach((text, index) => setOptionText(timelineSelect, index + 1, text));
-  copy.selects.tierOptions.forEach((text, index) => setOptionText(tierSelect, index, text));
 
   setText(".eligibility-panel legend", copy.eligibilityLegend);
+  setText("#tierLabel", copy.labels.tier);
   setAllText(".eligibility-panel .check-row span", [copy.eligibilityAge, copy.eligibilityBank, copy.eligibilityId]);
   setText(".eligibility-panel p", copy.eligibilityNote);
   setText(".form-actions .button", copy.startIntake);
@@ -1975,7 +1985,10 @@ languageToggle.addEventListener("click", (event) => {
 intakeForm.addEventListener("submit", (event) => {
   event.preventDefault();
   const data = new FormData(intakeForm);
-  const tier = data.get("tier");
+  const result = evaluateTier();
+  setTier(result.tier, result.reason);
+  data.set("tier", result.tier);
+  const tier = result.tier;
   const checkoutUrl = STRIPE_CHECKOUT_URLS[tier];
   const summary = buildLeadSummary(data);
 

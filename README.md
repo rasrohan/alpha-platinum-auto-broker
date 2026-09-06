@@ -24,7 +24,7 @@ June 21 update: replaced the native mobile select indicator with a custom light 
 
 July 1 update: added the Maria AI Receptionist bridge section. The public website remains the premium showroom/intake front door, while Maria owns conversational buyer intake and prepares the shared lead packet for Rowtronic / Alpha Platinum review.
 
-July 3 update: standardized the AI receptionist name to Maria and clarified the payment lane. Maria may explain Standard Concierge ($699) and Premium / Export Concierge ($1,400), then route buyers to secure website Stripe checkout. Maria must never collect card details in chat.
+July 3 update: standardized the AI receptionist name to Maria and clarified the payment lane. Maria may explain Standard Concierge ($699) and Premium Concierge ($1,499), then route buyers to secure website Stripe checkout. Maria must never collect card details in chat.
 
 July 15 update: tested an Institution Ready Protocol design layer for internal structure and compliance thinking.
 
@@ -113,7 +113,13 @@ The intake form uses a curated U.S.-market make dropdown and a model field with 
 
 The intake also includes a preferred exterior color dropdown with a custom write-in option.
 
-The form auto-selects Premium / Export Concierge when it detects:
+The form calculates the concierge fee lane from the buyer's intake details. The current budget rule is:
+
+- $20,000-$34,999 target budget: Standard Concierge, $699 service fee only
+- $35,000-$120,000 target budget: Premium Concierge, $1,499 service fee only
+- $120,000+ target budget: team review, treated as Premium Concierge unless manually approved otherwise
+
+When no clear budget has been entered yet, the form can still preview Premium Concierge when it detects:
 
 - premium/luxury make
 - premium or specialty model term
@@ -121,7 +127,7 @@ The form auto-selects Premium / Export Concierge when it detects:
 - newer low-mileage target
 - international destination
 
-Example: `2024 Infiniti Q45`, `$42,000 - $45,000`, under `25,000 mi`, and an overseas destination is automatically classified as Premium / Export Concierge.
+Example: `2024 Infiniti Q45`, `$35,000 - $60,000`, under `25,000 mi`, and an overseas destination is automatically classified as Premium Concierge.
 
 ## Maria AI Receptionist Bridge
 
@@ -130,7 +136,7 @@ Maria v1 stays focused on premium buyer intake:
 - EN/ES greeting and buyer conversation
 - missing-field collection
 - eligibility and consent confirmations
-- Standard vs Premium / Export tier detection
+- Standard vs Premium Concierge tier detection
 - secure website/Stripe payment routing after tier detection
 - copy-ready lead summary for Alpha Platinum review
 
@@ -178,7 +184,7 @@ Founder story material for the future About page:
 Create two Stripe Checkout payment links or server-generated Checkout session routes:
 
 - Standard Concierge: `$699`
-- Premium / Export Concierge: `$1,400`
+- Premium Concierge: `$1,499`
 
 Paste the final URLs into `STRIPE_CHECKOUT_URLS` in `app.js`.
 
