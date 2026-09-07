@@ -3,6 +3,11 @@ const STRIPE_CHECKOUT_URLS = {
   premium: "https://buy.stripe.com/7sY8wPepQ9gi2g2czf73G05"
 };
 
+const STRIPE_CHECKOUT_READY = {
+  standard: true,
+  premium: false
+};
+
 const MARIA_AUDIO_CLIPS = {
   en: {
     welcome: "assets/audio/maria-welcome.mp3",
@@ -170,7 +175,8 @@ const translations = {
       verify: "Verify",
       source: "Source"
     },
-    formDemo: "Intake captured for demo. Add Stripe Checkout URLs in app.js to activate payment routing."
+    formDemo: "This fee lane is pending Stripe checkout setup. Please contact Alpha Platinum so the team can send the correct secure payment link.",
+    checkoutReferenceNote: (leadId) => `Use Lead ID ${leadId} as your payment reference.`
   },
   es: {
     pageTitle: "Alpha Platinum Auto Broker | Conserje de Procuración de Vehículos Premium",
@@ -309,7 +315,8 @@ const translations = {
       verify: "Verificar",
       source: "Buscar"
     },
-    formDemo: "Intake capturado para demo. Agrega URLs de Stripe Checkout en app.js para activar el pago."
+    formDemo: "Esta tarifa está pendiente de configuración en Stripe. Por favor contacta a Alpha Platinum para que el equipo envíe el enlace de pago seguro correcto.",
+    checkoutReferenceNote: (leadId) => `Usa el Lead ID ${leadId} como referencia de pago.`
   }
 };
 
@@ -347,6 +354,7 @@ const mariaTranslations = {
     reset: "Reset",
     close: "Close Maria assistant",
     checkoutButton: "Continue to secure website checkout",
+    checkoutButtonPending: "Premium checkout setup pending",
     paymentNote: "This is the concierge service fee only. It does not include vehicle price, shipping, taxes, customs, title, dealer, or export costs. Maria does not collect card details in chat.",
     leadLabel: "Lead ID",
     initialReply: "Welcome to Alpha Platinum. I'm Maria, your AI concierge. Tell me what vehicle you want and I will help build your buyer packet.",
@@ -354,6 +362,7 @@ const mariaTranslations = {
     guardrailReply: "I do not want to guess on that. I can add your question to the buyer request and have the Alpha Platinum team follow up with the right answer.",
     readyReply: "You are in the right place. I will prepare this clearly for the Alpha Platinum team.",
     checkoutReply: "Payments are completed through secure Alpha Platinum website checkout. I do not collect card details in chat.",
+    checkoutPendingReply: "The Premium Concierge payment link is being updated. Your buyer packet is ready, and the team can send the correct secure payment link.",
     resetReply: "Maria is reset. Tell me what vehicle you want to source.",
     voiceUnavailable: "Maria voice is being prepared. You can continue with the chat request.",
       nextPrompts: {
@@ -373,7 +382,7 @@ const mariaTranslations = {
       stepLabel: (current, total) => `Step ${current} of ${total}`,
       confirmLine: (name, address) => `Let me confirm the spelling of the buyer name: ${name || "the buyer"}. I have the address or destination details as: ${address || "not provided yet"}.`,
       confirmSummary: (data) => `Buyer: ${data.name || "[missing]"} | Vehicle: ${data.vehicle || "[missing]"} | Destination: ${data.destination || "[missing]"} | Details: ${data.address || "[missing]"}`,
-    packetReady: (leadId, tierLabel, fee) => `Your buyer packet is ready. Reference number ${leadId}. Based on your request, this looks like ${tierLabel} with a ${fee} concierge service fee. Vehicle price, shipping, taxes, customs, title, dealer, and export costs are separate.`,
+    packetReady: (leadId, tierLabel, fee) => `Your buyer packet is ready. Reference number ${leadId}. Based on your request, this looks like ${tierLabel} with a ${fee} concierge service fee. Use this Lead ID as your payment reference. Vehicle price, shipping, taxes, customs, title, dealer, and export costs are separate.`,
     handoffEmail: "Email request",
     handoffWhatsApp: "Open WhatsApp",
     emailInstructions: "Choose your email service, review the request, then press Send there. If no draft opens, copy the request below.",
@@ -433,6 +442,7 @@ const mariaTranslations = {
     reset: "Limpiar",
     close: "Cerrar asistente Maria",
     checkoutButton: "Continuar al checkout seguro",
+    checkoutButtonPending: "Checkout Premium pendiente",
     paymentNote: "Esta es solo la tarifa de servicio concierge. No incluye precio del vehículo, envío, impuestos, aduana, título, dealer ni costos de exportación. Maria no recopila datos de tarjeta en el chat.",
     leadLabel: "Lead ID",
     initialReply: "Bienvenido a Alpha Platinum. Soy Maria, tu conserje AI. Dime que vehiculo buscas y te ayudo a preparar el paquete del comprador.",
@@ -440,6 +450,7 @@ const mariaTranslations = {
     guardrailReply: "No quiero adivinar esa respuesta. Puedo agregar tu pregunta a la solicitud para que el equipo de Alpha Platinum responda correctamente.",
     readyReply: "Estas en el lugar correcto. Preparare esto claramente para el equipo de Alpha Platinum.",
     checkoutReply: "Los pagos se completan por el checkout seguro de Alpha Platinum. No recopilo datos de tarjeta en el chat.",
+    checkoutPendingReply: "El enlace de pago de Concierge Premium se esta actualizando. Tu paquete de comprador esta listo y el equipo puede enviar el enlace seguro correcto.",
     resetReply: "Maria fue reiniciada. Dime que vehiculo quieres buscar.",
     voiceUnavailable: "La voz de Maria se esta preparando. Puedes continuar con la solicitud por chat.",
       nextPrompts: {
@@ -459,7 +470,7 @@ const mariaTranslations = {
       stepLabel: (current, total) => `Paso ${current} de ${total}`,
       confirmLine: (name, address) => `Permiteme confirmar la ortografia del comprador: ${name || "el comprador"}. Tengo la direccion o detalles de destino como: ${address || "no indicado todavia"}.`,
       confirmSummary: (data) => `Comprador: ${data.name || "[falta]"} | Vehiculo: ${data.vehicle || "[falta]"} | Destino: ${data.destination || "[falta]"} | Detalles: ${data.address || "[falta]"}`,
-    packetReady: (leadId, tierLabel, fee) => `Tu paquete de comprador esta listo. Referencia ${leadId}. Segun tu solicitud, parece ${tierLabel} con una tarifa de servicio concierge de ${fee}. Precio del vehículo, envío, impuestos, aduana, título, dealer y exportación son costos separados.`,
+    packetReady: (leadId, tierLabel, fee) => `Tu paquete de comprador esta listo. Referencia ${leadId}. Segun tu solicitud, parece ${tierLabel} con una tarifa de servicio concierge de ${fee}. Usa este Lead ID como referencia de pago. Precio del vehículo, envío, impuestos, aduana, título, dealer y exportación son costos separados.`,
     handoffEmail: "Enviar solicitud por correo",
     handoffWhatsApp: "Abrir WhatsApp",
     emailInstructions: "Elige tu servicio de correo, revisa la solicitud y pulsa Enviar allí. Si no se abre un borrador, copia la solicitud de abajo.",
@@ -1289,6 +1300,18 @@ function buildMariaLeadSummary(data, tier) {
   ].join("\n");
 }
 
+function buildStripeCheckoutUrl(tier, { leadId = "", email = "" } = {}) {
+  if (!STRIPE_CHECKOUT_READY[tier]) return "";
+  const checkoutUrl = STRIPE_CHECKOUT_URLS[tier];
+  if (!checkoutUrl) return "";
+  const url = new URL(checkoutUrl);
+  if (leadId) url.searchParams.set("client_reference_id", leadId);
+  if (email && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    url.searchParams.set("prefilled_email", email);
+  }
+  return url.href;
+}
+
 function updateMariaHandoffLinks(summary) {
   const recipient = "rowtronicconsulting@gmail.com";
   const subject = `Alpha Platinum Maria Lead ${currentMariaLeadId}`;
@@ -1470,13 +1493,19 @@ function logMariaVoiceDiagnostics(voices, selectedVoice, preference, fallbackUse
 
 function setMariaCheckout(tier, muted = false) {
   const copy = t();
+  const mariaText = mariaCopy();
   const premium = tier === "premium";
+  const checkoutReady = Boolean(buildStripeCheckoutUrl(tier, {
+    leadId: currentMariaLeadId,
+    email: mariaField("contact")?.value || ""
+  }));
   mariaFeeLane.textContent = `${premium ? copy.premiumConcierge : copy.standardConcierge} - concierge service fee only`;
   mariaFeeAmount.textContent = premium ? "$1,499" : "$699";
   mariaCheckoutButton.dataset.tier = tier;
-  mariaCheckoutButton.disabled = muted;
+  mariaCheckoutButton.disabled = muted || !checkoutReady;
+  mariaCheckoutButton.textContent = checkoutReady ? mariaText.checkoutButton : mariaText.checkoutButtonPending;
   mariaCheckoutPreview.classList.add("is-visible");
-  mariaCheckoutPreview.classList.toggle("is-muted", muted);
+  mariaCheckoutPreview.classList.toggle("is-muted", muted || !checkoutReady);
 }
 
 function updateMariaConductorReply() {
@@ -1673,7 +1702,10 @@ function prepareMariaRequest() {
   setMariaEngineState("checkout");
   setMariaCheckout(tier, false);
   updateMariaHandoffLinks(summary);
-  mariaReply.textContent = `${copy.packetReady(currentMariaLeadId, tierLabel, fee)} ${copy.checkoutReply}`;
+  mariaReply.textContent = `${copy.packetReady(currentMariaLeadId, tierLabel, fee)} ${buildStripeCheckoutUrl(tier, {
+    leadId: currentMariaLeadId,
+    email: data.get("contact") || ""
+  }) ? copy.checkoutReply : copy.checkoutPendingReply}`;
   addMariaConversation("maria", mariaReply.textContent);
   setMariaAudioClip("handoff");
   setMariaEngineState("handoff");
@@ -1704,9 +1736,10 @@ function requestVehicle(index, requestNote = "") {
   openMariaWidget(vehicle, false);
 }
 
-function buildLeadSummary(data) {
+function buildLeadSummary(data, leadId = "") {
   return [
     `Alpha Platinum intake request`,
+    leadId ? `Lead ID: ${leadId}` : "",
     `Name: ${data.get("fullName")}`,
     `Email: ${data.get("email")}`,
     `Phone: ${data.get("phone")}`,
@@ -1723,7 +1756,7 @@ function buildLeadSummary(data) {
     `Valid bank/payment method: ${data.get("bankConfirm") === "on" ? "Yes" : "No"}`,
     `Valid government ID: ${data.get("idConfirm") === "on" ? "Yes" : "No"}`,
     `Specs: ${data.get("specs") || "None provided"}`
-  ].join("\n");
+  ].filter(Boolean).join("\n");
 }
 
 grid.addEventListener("click", (event) => {
@@ -1774,7 +1807,10 @@ mariaWidgetForm.addEventListener("submit", (event) => {
 });
 mariaCheckoutButton.addEventListener("click", () => {
   const tier = mariaCheckoutButton.dataset.tier || "premium";
-  const checkoutUrl = STRIPE_CHECKOUT_URLS[tier];
+  const checkoutUrl = buildStripeCheckoutUrl(tier, {
+    leadId: currentMariaLeadId,
+    email: mariaField("contact")?.value || ""
+  });
   if (checkoutUrl) window.location.href = checkoutUrl;
 });
 
@@ -1824,7 +1860,16 @@ function applyMariaLanguage() {
   setText("#mariaBack", copy.back);
   setText("#mariaNext", mariaStepIndex === mariaStepOrder.length - 1 ? copy.prepareButton : copy.next);
   setText("#mariaReset", copy.reset);
-  setText("#mariaCheckoutButton", copy.checkoutButton);
+  const activeCheckoutTier = mariaCheckoutButton.dataset.tier;
+  setText(
+    "#mariaCheckoutButton",
+    activeCheckoutTier && !buildStripeCheckoutUrl(activeCheckoutTier, {
+      leadId: currentMariaLeadId,
+      email: mariaField("contact")?.value || ""
+    })
+      ? copy.checkoutButtonPending
+      : copy.checkoutButton
+  );
   setText("#mariaPaymentNote", copy.paymentNote);
   setText("#mariaLeadLabel", copy.leadLabel);
   setText("#mariaEmailHandoff", copy.handoffEmail);
@@ -1989,8 +2034,12 @@ intakeForm.addEventListener("submit", (event) => {
   setTier(result.tier, result.reason);
   data.set("tier", result.tier);
   const tier = result.tier;
-  const checkoutUrl = STRIPE_CHECKOUT_URLS[tier];
-  const summary = buildLeadSummary(data);
+  const leadId = createMariaLeadId();
+  const checkoutUrl = buildStripeCheckoutUrl(tier, {
+    leadId,
+    email: data.get("email") || ""
+  });
+  const summary = buildLeadSummary(data, leadId);
 
   console.info(summary);
 
@@ -1999,7 +2048,7 @@ intakeForm.addEventListener("submit", (event) => {
     return;
   }
 
-  formNote.textContent = t().formDemo;
+  formNote.textContent = `${t().formDemo} ${t().checkoutReferenceNote(leadId)}`;
 });
 
 renderCountries();
