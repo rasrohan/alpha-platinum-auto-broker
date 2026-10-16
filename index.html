@@ -5,12 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Alpha Platinum Auto Broker | Premium Vehicle Procurement Concierge</title>
   <meta name="description" content="Alpha Platinum Auto Broker helps qualified buyers source premium U.S. vehicles through licensed dealer relationships in Georgia and South Florida.">
+  <meta name="theme-color" content="#090b0d">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Alpha Platinum Auto Broker">
+  <meta property="og:title" content="Alpha Platinum Auto Broker | Premium Vehicle Procurement Concierge">
+  <meta property="og:description" content="Premium U.S. vehicle sourcing support for qualified domestic and international buyers.">
+  <meta property="og:url" content="https://alphaplatinumautobroker.com/">
+  <meta property="og:image" content="https://alphaplatinumautobroker.com/showroom-hero.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="canonical" href="https://alphaplatinumautobroker.com/">
+  <link rel="icon" type="image/png" href="alpha-platinum-mark.png">
+  <link rel="manifest" href="site.webmanifest">
   <link rel="preload" href="showroom-hero.png" as="image">
-  <link rel="stylesheet" href="styles.css?v=20260907-payment-handshake">
+  <link rel="stylesheet" href="styles.css?v=20261016-institution-ready">
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
   <header class="topbar">
-    <a class="brand" href="#top" aria-label="Alpha Platinum Auto Broker home">
+    <a class="brand" href="#main-content" aria-label="Alpha Platinum Auto Broker home">
       <span class="brand-mark">
         <img src="alpha-platinum-mark.png" alt="" aria-hidden="true">
       </span>
@@ -23,6 +37,7 @@
       <a href="#showroom">Showroom</a>
       <a href="#source">Custom Sourcing</a>
       <a href="#process">Process</a>
+      <a href="#standards">Standards</a>
       <a href="#about">About</a>
       <a href="#contact">Contact</a>
     </nav>
@@ -32,7 +47,7 @@
     </button>
   </header>
 
-  <main id="top">
+  <main id="main-content">
     <section class="hero" aria-labelledby="hero-title">
       <img class="hero-image" src="showroom-hero.png" alt="Dark premium vehicle showroom with luxury cars">
       <div class="hero-overlay"></div>
@@ -249,7 +264,12 @@
             <input id="idConfirm" name="idConfirm" type="checkbox" required>
             <span>I confirm the buyer has valid government identification, such as a passport or valid driver's license.</span>
           </label>
+          <label class="check-row">
+            <input id="privacyConsent" name="privacyConsent" type="checkbox" required>
+            <span id="privacyConsentLabel">I agree to the website Terms and acknowledge the Privacy Notice, and I consent to contact about this request.</span>
+          </label>
           <p>Destination selection does not guarantee export approval. Final eligibility depends on U.S. export requirements, sanctions screening, destination-country import rules, and licensed dealer documentation.</p>
+          <p class="legal-consent-note"><span id="legalReviewLabel">Review:</span> <a id="privacyNoticeLink" href="privacy.html">Privacy Notice</a> · <a id="termsLink" href="terms.html">Terms of Use</a></p>
         </fieldset>
         <div class="form-actions">
           <button class="button primary" type="submit">Start Intake</button>
@@ -284,6 +304,36 @@
           <span>04</span>
           <h3>Coordinate next steps</h3>
           <p>The team supports communication, inspection questions, dealer handoff, and logistics guidance.</p>
+        </article>
+      </div>
+    </section>
+
+    <section class="section standards-section" id="standards" aria-labelledby="standards-title">
+      <div class="section-heading">
+        <p class="eyebrow" id="standardsEyebrow">Trust & Transaction Standards</p>
+        <h2 id="standards-title">Clear roles. Documented handoffs. No hidden promises.</h2>
+        <p id="standardsCopy">Our process is designed to give buyers, dealers, payment providers, and logistics teams a clear record of what Alpha Platinum does—and what remains with licensed third parties.</p>
+      </div>
+      <div class="standards-grid">
+        <article>
+          <span>01</span>
+          <h3>Published business identity</h3>
+          <p>Alpha Platinum Auto Broker operates as a DBA of Rowtronic LLC, with published business contact information and a defined operations contact.</p>
+        </article>
+        <article>
+          <span>02</span>
+          <h3>Transparent service boundaries</h3>
+          <p>Concierge fees are separate from vehicle price, dealer charges, shipping, taxes, title, customs, and export costs.</p>
+        </article>
+        <article>
+          <span>03</span>
+          <h3>Secure payment boundary</h3>
+          <p>Card details belong only in secure Stripe checkout. Maria and the public intake never ask buyers to submit card or bank credentials.</p>
+        </article>
+        <article>
+          <span>04</span>
+          <h3>Reference-based handoff</h3>
+          <p>Each prepared request receives an APAB Lead ID so the buyer request, payment reference, and team review can be matched.</p>
         </article>
       </div>
     </section>
@@ -369,7 +419,8 @@
           <p id="mariaConfirmSummary">Review the buyer name, destination details, and vehicle request before Maria prepares the packet.</p>
           <label class="maria-check-row"><input id="mariaConfirm" name="confirm" type="checkbox"><span id="mariaConfirmLabel">The buyer name and destination details look correct.</span></label>
         </div>
-        <label class="maria-check-row" data-maria-step="consent"><input id="mariaConsent" name="consent" type="checkbox"><span id="mariaConsentLabel">I consent to Alpha Platinum / Rowtronic contacting me about this request.</span></label>
+        <label class="maria-check-row" data-maria-step="consent"><input id="mariaConsent" name="consent" type="checkbox"><span id="mariaConsentLabel">I consent to Alpha Platinum / Rowtronic contacting me about this request and acknowledge the Privacy Notice.</span></label>
+        <p class="maria-legal-note" data-maria-step="consent"><a href="privacy.html">Privacy Notice</a> · <a href="terms.html">Terms of Use</a></p>
         <div class="maria-step-actions">
           <button class="button secondary" id="mariaBack" type="button">Back</button>
           <button class="button secondary" id="mariaNext" type="button">Next</button>
@@ -413,8 +464,14 @@
   <footer class="footer">
     <p>&copy; 2026 Rowtronic LLC. Alpha Platinum Auto Broker DBA. Independent vehicle procurement concierge.</p>
     <p id="poweredByLine">Powered by Rowtronic LLC | Custom Web Design & AI Receptionist Agents | +1 (404) 664-1309</p>
+    <nav class="footer-links" aria-label="Legal and accessibility">
+      <a href="privacy.html">Privacy Notice</a>
+      <a href="terms.html">Terms of Use</a>
+      <a href="accessibility.html">Accessibility</a>
+      <a href="mailto:rowtronicconsulting@gmail.com?subject=Alpha%20Platinum%20Website%20Support">Website Support</a>
+    </nav>
   </footer>
 
-  <script src="app.js?v=20260907-payment-handshake"></script>
+  <script src="app.js?v=20261016-institution-ready-v2"></script>
 </body>
 </html>

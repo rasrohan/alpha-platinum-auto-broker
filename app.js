@@ -42,7 +42,7 @@ const translations = {
     pageTitle: "Alpha Platinum Auto Broker | Premium Vehicle Procurement Concierge",
     metaDescription: "Alpha Platinum Auto Broker helps qualified buyers source premium U.S. vehicles through licensed dealer relationships in Georgia and South Florida.",
     brandSmall: "Auto Broker",
-    nav: ["Showroom", "Custom Sourcing", "Process", "About", "Contact"],
+    nav: ["Showroom", "Custom Sourcing", "Process", "Standards", "About", "Contact"],
     heroEyebrow: "Rowtronic LLC DBA",
     heroCopy: "A virtual luxury auto showroom and procurement concierge for qualified buyers seeking premium U.S. vehicles through trusted licensed dealer relationships in Georgia and South Florida.",
     browseShowroom: "Browse Showroom",
@@ -66,7 +66,7 @@ const translations = {
     weeklyTitle: "Featured Sourcing Target of the Week",
     weeklyCopy: "Three rotating high-interest target specs selected for qualified buyers this week. These are sourcing targets, not owned inventory.",
     weeklyBadge: "Weekly Sourcing Spotlight",
-    weeklyWindow: "Week of September 1, 2026",
+    weeklyWindow: "Week of October 12, 2026",
     weeklyMariaNote: (vehicle) => `I am interested in the weekly sourcing spotlight: ${vehicle.year} ${vehicle.make} ${vehicle.model}.`,
     aboutEyebrow: "Built From Real Service Experience",
     aboutTitle: "A concierge desk for serious vehicle buyers",
@@ -137,7 +137,11 @@ const translations = {
     eligibilityAge: "I confirm the buyer is 18 years of age or older.",
     eligibilityBank: "I confirm the buyer has a valid bank account or approved payment method for vehicle purchase funds.",
     eligibilityId: "I confirm the buyer has valid government identification, such as a passport or valid driver's license.",
+    eligibilityPrivacy: "I agree to the website Terms and acknowledge the Privacy Notice, and I consent to contact about this request.",
     eligibilityNote: "Destination selection does not guarantee export approval. Final eligibility depends on U.S. export requirements, sanctions screening, destination-country import rules, and licensed dealer documentation.",
+    legalReview: "Review:",
+    privacyNotice: "Privacy Notice",
+    termsOfUse: "Terms of Use",
     startIntake: "Start Intake",
     resetIntake: "Reset",
     processEyebrow: "Concierge Sourcing Process",
@@ -147,6 +151,15 @@ const translations = {
       ["Confirm the request", "We review the vehicle goal, buyer readiness, destination, and sourcing level before active work begins."],
       ["Search real options", "Alpha Platinum checks available dealer inventory and presents serious options for the buyer to review."],
       ["Coordinate next steps", "The team supports communication, inspection questions, dealer handoff, and logistics guidance."]
+    ],
+    standardsEyebrow: "Trust & Transaction Standards",
+    standardsTitle: "Clear roles. Documented handoffs. No hidden promises.",
+    standardsCopy: "Our process is designed to give buyers, dealers, payment providers, and logistics teams a clear record of what Alpha Platinum does—and what remains with licensed third parties.",
+    standardsCards: [
+      ["Published business identity", "Alpha Platinum Auto Broker operates as a DBA of Rowtronic LLC, with published business contact information and a defined operations contact."],
+      ["Transparent service boundaries", "Concierge fees are separate from vehicle price, dealer charges, shipping, taxes, title, customs, and export costs."],
+      ["Secure payment boundary", "Card details belong only in secure Stripe checkout. Maria and the public intake never ask buyers to submit card or bank credentials."],
+      ["Reference-based handoff", "Each prepared request receives an APAB Lead ID so the buyer request, payment reference, and team review can be matched."]
     ],
     businessEyebrow: "Business Registry",
     dba: "DBA:",
@@ -182,7 +195,7 @@ const translations = {
     pageTitle: "Alpha Platinum Auto Broker | Conserje de Procuración de Vehículos Premium",
     metaDescription: "Alpha Platinum Auto Broker ayuda a compradores calificados a localizar vehículos premium en EE. UU. mediante relaciones con concesionarios autorizados en Georgia y el sur de Florida.",
     brandSmall: "Auto Broker",
-    nav: ["Showroom", "Búsqueda Personalizada", "Proceso", "Acerca", "Contacto"],
+    nav: ["Showroom", "Búsqueda Personalizada", "Proceso", "Estándares", "Acerca", "Contacto"],
     heroEyebrow: "Rowtronic LLC DBA",
     heroCopy: "Un showroom virtual de autos de lujo y conserje de procuración para compradores calificados que buscan vehículos premium de EE. UU. mediante relaciones con concesionarios autorizados en Georgia y el sur de Florida.",
     browseShowroom: "Ver Showroom",
@@ -206,7 +219,7 @@ const translations = {
     weeklyTitle: "Objetivo Destacado de Búsqueda de la Semana",
     weeklyCopy: "Tres specs objetivo rotativos de alto interés seleccionados para compradores calificados esta semana. Son objetivos de búsqueda, no inventario propio.",
     weeklyBadge: "Spotlight Semanal",
-    weeklyWindow: "Semana del 1 de septiembre de 2026",
+    weeklyWindow: "Semana del 12 de octubre de 2026",
     weeklyMariaNote: (vehicle) => `Estoy interesado en el spotlight semanal de búsqueda: ${vehicle.year} ${vehicle.make} ${vehicle.model}.`,
     aboutEyebrow: "Construido Desde Experiencia Real de Servicio",
     aboutTitle: "Un escritorio conserje para compradores serios",
@@ -277,7 +290,11 @@ const translations = {
     eligibilityAge: "Confirmo que el comprador tiene 18 años de edad o más.",
     eligibilityBank: "Confirmo que el comprador tiene una cuenta bancaria válida o método de pago aprobado para los fondos de compra del vehículo.",
     eligibilityId: "Confirmo que el comprador tiene identificación gubernamental válida, como pasaporte o licencia de conducir válida.",
+    eligibilityPrivacy: "Acepto los Términos del sitio, reconozco el Aviso de Privacidad y autorizo el contacto sobre esta solicitud.",
     eligibilityNote: "Seleccionar un destino no garantiza aprobación de exportación. La elegibilidad final depende de requisitos de exportación de EE. UU., revisión de sanciones, reglas de importación del país destino y documentación del concesionario autorizado.",
+    legalReview: "Revisar:",
+    privacyNotice: "Aviso de Privacidad",
+    termsOfUse: "Términos de Uso",
     startIntake: "Iniciar Intake",
     resetIntake: "Limpiar",
     processEyebrow: "Proceso de Busqueda Concierge",
@@ -287,6 +304,15 @@ const translations = {
       ["Confirma la solicitud", "Revisamos el objetivo, preparacion del comprador, destino y nivel de busqueda antes de comenzar."],
       ["Buscamos opciones reales", "Alpha Platinum revisa inventario disponible de dealers y presenta opciones serias para el comprador."],
       ["Coordinamos proximos pasos", "El equipo apoya comunicacion, preguntas de inspeccion, handoff al dealer y orientacion logistica."]
+    ],
+    standardsEyebrow: "Estándares de Confianza y Transacción",
+    standardsTitle: "Roles claros. Entregas documentadas. Sin promesas ocultas.",
+    standardsCopy: "Nuestro proceso brinda a compradores, concesionarios, proveedores de pago y equipos logísticos un registro claro de lo que hace Alpha Platinum y de lo que permanece con terceros autorizados.",
+    standardsCards: [
+      ["Identidad comercial publicada", "Alpha Platinum Auto Broker opera como DBA de Rowtronic LLC, con información pública de contacto comercial y un contacto de operaciones definido."],
+      ["Límites transparentes del servicio", "Las tarifas concierge son separadas del precio del vehículo, cargos del concesionario, envío, impuestos, título, aduana y exportación."],
+      ["Límite seguro de pago", "Los datos de tarjeta pertenecen únicamente al checkout seguro de Stripe. Maria y el intake público nunca solicitan credenciales bancarias ni de tarjeta."],
+      ["Entrega con referencia", "Cada solicitud preparada recibe un Lead ID de APAB para relacionar la solicitud, la referencia de pago y la revisión del equipo."]
     ],
     businessEyebrow: "Registro Comercial",
     dba: "DBA:",
@@ -346,7 +372,7 @@ const mariaTranslations = {
     questionLabel: "Anything else Maria should add?",
     confirmTitle: "Confirm buyer details",
     confirmLabel: "The buyer name and destination details look correct.",
-    consentLabel: "I consent to Alpha Platinum / Rowtronic contacting me about this request.",
+    consentLabel: "I consent to Alpha Platinum / Rowtronic contacting me about this request and acknowledge the Privacy Notice.",
     prepareButton: "Prepare buyer request",
     mainIntake: "Open full intake",
     speak: "Play Maria intro",
@@ -434,7 +460,7 @@ const mariaTranslations = {
     questionLabel: "Algo mas que Maria deba agregar?",
     confirmTitle: "Confirmar datos del comprador",
     confirmLabel: "El nombre del comprador y los detalles de destino se ven correctos.",
-    consentLabel: "Acepto que Alpha Platinum / Rowtronic me contacte sobre esta solicitud.",
+    consentLabel: "Acepto que Alpha Platinum / Rowtronic me contacte sobre esta solicitud y reconozco el Aviso de Privacidad.",
     prepareButton: "Preparar solicitud",
     mainIntake: "Abrir intake completo",
     speak: "Reproducir intro de Maria",
@@ -998,7 +1024,7 @@ function evaluateTier() {
 
 function setTier(tier, reason = "") {
   const premium = tier === "premium";
-  const laneText = `${premium ? t().premiumConcierge : t().standardConcierge} - ${premium ? "$1,499" : "$699"} service fee only`;
+  const laneText = premium ? t().selects.tierOptions[1] : t().selects.tierOptions[0];
   feeAmount.textContent = premium ? "$1,499" : "$699";
   feeLabel.textContent = premium ? t().premiumConcierge : t().standardConcierge;
   tierSelect.value = tier;
@@ -1755,6 +1781,7 @@ function buildLeadSummary(data, leadId = "") {
     `Buyer 18+: ${data.get("ageConfirm") === "on" ? "Yes" : "No"}`,
     `Valid bank/payment method: ${data.get("bankConfirm") === "on" ? "Yes" : "No"}`,
     `Valid government ID: ${data.get("idConfirm") === "on" ? "Yes" : "No"}`,
+    `Terms/privacy/contact consent: ${data.get("privacyConsent") === "on" ? "Yes" : "No"}`,
     `Specs: ${data.get("specs") || "None provided"}`
   ].filter(Boolean).join("\n");
 }
@@ -1952,6 +1979,13 @@ function applyLanguage(lang) {
     article.querySelector("h3").textContent = copy.steps[index][0];
     article.querySelector("p").textContent = copy.steps[index][1];
   });
+  setText("#standardsEyebrow", copy.standardsEyebrow);
+  setText("#standards-title", copy.standardsTitle);
+  setText("#standardsCopy", copy.standardsCopy);
+  document.querySelectorAll(".standards-grid article").forEach((article, index) => {
+    article.querySelector("h3").textContent = copy.standardsCards[index][0];
+    article.querySelector("p").textContent = copy.standardsCards[index][1];
+  });
   setText(".contact-card .eyebrow", copy.businessEyebrow);
   setText(".disclosure-copy h2", copy.disclosureTitle);
   setAllText(".disclosure-copy > p", copy.disclosureCopy);
@@ -1999,8 +2033,11 @@ function applyLanguage(lang) {
 
   setText(".eligibility-panel legend", copy.eligibilityLegend);
   setText("#tierLabel", copy.labels.tier);
-  setAllText(".eligibility-panel .check-row span", [copy.eligibilityAge, copy.eligibilityBank, copy.eligibilityId]);
+  setAllText(".eligibility-panel .check-row span", [copy.eligibilityAge, copy.eligibilityBank, copy.eligibilityId, copy.eligibilityPrivacy]);
   setText(".eligibility-panel p", copy.eligibilityNote);
+  setText("#legalReviewLabel", copy.legalReview);
+  setText("#privacyNoticeLink", copy.privacyNotice);
+  setText("#termsLink", copy.termsOfUse);
   setText(".form-actions .button", copy.startIntake);
   setText("#intakeResetTab", copy.resetIntake);
   intakeResetTab.setAttribute("aria-label", copy.resetIntake);
@@ -2015,7 +2052,8 @@ function applyLanguage(lang) {
   if (contactParagraphs[4]) contactParagraphs[4].innerHTML = `<strong>${copy.operationsManager}</strong> Lance Johnson`;
   if (contactParagraphs[5]) contactParagraphs[5].innerHTML = `<strong>${copy.operationsCell}</strong> <a href="tel:+15186987516">+1 (518) 698-7516</a>`;
 
-  setTier(tierSelect.value, tierReason.textContent || "");
+  const translatedTier = evaluateTier();
+  setTier(translatedTier.tier, translatedTier.reason);
   renderInventory();
   languageToggle.querySelectorAll("span").forEach((item) => {
     item.classList.toggle("active", item.textContent.toLowerCase() === lang);

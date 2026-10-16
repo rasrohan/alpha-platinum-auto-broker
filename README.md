@@ -190,6 +190,10 @@ Paste the final URLs into `STRIPE_CHECKOUT_URLS` in `app.js`.
 
 September 7 payment-lane note: the website appends the generated Lead ID to active Stripe Payment Links as `client_reference_id` and pre-fills buyer email when available. Standard checkout is active. Premium checkout is intentionally held until the Stripe dashboard/payment link is updated to the current `$1,499` Premium Concierge service fee. A checkout visit or customer statement is not verified paid status; payment verification still requires Stripe confirmation matched to the same Lead ID.
 
+October 16 institution-ready update: prepared the site for `alphaplatinumautobroker.com` with production canonical/social metadata, a customer-facing Trust & Transaction Standards section, required terms/privacy/contact consent on the main intake, Maria privacy acknowledgement, Privacy Notice, Terms of Use, Accessibility statement, sitemap, robots file, web manifest, and a standard security contact. Added keyboard focus, skip navigation, and reduced-motion support. See `INSTITUTION-READY.md` for the owner/vendor acceptance gates that cannot be completed by public website code alone.
+
+The legal-policy pages are operational drafts and must be reviewed by qualified counsel before final production acceptance. The website must not be represented as fully institution ready until the open legal, payment reconciliation, provider evidence, privacy operations, hosting security, and real-device testing gates are complete.
+
 ```js
 const STRIPE_CHECKOUT_URLS = {
   standard: "https://checkout.stripe.com/...",
